@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "298920779639",
+    "project_id": "iconsult52730",
+    "storage_bucket": "iconsult52730.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298920779639:android:f30cf35c5efc5571bc4b72",
+        "android_client_info": {
+          "package_name": "com.example.consultation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298920779639-eqd1d0ii992qteeq8cenrpqtk2dtqmg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8zh1Md6OAjUmDHXcIAHo7ogSuIPlaSVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298920779639-eqd1d0ii992qteeq8cenrpqtk2dtqmg5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

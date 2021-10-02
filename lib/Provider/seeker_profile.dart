@@ -1,126 +1,91 @@
+
+
+
+
+
+import 'package:consultation/Seeker/seeker_reports.dart';
 import 'package:consultation/components.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:consultation/Seeker/seeker_edit_profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:image_viewer/image_viewer.dart';
-import 'package:intl/intl.dart';
-
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:flutter/material.dart';
-
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel, EventList;
-import 'package:pinch_zoom/pinch_zoom.dart';
-
-
 
 class SeekerProfile extends StatefulWidget {
-  final bool canProceed;
-  final double ratingEditor=0;
-
-  const SeekerProfile({Key? key, this.canProceed=true}) : super(key: key);
-  
+  const SeekerProfile({ Key? key }) : super(key: key);
 
   @override
-  _SeekerProfileState createState() =>
-      _SeekerProfileState();
+  _SeekerProfileState createState() => _SeekerProfileState();
 }
 
-class _SeekerProfileState extends State<SeekerProfile>
-    with SingleTickerProviderStateMixin {
-  int seletedIndex = 0;
-  
-
-  
+class _SeekerProfileState extends State<SeekerProfile> {
+  FirebaseAuth instance=FirebaseAuth.instance ;
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: MyAppBar(),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                
-                alignment: Alignment.center,
-                height: 200,
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                        ),
-                        Text(
-                          "محمد علی",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(height: 1, color: Colors.black),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            setState(() {
-                              showDialog(context: context, builder: (context){
-                              return AlertDialog(
-                                title: Align(alignment: Alignment.center,child: Text("قيم تجربتك",style: TextStyle(color: Color(0xffCB997E)),)),
-                                content: RatingEditor(rating: widget.ratingEditor,),
-                                //actionsAlignment: MainAxisAlignment.start,
-                                actions: [
-                                  ElevatedButton(onPressed: (){}, child: Text("إرسال",style: TextStyle(color: Colors.white),)),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(primary: Colors.grey),
-                                    onPressed: (){}, child: Text("إلغاء",style: TextStyle(color: Colors.white),)),
-                                ],
-                                
-                              );
-                            });
-                            });
-                            
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("3.0"),
-                              StarRating(
-                                rating: widget.ratingEditor,
-                                size: 20,
-                                borderColor: Color(0xff6B705C),
-                                color: Color(0xff6B705C),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+
+          children: [
+            Container(
+                padding: EdgeInsets.all(20),
+                child: Align(alignment: Alignment.center,child: CircleAvatar(radius: 70,))),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SeekerProfileEdit()));
+              },
+              child: Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffFFE8D6)
                 ),
+                height: 50,
+                child: Row(children: [
+                  Container(padding: EdgeInsets.symmetric(horizontal: 10),child: Icon(Icons.person_outlined,size: 30,color: Color(0xff6B705C),)),
+                  Text("ملفي الشخصي",style: Theme.of(context).textTheme.headline6,)
+                ],),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                Text("الجنس",style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w900),),
-                Text("ذكر",style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w900),),
-                
-              ],),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                Text("تاريخ الميلاد",style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w900),),
-                Text(" 1 أغسطس 1997",style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.w900),),
-                
-              ],)
-              ],
-          ),
+            ),
+            GestureDetector(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SeekerReports()));
+              },
+              child: Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffFFE8D6)
+                ),
+                height: 50,
+                child: Row(children: [
+                  Container(padding: EdgeInsets.symmetric(horizontal: 10),child: Icon(Icons.report_outlined,size: 30,color: Color(0xff6B705C),)),
+                  Text("بلاغاتي ",style: Theme.of(context).textTheme.headline6,)
+                ],),
+              ),
+            ),GestureDetector(
+              onTap: (){
+                Navigator.pushNamedAndRemoveUntil(context, '/LoginSeeker', (route) => route.isFirst);
+              },
+              child: Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(0xffFFE8D6)
+                ),
+                height: 50,
+                child: Row(children: [
+                  Container(padding: EdgeInsets.symmetric(horizontal: 10),child: IconButton(icon:Icon(Icons.logout_outlined,size: 30,color: Color(0xff6B705C),),onPressed:(){
+                    instance.signOut();
+                  }),),
+                  Text("خروج",style: Theme.of(context).textTheme.headline6,)
+                ],),
+              ),
+            )
+          ],
         ),
       ),
-      bottomNavigationBar: MyProviderBottomNavigationBar(
-        selectedIndex: 0,
-      ),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
 }

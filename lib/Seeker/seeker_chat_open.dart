@@ -68,7 +68,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                      ElevatedButton(onPressed: () async{ //future function we used async and await when the data is filled in firebase (ex:bad connection)
 
                        // continue this
-                       print(FirebaseAuth.instance.currentUser?.uid );
+                      
                        await FirebaseFirestore.instance.collection("seeker").doc("0Gw0BElTEnZPdtTLGO3K").collection("ratings").doc("hana").set(
                            {  "rating":rating }); // ?= variable is optional may be null
                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>ProviderChat()), (route) => false);

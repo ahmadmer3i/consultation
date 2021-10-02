@@ -2,6 +2,7 @@
 
 import 'package:consultation/components.dart';
 import 'package:consultation/Seeker/seeker_chat_open.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SeekerChat extends StatefulWidget {
@@ -23,6 +24,7 @@ class _SeekerChatState extends State<SeekerChat> with SingleTickerProviderStateM
   }
   @override
   Widget build(BuildContext context) {
+    print(FirebaseAuth.instance.currentUser?.uid); //provider module
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(child: Column(

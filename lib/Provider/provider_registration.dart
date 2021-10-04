@@ -4,32 +4,29 @@ import 'dart:ui';
 
 import 'package:consultation/Provider/provider_registration_one.dart';
 import 'package:consultation/components.dart';
-import 'package:consultation/login_provider.dart';
-import 'package:consultation/pre_register.dart';
-import 'package:consultation/Provider/provider_registration_one.dart';
+import 'package:consultation/helpers/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class ProviderRegisteration extends StatefulWidget {
-
+class ProviderRegistration extends StatefulWidget {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final checkPasswordController = TextEditingController();
+  final birthdayController = TextEditingController();
 
-   ProviderRegisteration({Key? key}) : super(key: key);
+  ProviderRegistration({Key? key}) : super(key: key);
 
   @override
-  _ProviderRegisterationState createState() => _ProviderRegisterationState();
+  _ProviderRegistrationState createState() => _ProviderRegistrationState();
 }
 
-class _ProviderRegisterationState extends State<ProviderRegisteration> {
+class _ProviderRegistrationState extends State<ProviderRegistration> {
   var key = GlobalKey<FormState>();
   int selectedGender = 0;
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
     return Scaffold(
       resizeToAvoidBottomInset: true,
       // floatingActionButton: FloatingActionButton(
@@ -39,17 +36,16 @@ class _ProviderRegisterationState extends State<ProviderRegisteration> {
       //     key.currentState!.validate();
       //   },
       // ),
-
-      // ignore: prefer_const_constructors
       backgroundColor: Color(0xffFFE8D6),
       body: Column(
         children: [
           Container(
-              margin: EdgeInsets.only(top: 80, bottom: 40),
-              child: Image.asset(
-                "Assets/Logo2.png",
-                height: 100,
-              )),
+            margin: EdgeInsets.only(top: 80, bottom: 40),
+            child: Image.asset(
+              "Assets/Logo2.png",
+              height: 100,
+            ),
+          ),
           Text(
             'تسجيل حساب جديد',
             style: Theme.of(context)
@@ -58,89 +54,125 @@ class _ProviderRegisterationState extends State<ProviderRegisteration> {
                 .copyWith(color: Color(0xffCB997E)),
           ),
           Expanded(
-              child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
                     color: Color(0xff6B705C),
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40))),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 30),
-                padding: EdgeInsets.all(10),
-                child: Form(
-                  key: key,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.all(10),
+                  child: Form(
+                    key: key,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
                             margin: EdgeInsets.only(bottom: 20, top: 20),
-                            child: MyTextField(label: "الاسم بالكامل*",),),
-                        Container(
-                            margin: EdgeInsets.only(bottom: 10),
                             child: MyTextField(
-                              label: "البريد الإلكتروني*",
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            child: MyTextField(
-                              label: "اسم المستخدم*",
-                            )),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            "جنس*",
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(
-                                    color: Color(0xffFFE8D6),
-                                    ),
+                              textController: widget.nameController,
+                              label: "الاسم بالكامل*",
+                              onChanged: (_) {
+                                providerName = widget.nameController.text;
+                              },
+                            ),
                           ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(bottom: 20),
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
+                          Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: MyTextField(
+                                onChanged: (_) {
+                                  providerEmail = widget.emailController.text;
+                                },
+                                textController: widget.emailController,
+                                label: "البريد الإلكتروني*",
+                              )),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            child: MyTextField(
+                              onChanged: (value) {
+                                providerUsername =
+                                    widget.usernameController.text;
+                              },
+                              textController: widget.usernameController,
+                              label: "اسم المستخدم*",
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              "جنس*",
+                              style:
+                                  Theme.of(context).textTheme.caption!.copyWith(
+                                        color: Color(0xffFFE8D6),
+                                      ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 20),
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: DropdownButton(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5),
+                              ),
+                            ),
+                            child: DropdownButton(
                               hint: Text(
                                 "جنس*",
-                                style: TextStyle(color: Color(0xffFFE8D6),decoration: TextDecoration.none),
+                                style: TextStyle(
+                                  color: Color(0xffFFE8D6),
+                                  decoration: TextDecoration.none,
+                                ),
                               ),
                               onChanged: (int? value) {
-                                setState(() {
-                                  selectedGender = value!;
-                                });
+                                setState(
+                                  () {
+                                    selectedGender = value!;
+                                    selectedGender == 0
+                                        ? providerGender = "M"
+                                        : providerGender = "F";
+                                  },
+                                );
                               },
                               focusColor: Colors.white,
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                               value: selectedGender,
                               dropdownColor: Colors.white,
                               isExpanded: true,
                               items: const [
                                 DropdownMenuItem(
-                                    value: 0,
-                                    child: Text(
-                                      "ذكر",
-                                      style: TextStyle(color: Colors.black),
-                                    )),
+                                  value: 0,
+                                  child: Text(
+                                    "ذكر",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
                                 DropdownMenuItem(
-                                    value: 1,
-                                    child: Text(
-                                      "أنثى",
-                                      style: TextStyle(color: Colors.black),
-                                    )),
-                              ]),
-                        ),
-                        Container(
+                                  value: 1,
+                                  child: Text(
+                                    "أنثى",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
                             margin: EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              onChanged: (value) {
+                                providerBOD = widget.birthdayController.text;
+                              },
+                              textController: widget.birthdayController,
                               label: "تاريخ الميلاد*",
                               iconButton: IconButton(
                                 onPressed: () {
@@ -151,54 +183,79 @@ class _ProviderRegisterationState extends State<ProviderRegisteration> {
                                     lastDate: DateTime(2101),
                                   );
                                 },
-                                icon: Icon(Icons.calendar_today,
-                                    color: Colors.white38),
+                                icon: Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.white38,
+                                ),
                               ),
-                            )),
-                            Container(
+                            ),
+                          ),
+                          Container(
                             margin: EdgeInsets.only(bottom: 10),
                             child: MyTextField(
-                              isOsbcure: true,
+                              onChanged: (value) {
+                                providerPassword =
+                                    widget.passwordController.text;
+                              },
+                              textController: widget.passwordController,
+                              isObscure: true,
                               label: "كلمة المرور",
                               iconButton: IconButton(
-                                onPressed: () {
-                                  
-                                },
-                                icon: Icon(Icons.remove_red_eye,
-                                    color: Colors.white38),
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.white38,
+                                ),
                               ),
-                            )),
-                            Container(
+                            ),
+                          ),
+                          Container(
                             margin: EdgeInsets.only(bottom: 10),
                             child: MyTextField(
-                              isOsbcure: true,
+                              textController: widget.checkPasswordController,
+                              isObscure: true,
                               label: "تأكيد كلمة المرور*",
                               iconButton: IconButton(
-                                onPressed: () {
-                                  
-                                },
-                                icon: Icon(Icons.remove_red_eye,
-                                    color: Colors.white38),
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.white38,
+                                ),
                               ),
-                            )),
-                        ElevatedButton(
+                            ),
+                          ),
+                          ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProviderRegisterationOne()));
+                              if (providerGender == "") {
+                                providerGender = "M";
+                              }
+                              print(
+                                  "$providerPassword, $providerBOD, $providerGender");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProviderRegistrationOne(),
+                                ),
+                              );
                             },
                             child: Text(
                               "التالي",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
-                                  .copyWith(color: Color(0xffFFE8D6)),
-                            )),
-                      ],
+                                  .copyWith(
+                                    color: Color(0xffFFE8D6),
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
-          ))
+                )
+              ],
+            ),
+          ),
         ],
       ),
     );

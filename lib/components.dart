@@ -1,15 +1,14 @@
-// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 
 import 'package:consultation/Provider/Provider_profile.dart';
 import 'package:consultation/Provider/provider_chat.dart';
 import 'package:consultation/Provider/provider_dashboard.dart';
-import 'package:consultation/Provider/provider_profile.dart' as provider_profile;
 import 'package:consultation/Provider/seeker_notification.dart';
 import 'package:consultation/Seeker/dashboard_seeker.dart';
 import 'package:consultation/Seeker/my_requests.dart';
 import 'package:consultation/Seeker/seeker_chat.dart';
 import 'package:consultation/Seeker/seeker_notification.dart';
+import 'package:consultation/helpers/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
@@ -18,12 +17,19 @@ import 'Seeker/seeker_profile.dart';
 class MyTextField extends StatefulWidget {
   final String label;
   final IconButton? iconButton;
-  final bool? isOsbcure;
+  final bool? isObscure;
   final String? Function(String?)? validator;
-  final TextEditingController? TextController;
-  const MyTextField(
-      {Key? key, required this.label, this.iconButton, this.isOsbcure = false, this.validator, this.TextController})
-      : super(key: key);
+  final TextEditingController? textController;
+  final Function(String)? onChanged;
+  const MyTextField({
+    Key? key,
+    required this.label,
+    this.onChanged,
+    this.iconButton,
+    this.isObscure = false,
+    this.validator,
+    this.textController,
+  }) : super(key: key);
 
   @override
   _MyTextFieldState createState() => _MyTextFieldState();
@@ -33,9 +39,10 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      obscureText: widget.isOsbcure!,
+      onChanged: widget.onChanged,
+      obscureText: widget.isObscure!,
       validator: widget.validator,
-      controller: widget.TextController,
+      controller: widget.textController,
       style: TextStyle(
         color: Color(0xffFFE8D6),
         fontSize: 14,
@@ -65,29 +72,30 @@ class MyTextFieldDark extends StatefulWidget {
   final bool showLabel;
   final Color? backgroundColor;
   final IconButton? iconButton;
-  final Widget? Suffix;
-  final bool? isOsbcure;
+  final Widget? suffix;
+  final bool? isObscure;
   final int minHeight;
   final int? maxLength;
   final int? maxLines;
   final double? radius;
   final String? Function(String?)? validator;
-  final TextEditingController? TextController;
-  const MyTextFieldDark(
-      {Key? key,
-      required this.label,
-      this.iconButton,
-      this.isOsbcure = false,
-      this.minHeight = 1,
-      this.showHint = true,
-      this.Suffix,
-      this.maxLength,
-      this.radius,
-      this.showLabel = true,
-      this.backgroundColor,
-      this.maxLines,
-      this.TextController, this.validator})
-      : super(key: key);
+  final TextEditingController? textController;
+  const MyTextFieldDark({
+    Key? key,
+    required this.label,
+    this.iconButton,
+    this.isObscure = false,
+    this.minHeight = 1,
+    this.showHint = true,
+    this.suffix,
+    this.maxLength,
+    this.radius,
+    this.showLabel = true,
+    this.backgroundColor,
+    this.maxLines,
+    this.textController,
+    this.validator,
+  }) : super(key: key);
 
   @override
   _MyTextFieldDarkState createState() => _MyTextFieldDarkState();
@@ -97,9 +105,9 @@ class _MyTextFieldDarkState extends State<MyTextFieldDark> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.TextController,
+      controller: widget.textController,
       maxLength: widget.maxLength,
-      obscureText: widget.isOsbcure!,
+      obscureText: widget.isObscure!,
       validator: widget.validator,
       style: TextStyle(
         color: Color(0xff6B705C),
@@ -109,7 +117,7 @@ class _MyTextFieldDarkState extends State<MyTextFieldDark> {
       maxLines: widget.maxLines,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(10),
-        suffix: widget.iconButton ?? widget.Suffix,
+        suffix: widget.iconButton ?? widget.suffix,
         fillColor: widget.backgroundColor,
         filled: widget.backgroundColor != null ? true : false,
         focusedBorder: OutlineInputBorder(
@@ -143,6 +151,48 @@ class CategoriesSelector extends StatefulWidget {
 }
 
 class _CategoriesSelectorState extends State<CategoriesSelector> {
+  List<IconData> icons = [
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+    Icons.circle_outlined,
+  ];
+  List<Color> selectedItemColors = [
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+    Color(0xff6B705C),
+  ];
+  List<bool> checkedItems = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
   @override
   Widget build(BuildContext context) {
     List<String> list = [
@@ -170,51 +220,90 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
       return chunks;
     }
 
-    List nums = [1, 2, 3, 4, 5];
+    // List numbers = [1, 2, 3, 4, 5];
 
-    print(chunk(list, 4));
+    // print(chunk(list, 4));
 
     return FormField(
       validator: widget.validator,
       builder: (FormFieldState<dynamic> field) {
-        return Container(
-            height: 200,
-            width: 500,
-            child: ListView(scrollDirection: Axis.horizontal, children: [
+        return SizedBox(
+          height: 200,
+          width: 500,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(chunk(list, 4).length, (index) {
-                  List currentRow = chunk(list, 4).elementAt(index);
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: List.generate(
+                children: List.generate(
+                  chunk(list, 4).length,
+                  (index) {
+                    List currentRow = chunk(list, 4).elementAt(index);
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: List.generate(
                         currentRow.length,
-                        (indexx) => Container(
+                        (currentIndex) {
+                          int itemIndex =
+                              ((list.length / 3 - 1).toInt()) * index +
+                                  index +
+                                  currentIndex;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(
+                                () {
+                                  checkedItems[itemIndex] =
+                                      !checkedItems[itemIndex];
+                                  if (checkedItems[itemIndex]) {
+                                    icons[itemIndex] = Icons.check;
+                                    selectedItems.add(list[itemIndex]);
+                                    selectedItemColors[itemIndex] =
+                                        Colors.amber;
+                                  } else {
+                                    icons[itemIndex] = Icons.circle_outlined;
+                                    selectedItems.removeWhere((element) =>
+                                        element == list[itemIndex]);
+                                    selectedItemColors[itemIndex] =
+                                        Color(0xff6B705C);
+                                  }
+                                },
+                              );
+                            },
+                            child: Container(
                               padding: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 20),
                               margin: EdgeInsets.all(5),
                               height: 40,
                               child: Row(
-                                // ignore: prefer_const_literals_to_create_immutables
                                 children: [
                                   Icon(
-                                    Icons.check,
+                                    icons[((list.length / 3 - 1).toInt()) *
+                                            index +
+                                        index +
+                                        currentIndex],
                                     color: Colors.white,
                                   ),
                                   Text(
-                                    currentRow.elementAt(indexx),
+                                    currentRow.elementAt(currentIndex),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ],
                               ),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color(0xff6B705C)),
-                            )),
-                  );
-                }),
+                                borderRadius: BorderRadius.circular(20),
+                                color: selectedItemColors[itemIndex],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               )
-            ]));
+            ],
+          ),
+        );
       },
     );
   }
@@ -223,6 +312,7 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
 class MyAppBar extends StatefulWidget with PreferredSizeWidget {
   final bool autoLeading;
 
+  @override
   final Size preferredSize;
   final VoidCallback? onPressed;
 
@@ -269,8 +359,9 @@ class _MyAppBarState extends State<MyAppBar> {
 }
 
 class MyBottomNavigationBar extends StatefulWidget {
-  int? selectedIndex;
-  MyBottomNavigationBar({Key? key, this.selectedIndex = 0}) : super(key: key);
+  final int? selectedIndex;
+  const MyBottomNavigationBar({Key? key, this.selectedIndex = 0})
+      : super(key: key);
 
   @override
   _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
@@ -282,8 +373,10 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     return BottomNavigationBar(
       onTap: (index) {
         if (index == 4) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => DashboardSeeker()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DashboardSeeker(
+                    username: currentUsername!,
+                  )));
         } else if (index == 3) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => SeekerChat()));
@@ -320,29 +413,31 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
   }
 }
 
-
 class MyProviderBottomNavigationBar extends StatefulWidget {
-  int? selectedIndex;
-  MyProviderBottomNavigationBar({Key? key, this.selectedIndex = 0}) : super(key: key);
+  final int? selectedIndex;
+  const MyProviderBottomNavigationBar({Key? key, this.selectedIndex = 0})
+      : super(key: key);
 
   @override
-  _MyProviderBottomNavigationBarState createState() => _MyProviderBottomNavigationBarState();
+  _MyProviderBottomNavigationBarState createState() =>
+      _MyProviderBottomNavigationBarState();
 }
 
-class _MyProviderBottomNavigationBarState extends State<MyProviderBottomNavigationBar> {
+class _MyProviderBottomNavigationBarState
+    extends State<MyProviderBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       onTap: (index) {
         if (index == 3) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ProviderDashboard()));
-        } else if (index == 2) {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ProviderChat()));
-        } else if (index == 1) {
+              MaterialPageRoute(builder: (context) => ProviderDashboard()));
+        } else if (index == 2) {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ProviderNotification()));
+              .push(MaterialPageRoute(builder: (context) => ProviderChat()));
+        } else if (index == 1) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ProviderNotification()));
         } else if (index == 0) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => ProviderProfile()));
@@ -359,7 +454,6 @@ class _MyProviderBottomNavigationBarState extends State<MyProviderBottomNavigati
               radius: 20,
             ),
             label: ""),
-        
         BottomNavigationBarItem(
             icon: Icon(Icons.notifications_none_outlined), label: ""),
         BottomNavigationBarItem(
@@ -371,6 +465,8 @@ class _MyProviderBottomNavigationBarState extends State<MyProviderBottomNavigati
 }
 
 class MyBottomSheet extends StatefulWidget {
+  const MyBottomSheet({Key? key}) : super(key: key);
+
   @override
   _MyBottomSheetState createState() => _MyBottomSheetState();
 }
@@ -384,125 +480,128 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
       height: 500,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-      child: Container(
-        child: Column(
-          children: [
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "تأكيد الدفع",
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Color(0xffCB997E), fontWeight: FontWeight.w700),
-                )),
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "إجمالي المبلغ",
-                  style: Theme.of(context).textTheme.headline4!.copyWith(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                )),
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "15.00",
-                  style: Theme.of(context).textTheme.headline2!.copyWith(
-                      color: Colors.black, fontWeight: FontWeight.w700),
-                )),
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "ریال",
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
-                      color: Colors.black,
-                      height: 1,
-                      fontWeight: FontWeight.w700),
-                )),
-            Align(
-              alignment: Alignment.topRight,
+      child: Column(
+        children: [
+          Align(
+              alignment: Alignment.center,
               child: Text(
-                "جنس*",
-                style: Theme.of(context).textTheme.caption!.copyWith(
-                      color: Color(0xffFFE8D6),
-                    ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 20),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: DropdownButton(
-                  hint: Text(
-                    "جنس*",
-                    style: TextStyle(
-                        color: Color(0xffFFE8D6),
-                        decoration: TextDecoration.none),
+                "تأكيد الدفع",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                    color: Color(0xffCB997E), fontWeight: FontWeight.w700),
+              )),
+          Align(
+              alignment: Alignment.center,
+              child: Text(
+                "إجمالي المبلغ",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+              )),
+          Align(
+              alignment: Alignment.center,
+              child: Text(
+                "15.00",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2!
+                    .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
+              )),
+          Align(
+              alignment: Alignment.center,
+              child: Text(
+                "ریال",
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: Colors.black,
+                    height: 1,
+                    fontWeight: FontWeight.w700),
+              )),
+          Align(
+            alignment: Alignment.topRight,
+            child: Text(
+              "جنس*",
+              style: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Color(0xffFFE8D6),
                   ),
-                  onChanged: (int? value) {
-                    setState(() {
-                      selectedMethod = value!;
-                    });
-                  },
-                  focusColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
-                  value: selectedMethod,
-                  dropdownColor: Colors.white,
-                  isExpanded: true,
-                  items: [
-                    DropdownMenuItem(
-                        value: 0,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "Assets/applePay.png",
-                              width: 50,
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Text(
-                                  "Apple Pay",
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ))
-                          ],
-                        )),
-                    DropdownMenuItem(
-                        value: 1,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "Assets/stcPay.png",
-                              width: 50,
-                            ),
-                            Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Text(
-                                  "STC Pay",
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ))
-                          ],
-                        )),
-                  ]),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "دفع",
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(5))),
+            child: DropdownButton(
+                hint: Text(
+                  "جنس*",
                   style: TextStyle(
-                      fontWeight: FontWeight.w900, color: Colors.white),
-                ))
-          ],
-        ),
+                      color: Color(0xffFFE8D6),
+                      decoration: TextDecoration.none),
+                ),
+                onChanged: (int? value) {
+                  setState(() {
+                    selectedMethod = value!;
+                  });
+                },
+                focusColor: Colors.white,
+                style: TextStyle(color: Colors.white),
+                value: selectedMethod,
+                dropdownColor: Colors.white,
+                isExpanded: true,
+                items: [
+                  DropdownMenuItem(
+                      value: 0,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "Assets/applePay.png",
+                            width: 50,
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                "Apple Pay",
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ))
+                        ],
+                      )),
+                  DropdownMenuItem(
+                      value: 1,
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            "Assets/stcPay.png",
+                            width: 50,
+                          ),
+                          Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                "STC Pay",
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ))
+                        ],
+                      )),
+                ]),
+          ),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                "دفع",
+                style:
+                    TextStyle(fontWeight: FontWeight.w900, color: Colors.white),
+              ))
+        ],
       ),
     );
   }
 }
 
-
 class MyOfferBottomSheet extends StatefulWidget {
+  const MyOfferBottomSheet({Key? key}) : super(key: key);
+
   @override
   _MyOfferBottomSheetState createState() => _MyOfferBottomSheetState();
 }
@@ -527,10 +626,13 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
                   style: Theme.of(context).textTheme.headline5!.copyWith(
                       color: Color(0xffCB997E), fontWeight: FontWeight.w700),
                 )),
-                MyTextFieldDark(label: "الرجاء تحديد السعر",iconButton: IconButton(icon: Text("ریال"),onPressed: (){},),),
-            
-            
-           
+            MyTextFieldDark(
+              label: "الرجاء تحديد السعر",
+              iconButton: IconButton(
+                icon: Text("ریال"),
+                onPressed: () {},
+              ),
+            ),
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -549,7 +651,7 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
 
 class ReportStatus extends StatefulWidget {
   final int selectedIndex;
-  const ReportStatus({ Key? key, this.selectedIndex=0 }) : super(key: key);
+  const ReportStatus({Key? key, this.selectedIndex = 0}) : super(key: key);
 
   @override
   ReportStatusState createState() => ReportStatusState();
@@ -557,18 +659,47 @@ class ReportStatus extends StatefulWidget {
 
 class ReportStatusState extends State<ReportStatus> {
   List status = ["انتظار", "قید المراجعۃ", "منتھیۃ"];
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      
-      decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
-          Expanded(child: Container(color: widget.selectedIndex==0?Color(0xffCB997E):null,child: Center(child: Text("انتظار",style: Theme.of(context).textTheme.headline6!.copyWith(color:widget.selectedIndex==0?Color(0xffFFE8D6):Color(0xff6B705C)),)))),
-          Expanded(child: Container(color: widget.selectedIndex==1?Color(0xffCB997E):null,child: Center(child: Text("قید المراجعۃ",style: Theme.of(context).textTheme.headline6!.copyWith(color:widget.selectedIndex==1?Color(0xffFFE8D6):Color(0xff6B705C)),)))),
-          Expanded(child: Container(color: widget.selectedIndex==2?Color(0xffCB997E):null,child: Center(child: Text("منتھیۃ",style: Theme.of(context).textTheme.headline6!.copyWith(color:widget.selectedIndex==2?Color(0xffFFE8D6):Color(0xff6B705C)),)))),
-          
+          Expanded(
+              child: Container(
+                  color: widget.selectedIndex == 0 ? Color(0xffCB997E) : null,
+                  child: Center(
+                      child: Text(
+                    "انتظار",
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: widget.selectedIndex == 0
+                            ? Color(0xffFFE8D6)
+                            : Color(0xff6B705C)),
+                  )))),
+          Expanded(
+              child: Container(
+                  color: widget.selectedIndex == 1 ? Color(0xffCB997E) : null,
+                  child: Center(
+                      child: Text(
+                    "قید المراجعۃ",
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: widget.selectedIndex == 1
+                            ? Color(0xffFFE8D6)
+                            : Color(0xff6B705C)),
+                  )))),
+          Expanded(
+              child: Container(
+                  color: widget.selectedIndex == 2 ? Color(0xffCB997E) : null,
+                  child: Center(
+                      child: Text(
+                    "منتھیۃ",
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: widget.selectedIndex == 2
+                            ? Color(0xffFFE8D6)
+                            : Color(0xff6B705C)),
+                  )))),
         ],
       ),
     );
@@ -577,7 +708,7 @@ class ReportStatusState extends State<ReportStatus> {
 
 class RatingEditor extends StatefulWidget {
   double rating;
-  RatingEditor({ Key? key,this.rating=0}) : super(key: key);
+  RatingEditor({Key? key, this.rating = 0}) : super(key: key);
 
   @override
   _RatingEditorState createState() => _RatingEditorState();
@@ -586,21 +717,19 @@ class RatingEditor extends StatefulWidget {
 class _RatingEditorState extends State<RatingEditor> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-                                height: 50,
-                                child: StarRating(
-                                onRatingChanged: (value){
-                                  setState(() {
-                                    widget.rating=value;
-                                  });
-                                },
-                                rating: widget.rating,
-                                size: 40,
-                                borderColor: Color(0xff6B705C),
-                                
-                                color: Color(0xff6B705C),
-                                
-                            ),
-                              );
+    return SizedBox(
+      height: 50,
+      child: StarRating(
+        onRatingChanged: (value) {
+          setState(() {
+            widget.rating = value;
+          });
+        },
+        rating: widget.rating,
+        size: 40,
+        borderColor: Color(0xff6B705C),
+        color: Color(0xff6B705C),
+      ),
+    );
   }
 }

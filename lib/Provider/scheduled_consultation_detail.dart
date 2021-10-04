@@ -1,5 +1,4 @@
 import 'package:consultation/Components.dart';
-import 'package:consultation/Provider/provider_chat.dart';
 import 'package:consultation/Provider/provider_chat_open.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +18,11 @@ class _ScheduledConsultationDetailState
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Color(0xffFFE8D6), borderRadius: BorderRadius.circular(10)),
-        margin: EdgeInsets.all(10),
+            color: const Color(0xffFFE8D6),
+            borderRadius: BorderRadius.circular(10)),
+        margin: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,19 +32,19 @@ class _ScheduledConsultationDetailState
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SeekerProfile()));
+                        builder: (context) => const SeekerProfile()));
                   },
                   child: Row(
                     children: [
-                      CircleAvatar(),
+                      const CircleAvatar(),
                       Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Text(
                           "خالد عبدالله",
                           style: Theme.of(context)
                               .textTheme
                               .button!
-                              .copyWith(color: Color(0xffCB997E)),
+                              .copyWith(color: const Color(0xffCB997E)),
                         ),
                       )
                     ],
@@ -67,7 +67,7 @@ class _ScheduledConsultationDetailState
                         style: Theme.of(context)
                             .textTheme
                             .button!
-                            .copyWith(color: Color(0xffCB997E)))),
+                            .copyWith(color: const Color(0xffCB997E)))),
                 Text(
                     "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
                     style: Theme.of(context).textTheme.button!.copyWith()),
@@ -77,10 +77,10 @@ class _ScheduledConsultationDetailState
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProviderChatOpen()));
-
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ProviderChatOpen()));
                     },
-                    child: Text(
+                    child: const Text(
                       "قبول العرض",
                       style: TextStyle(color: Colors.white),
                     )))

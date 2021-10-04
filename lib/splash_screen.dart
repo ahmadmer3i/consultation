@@ -2,9 +2,9 @@
 // ignore: file_names
 import 'dart:async';
 
+import 'package:adobe_xd/pinned.dart';
 import 'package:consultation/login_seeker.dart';
 import 'package:flutter/material.dart';
-import 'package:adobe_xd/pinned.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -19,15 +19,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3),
-          ()=>Navigator.pushReplacement(context,
-                                        MaterialPageRoute(builder:
-                                                          (context) => 
-                                                          LoginSeeker()
-                                                         )
-                                       )
-         );
+    Timer(
+        const Duration(seconds: 3),
+        () => Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginSeeker())));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius:
-                    BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                    const BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
                 color: const Color(0xffcb997e),
                 border: Border.all(width: 1.0, color: const Color(0xff707070)),
               ),
@@ -52,16 +49,14 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius:
-                    BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                    const BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
                 color: const Color(0xffcb997e),
                 border: Border.all(width: 1.0, color: const Color(0xff707070)),
               ),
             ),
           ),
           Center(
-            child: Container(
-              child: Image.asset('Assets/Logo.png'),
-            ),
+            child: Image.asset('Assets/Logo.png'),
           ),
         ],
       ),

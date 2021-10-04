@@ -1,0 +1,14 @@
+String? currentUsername;
+List<String> selectedItems = [];
+String? providerGender = "M";
+String providerEmail = "";
+String providerPassword = "";
+String providerUsername = "";
+String providerBOD = "";
+String providerName = "";
+String providerExperience = "";
+String providerBank = "بنك الرياض";
+String providerIBAN = "";
+String providerPrice = "";
+var providerInstant = false;
+var providerScheduled = false;

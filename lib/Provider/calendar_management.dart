@@ -1,24 +1,22 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:consultation/Provider/add_new_slot.dart';
-import 'package:consultation/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
-
 import '../Components.dart';
 
 class CalendarManagement extends StatefulWidget {
-  const CalendarManagement({ Key? key }) : super(key: key);
+  const CalendarManagement({Key? key}) : super(key: key);
 
   @override
   _CalendarManagementState createState() => _CalendarManagementState();
 }
 
 class _CalendarManagementState extends State<CalendarManagement> {
-   List times = [
+  List times = [
     "08:45",
     "09:15",
     "09:45",
@@ -28,10 +26,10 @@ class _CalendarManagementState extends State<CalendarManagement> {
     "11:45",
     "12:15",
   ];
-   int seletedIndex = 0;
+  int seletedIndex = 0;
   DateTime? _selectedDate;
-  DateTime _currentDate = DateTime.now();
-  DateTime _currentDate2 = DateTime.now();
+  // DateTime _currentDate = DateTime.now();
+  // DateTime _currentDate2 = DateTime.now();
   String _currentMonth = DateFormat.yMMM().format(DateTime(2019, 2, 3));
   DateTime _targetDateTime = DateTime(2019, 2, 3);
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
@@ -105,11 +103,10 @@ class _CalendarManagementState extends State<CalendarManagement> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
-        
         backgroundColor: Color(0xffCB997E),
-        onPressed: (){
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddNewSlot()));     
-
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => AddNewSlot()));
         },
         child: Icon(Icons.add),
       ),
@@ -127,63 +124,59 @@ class _CalendarManagementState extends State<CalendarManagement> {
                       .headline5!
                       .copyWith(color: Color(0xffCB997E)),
                 )),
-                SingleChildScrollView(
-                  child: Container(
-                    
-                    child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(5),
-                                color: Color(0xffCB997E),
-                                height: 70,
-                                child: ListView.builder(
-                                    itemCount: times.length,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            seletedIndex = index;
-                                          });
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 5),
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 20),
-                                          decoration: BoxDecoration(
-                                            color: seletedIndex == index
-                                                ? Color(0xff6B705C)
-                                                : Color(0xffFAFAFA),
-                                            border: Border.all(
-                                                color: seletedIndex == index
-                                                    ? Color(0xffFAFAFA)
-                                                    : Color(0xff6B705C),
-                                                width: 2),
-                                            borderRadius: BorderRadius.circular(10),
-                                          ),
-                                          child: Center(
-                                              child: Text(
-                                            times.elementAt(index),
-                                            style: TextStyle(
-                                                color: seletedIndex == index
-                                                    ? Color(0xffFAFAFA)
-                                                    : Color(0xff6B705C),
-                                                fontWeight: FontWeight.bold),
-                                          )),
-                                        ),
-                                      );
-                                    }),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    color: Color(0xffCB997E),
+                    height: 70,
+                    child: ListView.builder(
+                        itemCount: times.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                seletedIndex = index;
+                              });
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 5),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 20),
+                              decoration: BoxDecoration(
+                                color: seletedIndex == index
+                                    ? Color(0xff6B705C)
+                                    : Color(0xffFAFAFA),
+                                border: Border.all(
+                                    color: seletedIndex == index
+                                        ? Color(0xffFAFAFA)
+                                        : Color(0xff6B705C),
+                                    width: 2),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Container(
-                                  height: 400,
-                                  
-                                  color: Color(0xffFFE8D6),
-                                  child: _calendarCarouselNoHeader),
-                            ],
-                          ),
+                              child: Center(
+                                  child: Text(
+                                times.elementAt(index),
+                                style: TextStyle(
+                                    color: seletedIndex == index
+                                        ? Color(0xffFAFAFA)
+                                        : Color(0xff6B705C),
+                                    fontWeight: FontWeight.bold),
+                              )),
+                            ),
+                          );
+                        }),
                   ),
-                ),
+                  Container(
+                      height: 400,
+                      color: Color(0xffFFE8D6),
+                      child: _calendarCarouselNoHeader),
+                ],
+              ),
+            ),
           ],
         ),
       ),

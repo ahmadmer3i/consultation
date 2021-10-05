@@ -10,5 +10,6 @@ String providerExperience = "";
 String providerBank = "بنك الرياض";
 String providerIBAN = "";
 String providerPrice = "";
+String providerApprovalMessage = "";
 var providerInstant = false;
 var providerScheduled = false;

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultation/Provider/provider_dashboard.dart';
 import 'package:consultation/Seeker/dashboard_seeker.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/login_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -80,12 +80,14 @@ void providerRegister(
         "experience": experience,
         "price": price,
         "topics": topics,
+        "isApproved": false,
       },
     );
     currentUsername = name;
+    FirebaseAuth.instance.signOut();
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const ProviderDashboard(),
+        builder: (context) => const LoginProvider(),
       ),
     );
   } on FirebaseAuthException catch (e) {}

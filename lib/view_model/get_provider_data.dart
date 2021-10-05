@@ -13,6 +13,7 @@ Future<List<ProviderData>> getProviderData(List<ProviderData> data) async {
         email: doc["email"],
         name: doc["name"],
         uid: doc["uid"],
+        isApproved: doc["isApproved"],
       ),
     );
   }

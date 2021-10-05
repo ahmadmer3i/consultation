@@ -1,7 +1,7 @@
-import 'package:consultation/Provider/provider_dashboard.dart';
 import 'package:consultation/login_seeker.dart';
 import 'package:consultation/pre_register.dart';
 import 'package:consultation/view_model/get_provider_data.dart';
+import 'package:consultation/view_model/login_register/user_login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -167,32 +167,38 @@ class _LoginProviderState extends State<LoginProvider> {
                                   ConnectionState.done) {
                                 return ElevatedButton(
                                   onPressed: () async {
-                                    try {
-                                      // UserCredential credential =
-                                      // await instance.signInWithEmailAndPassword(
-                                      //     email: _email, password: _password);
-                                      for (var provider in providerList) {
-                                        if (provider.email == _email &&
-                                            provider.password == _password) {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const ProviderDashboard(),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    } on FirebaseAuthException catch (e) {
-                                      if (e.code == "invalid-email") {
-                                        // print("invalid-email");
-                                      } else if (e.code == "wrong-password") {
-                                        // print("wrong-password");
-                                      } else if (e.code == "user-disabled") {
-                                        // print("user-disabled");
-                                      } else if (e.code == "user-not-found") {
-                                        // print("user-not-found");
-                                      }
-                                    }
+                                    providerLogin(
+                                      email: _email,
+                                      password: _password,
+                                      userList: providerList,
+                                      context: context,
+                                    );
+                                    // try {
+                                    //   // UserCredential credential =
+                                    //   // await instance.signInWithEmailAndPassword(
+                                    //   //     email: _email, password: _password);
+                                    //   for (var provider in providerList) {
+                                    //     if (provider.email == _email &&
+                                    //         provider.password == _password) {
+                                    //       Navigator.of(context).push(
+                                    //         MaterialPageRoute(
+                                    //           builder: (context) =>
+                                    //               const ProviderDashboard(),
+                                    //         ),
+                                    //       );
+                                    //     }
+                                    //   }
+                                    // } on FirebaseAuthException catch (e) {
+                                    //   if (e.code == "invalid-email") {
+                                    //     // print("invalid-email");
+                                    //   } else if (e.code == "wrong-password") {
+                                    //     // print("wrong-password");
+                                    //   } else if (e.code == "user-disabled") {
+                                    //     // print("user-disabled");
+                                    //   } else if (e.code == "user-not-found") {
+                                    //     // print("user-not-found");
+                                    //   }
+                                    // }
                                   },
                                   child: Text(
                                     "تسجيل الدخول",

@@ -40,12 +40,13 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                         constraints: BoxConstraints(maxWidth: 300),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color(0xffFFE0BE),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                              )),
+                            color: Color(0xffFFE0BE),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                            ),
+                          ),
                           padding:
                               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           child: Column(
@@ -81,36 +82,39 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                         constraints: BoxConstraints(maxWidth: 300),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color(0xffF3F3F3),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              )),
+                            color: Color(0xffF3F3F3),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20),
+                            ),
+                          ),
                           padding:
                               EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                  margin: EdgeInsets.all(5),
-                                  child: Text(
-                                    "وعليكم السلام",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1!
-                                        .copyWith(height: 1),
-                                  )),
+                                margin: EdgeInsets.all(5),
+                                child: Text(
+                                  "وعليكم السلام",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .copyWith(height: 1),
+                                ),
+                              ),
                               Container(
-                                  margin: EdgeInsets.only(top: 5),
-                                  child: Text(
-                                    "12:06 مساءً",
-                                    textAlign: TextAlign.start,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption!
-                                        .copyWith(height: 1),
-                                  )),
+                                margin: EdgeInsets.only(top: 5),
+                                child: Text(
+                                  "12:06 مساءً",
+                                  textAlign: TextAlign.start,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(height: 1),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -133,20 +137,21 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                         icon: Icon(Icons.more_horiz),
                       ),
                       Expanded(
-                          child: MyTextFieldDark(
-                        backgroundColor: Colors.white,
-                        label: "",
-                        showLabel: false,
-                        radius: 30,
-                        iconButton: IconButton(
-                          padding: EdgeInsets.all(0),
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.attachment,
-                            size: 20,
+                        child: MyTextFieldDark(
+                          backgroundColor: Colors.white,
+                          label: "",
+                          showLabel: false,
+                          radius: 30,
+                          iconButton: IconButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.attachment,
+                              size: 20,
+                            ),
                           ),
                         ),
-                      )),
+                      ),
                       IconButton(
                         onPressed: () {},
                         icon: Icon(Icons.camera_alt),

@@ -1,6 +1,7 @@
 import 'package:consultation/Seeker/seeker_edit_profile.dart';
 import 'package:consultation/Seeker/seeker_reports.dart';
 import 'package:consultation/components.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SeekerProfile extends StatefulWidget {
@@ -83,7 +84,8 @@ class _SeekerProfileState extends State<SeekerProfile> {
               ),
             ),
             GestureDetector(
-              onTap: () {
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
                 Navigator.pushNamedAndRemoveUntil(
                     context, '/LoginSeeker', (route) => route.isFirst);
               },

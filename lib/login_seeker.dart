@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:consultation/Seeker/dashboard_seeker.dart';
-import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/login_provider.dart';
 import 'package:consultation/models/seeker_data.dart';
 import 'package:consultation/pre_register.dart';
 import 'package:consultation/view_model/get_seeker_data.dart';
+import 'package:consultation/view_model/login_register/user_login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -179,44 +177,51 @@ class _LoginSeekerState extends State<LoginSeeker> {
                                   ConnectionState.done) {
                                 return ElevatedButton(
                                   onPressed: () async {
-                                    try {
-                                      // UserCredential credential =
-                                      //     await instance
-                                      //         .signInWithEmailAndPassword(
-                                      //             email: _email,
-                                      //             password: _password);
-                                      for (var seeker in seekerList) {
-                                        if (seeker.email == _email &&
-                                            seeker.password == _password) {
-                                          currentUsername = seeker.name;
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DashboardSeeker(
-                                                username: seeker.name!,
-                                              ),
-                                            ),
-                                          );
-                                        } else {}
-                                      }
-                                    } on FirebaseAuthException catch (e) {
-                                      if (e.code == "invalid-email") {
-                                        // print("invalid-email");
-                                      } else if (e.code == "wrong-password") {
-                                        // print("wrong-password");
-                                      } else if (e.code == "user-disabled") {
-                                        // print("user-disabled");
-                                      } else if (e.code == "user-not-found") {
-                                        // print("user-not-found");
-                                      }
+                                    seekerLogin(
+                                      email: _email,
+                                      password: _password,
+                                      userList: seekerList,
+                                      context: context,
+                                    );
 
-                                      try {
-                                        // var result = await FirebaseFirestore
-                                        //     .instance
-                                        //     .collection('users')
-                                        //     .get();
-                                      } on FirebaseException catch (e) {}
-                                    }
+                                    // try {
+                                    //   // UserCredential credential =
+                                    //   //     await instance
+                                    //   //         .signInWithEmailAndPassword(
+                                    //   //             email: _email,
+                                    //   //             password: _password);
+                                    //   for (var seeker in seekerList) {
+                                    //     if (seeker.email == _email &&
+                                    //         seeker.password == _password) {
+                                    //       currentUsername = seeker.name;
+                                    //       Navigator.of(context).push(
+                                    //         MaterialPageRoute(
+                                    //           builder: (context) =>
+                                    //               DashboardSeeker(
+                                    //             username: seeker.name!,
+                                    //           ),
+                                    //         ),
+                                    //       );
+                                    //     } else {}
+                                    //   }
+                                    // } on FirebaseAuthException catch (e) {
+                                    //   if (e.code == "invalid-email") {
+                                    //     // print("invalid-email");
+                                    //   } else if (e.code == "wrong-password") {
+                                    //     // print("wrong-password");
+                                    //   } else if (e.code == "user-disabled") {
+                                    //     // print("user-disabled");
+                                    //   } else if (e.code == "user-not-found") {
+                                    //     // print("user-not-found");
+                                    //   }
+                                    //
+                                    //   try {
+                                    //     // var result = await FirebaseFirestore
+                                    //     //     .instance
+                                    //     //     .collection('users')
+                                    //     //     .get();
+                                    //   } on FirebaseException catch (e) {}
+                                    // }
                                   },
                                   child: Text(
                                     "تسجيل الدخول",

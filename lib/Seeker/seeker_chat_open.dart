@@ -3,13 +3,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/Provider/provider_chat.dart';
 import 'package:consultation/components.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class SeekerChatOpen extends StatefulWidget {
   final bool isClosed;
-  const SeekerChatOpen({Key? key, this.isClosed = false}) : super(key: key);
+  final String uid;
+  const SeekerChatOpen({
+    Key? key,
+    this.isClosed = false,
+    required this.uid,
+  }) : super(key: key);
 
   @override
   _SeekerChatOpenState createState() => _SeekerChatOpenState();
@@ -49,9 +55,9 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                             0.4, //media query ابعاد الجهاز اخذت ٤٠٪ من الشاشه
                         width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(
-                                10)), //زوايا الكونتينر نفسه و اللون
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ), //زوايا الكونتينر نفسه و اللون
                         child: Center(
                           // new widget so i need child its under container
                           child: Directionality(
@@ -62,22 +68,25 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                               children: [
                                 //list collection of widgets
                                 SmoothStarRating(
-                                    allowHalfRating: true, // 0.5 star
-                                    onRated: (v) {
-                                      setState(() {
+                                  allowHalfRating: true, // 0.5 star
+                                  onRated: (v) {
+                                    setState(
+                                      () {
                                         // go back to build widget each time the rate of stars change
                                         rating = v;
-                                      });
-                                    },
-                                    starCount: 5,
-                                    rating: rating,
-                                    size: 40.0,
-                                    isReadOnly: false,
-                                    filledIconData: Icons.star_outlined,
-                                    halfFilledIconData: Icons.star_half,
-                                    color: Colors.yellow,
-                                    borderColor: Colors.yellow,
-                                    spacing: 0.0),
+                                      },
+                                    );
+                                  },
+                                  starCount: 5,
+                                  rating: rating,
+                                  size: 40.0,
+                                  isReadOnly: false,
+                                  filledIconData: Icons.star_outlined,
+                                  halfFilledIconData: Icons.star_half,
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                  spacing: 0.0,
+                                ),
                                 ElevatedButton(
                                     onPressed: () async {
                                       //future function we used async and await when the data is filled in firebase (ex:bad connection)
@@ -85,13 +94,14 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                       // continue this
 
                                       await FirebaseFirestore.instance
-                                          .collection("seeker")
-                                          .doc("0Gw0BElTEnZPdtTLGO3K")
+                                          .collection("provider")
+                                          .doc(widget.uid)
                                           .collection("ratings")
-                                          .doc("hana")
-                                          .set({
-                                        "rating": rating
-                                      }); // ?= variable is optional may be null
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .set(
+                                        {"rating": rating},
+                                      ); // ?= variable is optional may be null
                                       Navigator.of(context).pushAndRemoveUntil(
                                           MaterialPageRoute(
                                               builder: (context) =>

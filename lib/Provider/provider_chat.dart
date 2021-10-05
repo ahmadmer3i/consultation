@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:consultation/Seeker/seeker_chat_open.dart';
+import 'package:consultation/Provider/provider_chat_open.dart';
 import 'package:consultation/components.dart';
 import 'package:flutter/material.dart';
 
@@ -29,14 +29,15 @@ class _ProviderChatState extends State<ProviderChat>
       body: Column(
         children: [
           Align(
-              alignment: Alignment.center,
-              child: Text(
-                "دردشة",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: Color(0xffCB997E)),
-              )),
+            alignment: Alignment.center,
+            child: Text(
+              "دردشة",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: Color(0xffCB997E)),
+            ),
+          ),
           TabBar(
             labelColor: Color(0xff696E5A),
             unselectedLabelColor: Color(0xffA9A890),
@@ -52,112 +53,123 @@ class _ProviderChatState extends State<ProviderChat>
             ],
           ),
           Expanded(
-            child: TabBarView(controller: tabController, children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SeekerChatOpen()));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xffFFE8D6)),
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(),
-                                Container(
+            child: TabBarView(
+              controller: tabController,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: ListView(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProviderChatOpen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xffFFE8D6)),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(),
+                                  Container(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
                                       "خالد عبدالله",
                                       style:
                                           Theme.of(context).textTheme.subtitle1,
-                                    ))
-                              ],
-                            ),
-                            Stack(
-                              alignment: Alignment.center,
-                              children: const [
-                                CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Color(0xff6B705C),
-                                ),
-                                Text(
-                                  "10",
-                                  style: TextStyle(
-                                      fontSize: 11, color: Colors.white),
-                                )
-                              ],
-                            )
-                          ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: const [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Color(0xff6B705C),
+                                  ),
+                                  Text(
+                                    "10",
+                                    style: TextStyle(
+                                        fontSize: 11, color: Colors.white),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                child: ListView(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SeekerChatOpen(
-                                  isClosed: true,
-                                )));
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xffFFE8D6)),
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(),
-                                Container(
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: ListView(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProviderChatOpen(
+                                isClosed: true,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xffFFE8D6)),
+                          padding: EdgeInsets.all(10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(),
+                                  Container(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 10),
                                     child: Text(
                                       "خالد عبدالله",
                                       style:
                                           Theme.of(context).textTheme.subtitle1,
-                                    ))
-                              ],
-                            ),
-                            Stack(
-                              alignment: Alignment.center,
-                              children: const [
-                                CircleAvatar(
-                                  radius: 10,
-                                  backgroundColor: Color(0xff6B705C),
-                                ),
-                                Text(
-                                  "10",
-                                  style: TextStyle(
-                                      fontSize: 11, color: Colors.white),
-                                )
-                              ],
-                            )
-                          ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Stack(
+                                alignment: Alignment.center,
+                                children: const [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Color(0xff6B705C),
+                                  ),
+                                  Text(
+                                    "10",
+                                    style: TextStyle(
+                                        fontSize: 11, color: Colors.white),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           )
         ],
       ),

@@ -17,23 +17,26 @@ void seekerLogin({
   GlobalKey<ScaffoldState>? scaffoldKey,
 }) async {
   try {
-    var user = await FirebaseAuth.instance
+    MessageDialog.showWaitingDialog(context);
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    if (user != null) {
-      for (var user in userList) {
-        if (user.email == email) {
-          currentUsername = user.name;
-          Navigator.of(context).push(
+
+    for (var user in userList) {
+      if (user.email == email) {
+        currentUsername = user.name;
+        Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
+            context,
             MaterialPageRoute(
               builder: (context) => DashboardSeeker(
                 username: user.name!,
               ),
             ),
-          );
-        }
+            (route) => false);
       }
     }
   } on FirebaseAuthException catch (e) {
+    Navigator.pop(context);
     if (e.code == "invalid-email") {
       MessageDialog.showSnackBar("خطأ في البريد المستخدم", context);
     } else if (e.code == "wrong-password") {
@@ -56,34 +59,36 @@ void providerLogin({
   GlobalKey? scaffoldKey,
 }) async {
   try {
-    var user = await FirebaseAuth.instance
+    MessageDialog.showWaitingDialog(context);
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    if (user != null) {
-      for (var user in userList) {
-        if (user.email == email && user.isApproved == true) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const ProviderDashboard(),
-            ),
-          );
-        } else if (user.email == email && user.isApproved == false) {
-          MessageDialog.showMessageDialog(
-            context,
-            message: "الحساب بإنتظار الموافقة",
-            buttonTitle: "موافق",
-            onPressed: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const LoginProvider(),
-                ),
-              );
-            },
-          );
-        }
+    for (var user in userList) {
+      if (user.email == email && user.isApproved == true) {
+        Navigator.pop(context);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const ProviderDashboard(),
+          ),
+        );
+      } else if (user.email == email && user.isApproved == false) {
+        Navigator.pop(context);
+        MessageDialog.showMessageDialog(
+          context,
+          message: "الحساب بإنتظار الموافقة",
+          buttonTitle: "موافق",
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const LoginProvider(),
+              ),
+            );
+          },
+        );
       }
     }
   } on FirebaseAuthException catch (e) {
+    Navigator.pop(context);
     if (e.code == "invalid-email") {
       MessageDialog.showSnackBar("خطأ في البريد المستخدم", context);
     } else if (e.code == "wrong-password") {

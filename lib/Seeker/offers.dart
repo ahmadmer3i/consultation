@@ -40,7 +40,7 @@ class _OffersState extends State<Offers> {
                           ),
                         ),
                         context: context,
-                        builder: (_) => MyBottomSheet(),
+                        builder: (_) => const MyBottomSheet(),
                       );
                     },
                     child: Container(
@@ -118,7 +118,7 @@ class _OffersState extends State<Offers> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(),
+      bottomNavigationBar: const MyBottomNavigationBar(),
     );
   }
 }

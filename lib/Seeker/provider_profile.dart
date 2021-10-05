@@ -289,7 +289,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                   .headline4!
                                   .copyWith(color: Color(0xffCB997E)),
                             ),
-                            Container(
+                            SizedBox(
                               height: 200,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
@@ -307,10 +307,10 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                                     milliseconds: 100),
                                                 maxScale: 2.5,
                                                 onZoomStart: () {
-                                                  print('Start zooming');
+                                                  // print('Start zooming');
                                                 },
                                                 onZoomEnd: () {
-                                                  print('Stop zooming');
+                                                  // print('Stop zooming');
                                                 },
                                               );
                                             });

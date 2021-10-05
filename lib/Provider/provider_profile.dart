@@ -31,8 +31,11 @@ class _ProviderProfileState extends State<ProviderProfile> {
                     ))),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ProviderProfileEdit()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ProviderProfileEdit(),
+                  ),
+                );
               },
               child: Container(
                 margin: const EdgeInsets.all(5),

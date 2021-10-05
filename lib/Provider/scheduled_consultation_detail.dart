@@ -87,7 +87,7 @@ class _ScheduledConsultationDetailState
           ],
         ),
       ),
-      bottomNavigationBar: MyProviderBottomNavigationBar(),
+      bottomNavigationBar: const MyProviderBottomNavigationBar(),
     );
   }
 }

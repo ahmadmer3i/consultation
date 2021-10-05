@@ -229,8 +229,6 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               if (providerGender == "") {
                                 providerGender = "M";
                               }
-                              print(
-                                  "$providerPassword, $providerBOD, $providerGender");
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>

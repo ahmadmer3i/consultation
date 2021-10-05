@@ -168,14 +168,14 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                 children: [
                                   CircleAvatar(),
                                   Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 10),
-                                      child: Text(
-                                        "خالد عبدالله",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
-                                      ))
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10),
+                                    child: Text(
+                                      "خالد عبدالله",
+                                      style:
+                                          Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),

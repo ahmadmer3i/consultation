@@ -289,19 +289,20 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: const MyTextFieldDark(label: "رقم الآيبان*")),
               ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "تحديث",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(color: const Color(0xffFFE8D6)),
-                  )),
+                onPressed: () {},
+                child: Text(
+                  "تحديث",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(color: const Color(0xffFFE8D6)),
+                ),
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: MyProviderBottomNavigationBar(),
+      bottomNavigationBar: const MyProviderBottomNavigationBar(),
     );
   }
 }

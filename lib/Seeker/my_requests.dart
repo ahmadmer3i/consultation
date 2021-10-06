@@ -2,6 +2,9 @@ import 'package:consultation/Seeker/consultation_details_instant.dart';
 import 'package:consultation/Seeker/offers.dart';
 import 'package:consultation/Seeker/seeker_chat.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/models/consult_data.dart';
+import 'package:consultation/view_model/get_request_data.dart';
+import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 
 class MyRequests extends StatefulWidget {
@@ -13,6 +16,16 @@ class MyRequests extends StatefulWidget {
 
 class _MyRequestsState extends State<MyRequests> {
   bool request = true;
+
+  Future<List<ConsultData>>? getConsults;
+  List<ConsultData> consultsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getConsults = getRequestData(consultsList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,117 +65,140 @@ class _MyRequestsState extends State<MyRequests> {
           ),
           Expanded(
             child: request
-                ? Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                      color: Color(0xffFFE8D6),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "تصميم غرافيك",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                ? FutureBuilder(
+                    future: getConsults,
+                    builder:
+                        (context, AsyncSnapshot<List<ConsultData>> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        print(snapshot.data?.length);
+                        return ListView.builder(
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(20),
+                              decoration: const BoxDecoration(
+                                color: Color(0xffFFE8D6),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
                                 ),
-                                IconButton(
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        request = false;
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.delete_outline_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  " 17 سبتمبر 2021",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                                Text(
-                                  "8:00 - 6:00 مساءً",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                )
-                              ],
-                            ),
-                            Container(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: Text(
-                                "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(
-                                      height: 1.2,
-                                    ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "عروض : 5",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(fontWeight: FontWeight.w700),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const Offers(),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "تصميم غرافيك",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              setState(
+                                                () {
+                                                  request = false;
+                                                },
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.delete_outline_outlined,
+                                              color: Colors.grey,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            " 17 سبتمبر 2021",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                          ),
+                                          Text(
+                                            "8:00 - 6:00 مساءً",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                          )
+                                        ],
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.only(top: 20),
+                                        child: Text(
+                                          "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1!
+                                              .copyWith(
+                                                height: 1.2,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                              child: Text(
-                                "مشاهدة العروض",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1!
-                                    .copyWith(
-                                      color: Colors.white,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "عروض : 5",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Offers(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(
+                                          "مشاهدة العروض",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1!
+                                              .copyWith(
+                                                color: Colors.white,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                            );
+                          },
+                        );
+                      } else {
+                        return MessageDialog.showLoadingDialog(context,
+                            message: "يرجى الإنتظار");
+                      }
+                    },
                   )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,

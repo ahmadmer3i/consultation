@@ -16,7 +16,7 @@ void seekerLogin({
   required BuildContext context,
 }) async {
   try {
-    MessageDialog.showWaitingDialog(context);
+    MessageDialog.showWaitingDialog(context, message: "جاري تسجيل الدخول");
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
 
@@ -61,7 +61,7 @@ void providerLogin({
   GlobalKey? scaffoldKey,
 }) async {
   try {
-    MessageDialog.showWaitingDialog(context);
+    MessageDialog.showWaitingDialog(context, message: "جاري تسجيل الدخول");
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     for (var user in userList) {

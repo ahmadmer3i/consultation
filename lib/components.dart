@@ -14,7 +14,7 @@ import 'package:flutter_rating/flutter_rating.dart';
 
 import 'Seeker/seeker_profile.dart';
 
-class MyTextField extends StatefulWidget {
+class MyTextField extends StatelessWidget {
   final String label;
   final IconButton? iconButton;
   final bool? isObscure;
@@ -22,6 +22,7 @@ class MyTextField extends StatefulWidget {
   final TextEditingController? textController;
   final Function(String)? onChanged;
   final Widget? suffixIcon;
+
   const MyTextField({
     Key? key,
     this.suffixIcon,
@@ -34,34 +35,41 @@ class MyTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MyTextFieldState createState() => _MyTextFieldState();
-}
-
-class _MyTextFieldState extends State<MyTextField> {
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: widget.onChanged,
-      obscureText: widget.isObscure!,
-      validator: widget.validator,
-      controller: widget.textController,
+      onChanged: onChanged,
+      obscureText: isObscure!,
+      validator: validator,
+      controller: textController,
       style: TextStyle(
         color: Color(0xffFFE8D6),
         fontSize: 14,
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(10),
-        suffixIcon: widget.suffixIcon,
-        suffix: widget.iconButton,
+        suffixIcon: suffixIcon,
+        suffix: iconButton,
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xffFFE8D6), width: 2)),
+          borderSide: BorderSide(
+            color: Color(0xffFFE8D6),
+            width: 2,
+          ),
+        ),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xffFFE8D6))),
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xffFFE8D6),
+          ),
+        ),
         border: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Color(0xffFFE8D6))),
-        hintText: widget.label,
+          borderSide: BorderSide(
+            width: 1,
+            color: Color(0xffFFE8D6),
+          ),
+        ),
+        hintText: label,
         hintStyle: TextStyle(color: Color(0xffFFE8D6).withAlpha(100)),
-        labelText: widget.label,
+        labelText: label,
         labelStyle: TextStyle(color: Color(0xffFFE8D6)),
         prefixText: ' ',
       ),

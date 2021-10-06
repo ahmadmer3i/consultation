@@ -178,7 +178,9 @@ class _MyRequestsState extends State<MyRequests> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
-                                  const ConsultationDetailsInstant(),
+                                  const ConsultationDetailsInstant(
+                                topic: "",
+                              ),
                             ),
                           );
                         },

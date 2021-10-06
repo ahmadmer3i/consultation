@@ -1,5 +1,5 @@
 import 'package:consultation/Provider/calendar_management.dart';
-import 'package:consultation/Provider/provider_edit_profile.dart';
+import 'package:consultation/Provider/view_my_profile.dart';
 import 'package:consultation/Seeker/seeker_reports.dart';
 import 'package:consultation/components.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +33,7 @@ class _ProviderProfileState extends State<ProviderProfile> {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ProviderProfileEdit(),
+                    builder: (context) => const ViewMyProfile(),
                   ),
                 );
               },

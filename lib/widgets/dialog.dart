@@ -47,8 +47,9 @@ class MessageDialog {
   }
 
   static void showWaitingDialog(
-    BuildContext context,
-  ) {
+    BuildContext context, {
+    String? message,
+  }) {
     showDialog(
       context: context,
       builder: (context) {
@@ -69,7 +70,7 @@ class MessageDialog {
                         radius: 20,
                       )
                     : const CircularProgressIndicator(),
-                const Text("جاري تسجيل الدخول"),
+                Text(message ?? ""),
               ],
             ),
           ),
@@ -87,5 +88,29 @@ class MessageDialog {
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static Widget showLoadingDialog(BuildContext context,
+      {required String message}) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.2,
+        height: MediaQuery.of(context).size.width * 0.2,
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.7),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Platform.isIOS
+                ? const CupertinoActivityIndicator()
+                : const CircularProgressIndicator(),
+            Text(message),
+          ],
+        ),
+      ),
+    );
   }
 }

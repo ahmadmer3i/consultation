@@ -1,6 +1,10 @@
 import 'package:consultation/Seeker/consultation_details_instant.dart';
 import 'package:consultation/Seeker/list_consultants.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/models/topic.dart';
+import 'package:consultation/view_model/get_topics_data.dart';
+import 'package:consultation/widgets/dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DashboardSeeker extends StatefulWidget {
@@ -12,6 +16,8 @@ class DashboardSeeker extends StatefulWidget {
 }
 
 class _DashboardSeekerState extends State<DashboardSeeker> {
+  Future<List<Topic>>? getTopics;
+  List<Topic> topicsList = [];
   List<String> list = [
     "تصميم غرافيك",
     "تكنولوجيا المعلومات",
@@ -27,6 +33,12 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
     "تسويق"
   ];
   Map<String, String> map = {};
+
+  @override
+  void initState() {
+    super.initState();
+    getTopics = getTopicsData(topicsList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,115 +89,132 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
               ),
             ),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 2 / 3,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                ),
-                itemCount: map.entries.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor: const Color(0xffFFE8D6),
-                            title: const Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                "حدد نوع الاستشارة",
-                              ),
-                            ),
-                            content: SizedBox(
-                              height: 150,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ListConsultants(),
-                                        ),
-                                      );
-                                    },
+              child: FutureBuilder(
+                future: getTopics,
+                builder: (context, AsyncSnapshot<List<Topic>> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
+                        childAspectRatio: 2 / 3,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 5,
+                      ),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  backgroundColor: const Color(0xffFFE8D6),
+                                  title: const Align(
+                                    alignment: Alignment.center,
                                     child: Text(
-                                      "مجدولة",
+                                      "حدد نوع الاستشارة",
+                                    ),
+                                  ),
+                                  content: SizedBox(
+                                    height: 150,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ListConsultants(),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            "مجدولة",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ConsultationDetailsInstant(
+                                                  topic:
+                                                      topicsList[index].title,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            "فورية",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6!
+                                                .copyWith(
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      topicsList[index].title,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline6!
                                           .copyWith(
-                                            color: Colors.white,
+                                            color: const Color(0xff6B705C),
+                                            height: 1.2,
                                           ),
                                     ),
                                   ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ConsultationDetailsInstant(),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "فورية",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                            color: Colors.white,
-                                          ),
-                                    ),
+                                ),
+                                Expanded(
+                                  child: Image.network(
+                                    topicsList[index].image,
                                   ),
-                                ],
-                              ),
+                                )
+                              ],
                             ),
-                          );
-                        },
-                      );
-                    },
-                    child: Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(20),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                map.keys.elementAt(index),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      color: const Color(0xff6B705C),
-                                      height: 1.2,
-                                    ),
-                              ),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFFE8D6),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          Expanded(
-                            child: Image.asset(
-                              "Assets/${map.values.elementAt(index)}",
-                            ),
-                          )
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFFE8D6),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else {
+                    return MessageDialog.showLoadingDialog(
+                      context,
+                      message: "يرجى الانتظار",
+                    );
+                  }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -14,7 +14,7 @@ Future<List<ConsultData>> getRequestData(List<ConsultData> data) async {
         ConsultData(
           uid: doc['uid'],
           topic: doc['topic'],
-          detail: doc['detail'],
+          detail: doc['details'],
           date: doc['date'],
         ),
       );

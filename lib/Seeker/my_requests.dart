@@ -3,7 +3,9 @@ import 'package:consultation/Seeker/offers.dart';
 import 'package:consultation/Seeker/seeker_chat.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
+import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/view_model/get_request_data.dart';
+import 'package:consultation/view_model/provider_for_consult.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -70,10 +72,17 @@ class _MyRequestsState extends State<MyRequests> {
                     builder:
                         (context, AsyncSnapshot<List<ConsultData>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        print(snapshot.data?.length);
+                        if (snapshot.data!.isEmpty) {
+                          setState(() {
+                            request = false;
+                          });
+                        }
                         return ListView.builder(
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
+                            consultsList.sort((b, a) {
+                              return a.date.compareTo(b.date);
+                            });
                             return Container(
                               margin: const EdgeInsets.all(10),
                               padding: const EdgeInsets.all(20),
@@ -94,7 +103,7 @@ class _MyRequestsState extends State<MyRequests> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "تصميم غرافيك",
+                                            consultsList[index].topic,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .subtitle1!
@@ -144,7 +153,7 @@ class _MyRequestsState extends State<MyRequests> {
                                       Container(
                                         padding: const EdgeInsets.only(top: 20),
                                         child: Text(
-                                          "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
+                                          consultsList[index].detail,
                                           textAlign: TextAlign.center,
                                           style: Theme.of(context)
                                               .textTheme
@@ -156,39 +165,51 @@ class _MyRequestsState extends State<MyRequests> {
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "عروض : 5",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const Offers(),
+                                  FutureBuilder(
+                                    builder: (context, snapshot) {
+                                      List<ProviderData> providerTopic = [];
+                                      Future<List<ProviderData>> getProvider =
+                                          getProviderForTopics(providerTopic,
+                                              topic: consultsList[index].topic);
+                                      return FutureBuilder(
+                                        future: getProvider,
+                                        builder: (context, snapshot) => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "عروض : ${providerTopic.length}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .subtitle1!
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w700),
                                             ),
-                                          );
-                                        },
-                                        child: Text(
-                                          "مشاهدة العروض",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1!
-                                              .copyWith(
-                                                color: Colors.white,
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Offers(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
+                                                "مشاهدة العروض",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1!
+                                                    .copyWith(
+                                                      color: Colors.white,
+                                                    ),
                                               ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  )
+                                      );
+                                    },
+                                  ),
                                 ],
                               ),
                             );

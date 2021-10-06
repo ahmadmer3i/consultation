@@ -18,7 +18,7 @@ void seekerRegister({
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     await FirebaseFirestore.instance
-        .collection("seeker")
+        .collection(seekerCollection)
         .doc(FirebaseAuth.instance.currentUser?.uid)
         .set(
       {
@@ -43,27 +43,27 @@ void seekerRegister({
 }
 
 void providerRegister(
-    {required name,
-    required password,
-    required email,
-    required price,
-    required iban,
-    required experience,
-    required gender,
-    required username,
-    required dob,
-    required instant,
-    required scheduled,
-    required bank,
+    {required String name,
+    required String password,
+    required String email,
+    required double price,
+    required String iban,
+    required String experience,
+    required String gender,
+    required String username,
+    required String dob,
+    required bool instant,
+    required bool scheduled,
+    required String bank,
     required List<String> topics,
-    required context,
+    required BuildContext context,
     required}) async {
   try {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     await FirebaseFirestore.instance
-        .collection("provider")
-        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection(providerCollection)
+        .doc(FirebaseAuth.instance.currentUser?.uid) // uid of the user
         .set(
       {
         "email": email,

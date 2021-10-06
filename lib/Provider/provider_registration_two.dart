@@ -159,7 +159,7 @@ class _ProviderRegistrationTwoState extends State<ProviderRegistrationTwo> {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            providerPrice = priceController.text;
+                            providerPrice = double.parse(priceController.text);
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>

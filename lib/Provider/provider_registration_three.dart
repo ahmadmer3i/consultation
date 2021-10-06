@@ -182,7 +182,7 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
                                   price: providerPrice,
                                   iban: providerIBAN,
                                   experience: providerExperience,
-                                  gender: providerGender,
+                                  gender: providerGender!,
                                   username: providerUsername,
                                   dob: providerBOD,
                                   instant: instant,

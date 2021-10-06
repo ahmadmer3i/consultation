@@ -1,3 +1,4 @@
+import 'package:consultation/Seeker/consultation_details_instant.dart';
 import 'package:consultation/Seeker/list_consultants.dart';
 import 'package:consultation/components.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "أهلاً ${widget.username}",
+                "أهلاً ${widget.username}", // String interpolation
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                       color: const Color(0xffCB997E),
                     ),
@@ -123,7 +124,15 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                                     ),
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ConsultationDetailsInstant(),
+                                        ),
+                                      );
+                                    },
                                     child: Text(
                                       "فورية",
                                       style: Theme.of(context)

@@ -14,7 +14,6 @@ void seekerLogin({
   required String password,
   required List<SeekerData> userList,
   required BuildContext context,
-  GlobalKey<ScaffoldState>? scaffoldKey,
 }) async {
   try {
     MessageDialog.showWaitingDialog(context);
@@ -33,6 +32,9 @@ void seekerLogin({
               ),
             ),
             (route) => false);
+      } else {
+        Navigator.pop(context);
+        MessageDialog.showSnackBar("ليس لديك حساب كمستفيد", context);
       }
     }
   } on FirebaseAuthException catch (e) {
@@ -45,7 +47,7 @@ void seekerLogin({
     } else if (e.code == "user-disabled") {
       MessageDialog.showSnackBar("الحساب موقوف", context);
     } else if (e.code == "user-not-found") {
-      MessageDialog.showSnackBar("البريد الالكتورني غير مسجل", context);
+      MessageDialog.showSnackBar("ليس لديك حساب كمستفيد", context);
     }
   }
 }
@@ -85,6 +87,9 @@ void providerLogin({
             );
           },
         );
+      } else {
+        Navigator.pop(context);
+        MessageDialog.showSnackBar("ليس لديك حساب كمستشار", context);
       }
     }
   } on FirebaseAuthException catch (e) {
@@ -97,7 +102,7 @@ void providerLogin({
     } else if (e.code == "user-disabled") {
       MessageDialog.showSnackBar("الحساب موقوف", context);
     } else if (e.code == "user-not-found") {
-      MessageDialog.showSnackBar("البريد الالكتورني غير مسجل", context);
+      MessageDialog.showSnackBar("ليس لديك حساب كمستشار", context);
     }
   }
 }

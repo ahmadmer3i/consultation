@@ -1,3 +1,4 @@
+import 'package:consultation/components.dart';
 import 'package:consultation/view_model/login_register/user_register_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,10 +69,9 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                labelText: "الأسم بالكامل",
-                              ), //كود التحقق من الايميل و الباسورد
+                            child: MyTextField(
+                              label: "الأسم بالكامل",
+                              //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -83,10 +83,9 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                labelText: "البريد الألكتروني",
-                              ), //كود التحقق من الايميل و الباسورد
+                            child: MyTextField(
+                              label: "البريد الألكتروني",
+                              //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -98,10 +97,9 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                labelText: "أسم المستخدم",
-                              ), //كود التحقق من الايميل و الباسورد
+                            child: MyTextField(
+                              label: "أسم المستخدم",
+                              //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -117,7 +115,7 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                               "جنس*",
                               style:
                                   Theme.of(context).textTheme.caption!.copyWith(
-                                        color: const Color(0xff000000),
+                                        color: Colors.white,
                                       ),
                             ),
                           ),
@@ -170,36 +168,30 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
+                            child: MyTextField(
                               onChanged: (value) {
-                                setState(
-                                  () {
-                                    _dateOfBirth = value;
-                                  },
-                                );
+                                _dateOfBirth = value;
                               },
-                              decoration: InputDecoration(
-                                labelText: " تاريخ الميلاد *",
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1920, 8),
-                                      lastDate: DateTime(2101),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.calendar_today,
-                                    color: Colors.white38,
-                                  ),
+                              label: "تاريخ الميلاد*",
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2015, 8),
+                                    lastDate: DateTime(2101),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.white38,
                                 ),
                               ),
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
+                            child: MyTextField(
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -207,29 +199,27 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                                   },
                                 );
                               },
-                              obscureText: _isObscure,
-                              decoration: InputDecoration(
-                                labelText: " كلمة المرور*",
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isObscure
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        _isObscure = !_isObscure;
-                                      },
-                                    );
-                                  },
+                              isObscure: _isObscure,
+                              label: " كلمة المرور*",
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      _isObscure = !_isObscure;
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
+                            child: MyTextField(
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -237,23 +227,21 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                                   },
                                 );
                               },
-                              obscureText: _isObscure,
-                              decoration: InputDecoration(
-                                labelText: "تأكيد كلمة المرور*",
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isObscure
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        _isObscure = !_isObscure;
-                                      },
-                                    );
-                                  },
+                              isObscure: _isObscure,
+                              label: "تأكيد كلمة المرور*",
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      _isObscure = !_isObscure;
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),

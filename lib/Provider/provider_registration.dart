@@ -174,7 +174,7 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               },
                               textController: widget.birthdayController,
                               label: "تاريخ الميلاد*",
-                              iconButton: IconButton(
+                              suffixIcon: IconButton(
                                 onPressed: () {
                                   showDatePicker(
                                     context: context,
@@ -200,7 +200,7 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               textController: widget.passwordController,
                               isObscure: true,
                               label: "كلمة المرور",
-                              iconButton: IconButton(
+                              suffixIcon: IconButton(
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.remove_red_eye,
@@ -215,7 +215,7 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               textController: widget.checkPasswordController,
                               isObscure: true,
                               label: "تأكيد كلمة المرور*",
-                              iconButton: IconButton(
+                              suffixIcon: IconButton(
                                 onPressed: () {},
                                 icon: Icon(
                                   Icons.remove_red_eye,

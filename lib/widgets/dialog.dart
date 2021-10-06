@@ -47,7 +47,7 @@ class MessageDialog {
   }
 
   static void showWaitingDialog(
-    context,
+    BuildContext context,
   ) {
     showDialog(
       context: context,

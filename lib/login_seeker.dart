@@ -27,6 +27,9 @@ class _LoginSeekerState extends State<LoginSeeker> {
 
   @override
   void initState() {
+    // built in method
+    // Just in StatefulWidget
+    // run one time when the screen appear
     super.initState();
     getSeeker = getSeekerData(seekerList);
   }
@@ -87,6 +90,7 @@ class _LoginSeekerState extends State<LoginSeeker> {
                             margin: EdgeInsets.only(bottom: 20, top: 20),
                             child: TextField(
                               decoration: InputDecoration(
+                                // hintText: "البريد الألكتروني",
                                 labelText: "البريد الألكتروني",
                               ), //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
@@ -116,14 +120,14 @@ class _LoginSeekerState extends State<LoginSeeker> {
                                 labelText: " كلمة المرور*",
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _isObscure
+                                    _isObscure == true
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                   ),
                                   onPressed: () {
                                     setState(
                                       () {
-                                        _isObscure = !_isObscure;
+                                        _isObscure = !_isObscure; //toggle
                                       },
                                     );
                                   },

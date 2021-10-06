@@ -21,8 +21,10 @@ class MyTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController? textController;
   final Function(String)? onChanged;
+  final Widget? suffixIcon;
   const MyTextField({
     Key? key,
+    this.suffixIcon,
     required this.label,
     this.onChanged,
     this.iconButton,
@@ -49,6 +51,7 @@ class _MyTextFieldState extends State<MyTextField> {
       ),
       decoration: InputDecoration(
         contentPadding: EdgeInsets.all(10),
+        suffixIcon: widget.suffixIcon,
         suffix: widget.iconButton,
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Color(0xffFFE8D6), width: 2)),
@@ -78,11 +81,15 @@ class MyTextFieldDark extends StatefulWidget {
   final int? maxLength;
   final int? maxLines;
   final double? radius;
+  final Widget? suffixIcon;
+  final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextEditingController? textController;
   const MyTextFieldDark({
     Key? key,
     required this.label,
+    this.onChanged,
+    this.suffixIcon,
     this.iconButton,
     this.isObscure = false,
     this.minHeight = 1,
@@ -107,6 +114,7 @@ class _MyTextFieldDarkState extends State<MyTextFieldDark> {
     return TextFormField(
       controller: widget.textController,
       maxLength: widget.maxLength,
+      onChanged: widget.onChanged,
       obscureText: widget.isObscure!,
       validator: widget.validator,
       style: TextStyle(
@@ -136,6 +144,7 @@ class _MyTextFieldDarkState extends State<MyTextFieldDark> {
         hintStyle: TextStyle(color: Color(0xff6B705C).withAlpha(100)),
         labelText: widget.showLabel ? widget.label : null,
         labelStyle: TextStyle(color: Color(0xff6B705C)),
+        suffixIcon: widget.suffixIcon,
         prefixText: ' ',
       ),
     );
@@ -237,24 +246,24 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(
                   chunk(list, 4).length,
-                  (index) {
-                    List currentRow = chunk(list, 4).elementAt(index);
+                  (indexRow) {
+                    List currentRow = chunk(list, 4).elementAt(indexRow);
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(
                         currentRow.length,
-                        (currentIndex) {
+                        (indexCol) {
                           int itemIndex =
-                              ((list.length / 3 - 1).toInt()) * index +
-                                  index +
-                                  currentIndex;
+                              ((list.length / 3 - 1).toInt()) * indexRow +
+                                  indexRow +
+                                  indexCol; // Real index of list items
                           return GestureDetector(
                             onTap: () {
                               setState(
                                 () {
                                   checkedItems[itemIndex] =
-                                      !checkedItems[itemIndex];
-                                  if (checkedItems[itemIndex]) {
+                                      !checkedItems[itemIndex]; //toggle
+                                  if (checkedItems[itemIndex] == true) {
                                     icons[itemIndex] = Icons.check;
                                     selectedItems.add(list[itemIndex]);
                                     selectedItemColors[itemIndex] =
@@ -278,13 +287,13 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
                                 children: [
                                   Icon(
                                     icons[((list.length / 3 - 1).toInt()) *
-                                            index +
-                                        index +
-                                        currentIndex],
+                                            indexRow +
+                                        indexRow +
+                                        indexCol],
                                     color: Colors.white,
                                   ),
                                   Text(
-                                    currentRow.elementAt(currentIndex),
+                                    currentRow.elementAt(indexCol),
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ],

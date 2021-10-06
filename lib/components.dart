@@ -217,13 +217,13 @@ class _CategoriesSelectorState extends State<CategoriesSelector> {
       "تكنولوجيا المعلومات",
       "إحصاء",
       "كيمياء",
-      "اللغة والترجمة",
+      "اللغة و الترجمة",
       "تسويق",
       "تصميم غرافيك",
       "تكنولوجيا المعلومات",
       "إحصاء",
       "كيمياء",
-      "اللغة والترجمة",
+      "اللغة و الترجمة",
       "تسويق"
     ];
 
@@ -482,7 +482,8 @@ class _MyProviderBottomNavigationBarState
 }
 
 class MyBottomSheet extends StatefulWidget {
-  const MyBottomSheet({Key? key}) : super(key: key);
+  final double price;
+  const MyBottomSheet({Key? key, required this.price}) : super(key: key);
 
   @override
   _MyBottomSheetState createState() => _MyBottomSheetState();
@@ -518,7 +519,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
           Align(
               alignment: Alignment.center,
               child: Text(
-                "15.00",
+                "${widget.price}",
                 style: Theme.of(context)
                     .textTheme
                     .headline2!

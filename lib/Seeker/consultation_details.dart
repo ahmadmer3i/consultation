@@ -11,8 +11,8 @@ class ConsultationDetails extends StatefulWidget {
 }
 
 class _ConsultationDetailsState extends State<ConsultationDetails> {
-  int? selectedMethod=0;
-  var scaffoldKey=GlobalKey<ScaffoldState>();
+  int? selectedMethod = 0;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,12 +42,14 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                     onPressed: () {
                       showModalBottomSheet(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20))
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        context: context,
+                        builder: (_) => MyBottomSheet(
+                          price: 100,
                         ),
-  context: context,
-  builder: (_) => MyBottomSheet(),
-);
-                      },
+                      );
+                    },
                     child: Text(
                       "الدفع",
                       style: TextStyle(

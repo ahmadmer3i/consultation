@@ -1,10 +1,15 @@
-import 'package:consultation/Components.dart';
+import 'package:consultation/components.dart';
+import 'package:consultation/models/provider_data.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_rating/flutter_rating.dart';
 
 class Offers extends StatefulWidget {
-  const Offers({Key? key}) : super(key: key);
+  final List<ProviderData> providerData;
+  const Offers({
+    Key? key,
+    required this.providerData,
+  }) : super(key: key);
 
   @override
   _OffersState createState() => _OffersState();
@@ -29,9 +34,13 @@ class _OffersState extends State<Offers> {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  GestureDetector(
+              child: ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
+                itemCount: widget.providerData.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
                         shape: const RoundedRectangleBorder(
@@ -40,7 +49,9 @@ class _OffersState extends State<Offers> {
                           ),
                         ),
                         context: context,
-                        builder: (_) => const MyBottomSheet(),
+                        builder: (_) => MyBottomSheet(
+                          price: widget.providerData[index].price!,
+                        ),
                       );
                     },
                     child: Container(
@@ -62,7 +73,7 @@ class _OffersState extends State<Offers> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "خالد عبدالله",
+                                      widget.providerData[index].name!,
                                       style:
                                           Theme.of(context).textTheme.subtitle1,
                                     ),
@@ -89,7 +100,7 @@ class _OffersState extends State<Offers> {
                               Column(
                                 children: [
                                   Text(
-                                    "15.00",
+                                    "${widget.providerData[index].price?.toStringAsFixed(2)}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle1!
@@ -107,12 +118,12 @@ class _OffersState extends State<Offers> {
                                 size: 30,
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
-                ],
+                  );
+                },
               ),
             )
           ],

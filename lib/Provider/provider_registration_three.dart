@@ -30,9 +30,14 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
           Pin(size: 256.0, start: -100.0),
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+              borderRadius: BorderRadius.all(
+                Radius.elliptical(9999.0, 9999.0),
+              ),
               color: const Color(0xff6B705C),
-              border: Border.all(width: 1.0, color: const Color(0xff6B705C)),
+              border: Border.all(
+                width: 1.0,
+                color: const Color(0xff6B705C),
+              ),
             ),
           ),
         ),
@@ -43,42 +48,50 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
               child: Container(
                 padding: EdgeInsets.only(top: 80, right: 50),
                 child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
             Align(
-                child: Text(
-              "أهلا بك! ",
-              style: Theme.of(context).textTheme.headline6!.copyWith(height: 1),
-            )),
-            Text(providerName,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3!
-                    .copyWith(height: 2, fontWeight: FontWeight.bold)),
+              child: Text(
+                "أهلا بك! ",
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                      height: 1,
+                    ),
+              ),
+            ),
+            Text(
+              providerName,
+              style: Theme.of(context).textTheme.headline3!.copyWith(
+                    height: 2,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
             Text(
               'نحتاج إلى بعض المعلومات الإضافية لإعداد حسابك',
               textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(height: 1, color: Color(0xffCB997E)),
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                    height: 1,
+                    color: Color(0xffCB997E),
+                  ),
             ),
             Expanded(
                 child: Stack(
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(40),
-                          topRight: Radius.circular(40))),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(40),
+                      topRight: Radius.circular(40),
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.all(10),
@@ -90,14 +103,18 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
                             Container(
                               padding: const EdgeInsets.all(10),
                               child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Text("أخبرنا عن نفسك",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                              height: 2,
-                                              color: Color(0xff21686C)))),
+                                alignment: Alignment.topCenter,
+                                child: Text(
+                                  "أخبرنا عن نفسك",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(
+                                        height: 2,
+                                        color: Color(0xff21686C),
+                                      ),
+                                ),
+                              ),
                             ),
                             Align(
                               alignment: Alignment.topRight,
@@ -112,33 +129,38 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
                               ),
                             ),
                             DropdownButton(
-                                onChanged: (int? value) {
-                                  setState(() {
+                              onChanged: (int? value) {
+                                setState(
+                                  () {
                                     selectedBank = value!;
                                     selectedBank == 0
                                         ? providerBank = "بنك الرياض"
                                         : providerBank = "بنك الجزيرة";
-                                  });
-                                },
-                                focusColor: Colors.black,
-                                style: TextStyle(color: Colors.black),
-                                value: selectedBank,
-                                dropdownColor: Colors.white,
-                                isExpanded: true,
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: 0,
-                                      child: Text(
-                                        "بنك الرياض",
-                                        style: TextStyle(color: Colors.black),
-                                      )),
-                                  DropdownMenuItem(
-                                      value: 1,
-                                      child: Text(
-                                        "بنك الجزيرة",
-                                        style: TextStyle(color: Colors.black),
-                                      )),
-                                ]),
+                                  },
+                                );
+                              },
+                              focusColor: Colors.black,
+                              style: TextStyle(color: Colors.black),
+                              value: selectedBank,
+                              dropdownColor: Colors.white,
+                              isExpanded: true,
+                              items: const [
+                                DropdownMenuItem(
+                                  value: 0,
+                                  child: Text(
+                                    "بنك الرياض",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                DropdownMenuItem(
+                                  value: 1,
+                                  child: Text(
+                                    "بنك الجزيرة",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            ),
                             MyTextFieldDark(
                               label: "رقم الآيبان*",
                               textController: ibanController,

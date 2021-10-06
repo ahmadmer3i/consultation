@@ -171,7 +171,9 @@ class _ProviderRegistrationOneState extends State<ProviderRegistrationOne> {
                               },
                               child: const Text(
                                 "التالي",
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ],

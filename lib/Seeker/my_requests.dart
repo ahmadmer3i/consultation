@@ -169,8 +169,10 @@ class _MyRequestsState extends State<MyRequests> {
                                     builder: (context, snapshot) {
                                       List<ProviderData> providerTopic = [];
                                       Future<List<ProviderData>> getProvider =
-                                          getProviderForTopics(providerTopic,
-                                              topic: consultsList[index].topic);
+                                          getProviderForTopics(
+                                        providerTopic,
+                                        topic: consultsList[index].topic,
+                                      );
                                       return FutureBuilder(
                                         future: getProvider,
                                         builder: (context, snapshot) => Row(
@@ -191,7 +193,10 @@ class _MyRequestsState extends State<MyRequests> {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const Offers(),
+                                                        Offers(
+                                                      providerData:
+                                                          providerTopic,
+                                                    ),
                                                   ),
                                                 );
                                               },

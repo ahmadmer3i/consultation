@@ -2,23 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<List<ConsultData>> getRequestData(List<ConsultData> data) async {
+// Future<Stream<List<ConsultData>>>?
+Stream<List<ConsultData>> get getRequestData
+// Stream<List<ConsultData>> data
+{
   var firebase = FirebaseFirestore.instance;
   var auth = FirebaseAuth.instance;
+  return firebase.collection("consults").snapshots().map((event) => event.docs
+      .where((element) => element.data()["uid"] == auth.currentUser!.uid)
+      .map((e) => ConsultData(
+          uid: e.data()["uid"],
+          topic: e.data()["topic"],
+          detail: e.data()["details"],
+          date: e.data()["date"]))
+      .toList());
 
-  var snapshotConsult = await firebase.collection("consults").get();
-
-  for (var doc in snapshotConsult.docs) {
-    if (doc["uid"] == auth.currentUser!.uid) {
-      data.add(
-        ConsultData(
-          uid: doc['uid'],
-          topic: doc['topic'],
-          detail: doc['details'],
-          date: doc['date'],
-        ),
-      );
-    }
-  }
-  return data;
+  // for (var doc in snapshotConsult.docs) {
+  //   if (doc["uid"] == auth.currentUser!.uid) {
+  //     data.add(
+  //       ConsultData(
+  //         uid: doc['uid'],
+  //         topic: doc['topic'],
+  //         detail: doc['details'],
+  //         date: doc['date'],
+  //       ),
+  //     );
+  //   }
+  // }
+  // return snapshotC;
 }

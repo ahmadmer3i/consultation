@@ -25,7 +25,7 @@ class _MyRequestsState extends State<MyRequests> {
   @override
   void initState() {
     super.initState();
-    getConsults = getRequestData(consultsList);
+    // getConsults = getRequestData(consultsList);
   }
 
   @override
@@ -66,13 +66,14 @@ class _MyRequestsState extends State<MyRequests> {
             ),
           ),
           Expanded(
-            child: FutureBuilder(
-              future: getConsults,
-              builder: (context, AsyncSnapshot<List<ConsultData>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
+            child: StreamBuilder<List<ConsultData>>(
+              stream: getRequestData,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  consultsList = snapshot.data!.toList();
                   return consultsList.isNotEmpty
                       ? ListView.builder(
-                          itemCount: snapshot.data?.length,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             consultsList.sort((b, a) {
                               return a.date.compareTo(b.date);

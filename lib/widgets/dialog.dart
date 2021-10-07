@@ -51,6 +51,7 @@ class MessageDialog {
     String? message,
   }) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) {
         return Dialog(

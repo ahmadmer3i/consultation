@@ -12,6 +12,7 @@ void saveConsult({
       "uid": FirebaseAuth.instance.currentUser!.uid,
       "topic": topic,
       "details": details,
+      "isDeleted": false,
       "date": DateTime.now(),
     },
   );

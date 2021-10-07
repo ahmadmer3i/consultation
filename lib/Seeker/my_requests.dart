@@ -113,15 +113,20 @@ class _MyRequestsState extends State<MyRequests> {
                                                 ),
                                           ),
                                           IconButton(
-                                            onPressed: () {
-                                              setState(
-                                                () {
-                                                  deleteItem(
-                                                      docId: consultsList[index]
-                                                          .docId);
-                                                },
-                                              );
-                                            },
+                                            onPressed: consultsList.length > 1
+                                                ? () {
+                                                    deleteItem(context,
+                                                        docId:
+                                                            consultsList[index]
+                                                                .docId);
+                                                  }
+                                                : () {
+                                                    deleteItem(context,
+                                                        docId:
+                                                            consultsList[index]
+                                                                .docId);
+                                                    Navigator.pop(context);
+                                                  },
                                             icon: const Icon(
                                               Icons.delete_outline_outlined,
                                               color: Colors.grey,

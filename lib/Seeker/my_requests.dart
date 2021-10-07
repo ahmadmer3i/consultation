@@ -66,23 +66,18 @@ class _MyRequestsState extends State<MyRequests> {
             ),
           ),
           Expanded(
-            child: request
-                ? FutureBuilder(
-                    future: getConsults,
-                    builder:
-                        (context, AsyncSnapshot<List<ConsultData>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.data!.isEmpty) {
-                          setState(() {
-                            request = false;
-                          });
-                        }
-                        return ListView.builder(
+            child: FutureBuilder(
+              future: getConsults,
+              builder: (context, AsyncSnapshot<List<ConsultData>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return snapshot.data == null
+                      ? ListView.builder(
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {
                             consultsList.sort((b, a) {
                               return a.date.compareTo(b.date);
                             });
+
                             return Container(
                               margin: const EdgeInsets.all(10),
                               padding: const EdgeInsets.all(20),
@@ -219,40 +214,43 @@ class _MyRequestsState extends State<MyRequests> {
                               ),
                             );
                           },
-                        );
-                      } else {
-                        return MessageDialog.showLoadingDialog(context,
-                            message: "يرجى الإنتظار");
-                      }
-                    },
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "لا یوجد استشارات",
-                        style: Theme.of(context).textTheme.headline5!.copyWith(
-                              color: Colors.grey,
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "لا یوجد استشارات",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                    color: Colors.grey,
+                                  ),
                             ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const ConsultationDetailsInstant(
-                                topic: "",
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ConsultationDetailsInstant(
+                                      topic: "",
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "استشر الآن",
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
-                          );
-                        },
-                        child: const Text(
-                          "استشر الآن",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
+                          ],
+                        );
+                } else {
+                  return MessageDialog.showLoadingDialog(context,
+                      message: "يرجى الإنتظار");
+                }
+              },
+            ),
           )
         ],
       ),

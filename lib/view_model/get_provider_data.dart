@@ -9,7 +9,7 @@ Future<List<ProviderData>> getProviderData(List<ProviderData> data) async {
   for (var doc in snapshot.docs) {
     data.add(
       ProviderData(
-        price: doc["price"] as double,
+        price: double.parse(doc["price"].toString()),
         password: doc["password"],
         email: doc["email"],
         name: doc["name"],

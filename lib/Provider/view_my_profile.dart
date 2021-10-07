@@ -1,33 +1,25 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:consultation/Provider/provider_edit_profile.dart';
-import 'package:consultation/Seeker/consultation_details.dart';
 import 'package:consultation/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:image_viewer/image_viewer.dart';
-import 'package:intl/intl.dart';
-
-import 'package:flutter_rating/flutter_rating.dart';
-import 'package:flutter/material.dart';
-
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:flutter_rating/flutter_rating.dart';
+import 'package:intl/intl.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
-
-
 
 class ViewMyProfile extends StatefulWidget {
   final bool canProceed;
-  final double ratingEditor=0;
+  final double ratingEditor = 0;
 
-  const ViewMyProfile({Key? key, this.canProceed=true}) : super(key: key);
-  
+  const ViewMyProfile({Key? key, this.canProceed = true}) : super(key: key);
 
   @override
-  _ViewMyProfileState createState() =>
-      _ViewMyProfileState();
+  _ViewMyProfileState createState() => _ViewMyProfileState();
 }
 
 class _ViewMyProfileState extends State<ViewMyProfile>
@@ -51,33 +43,33 @@ class _ViewMyProfileState extends State<ViewMyProfile>
   String _currentMonth = DateFormat.yMMM().format(DateTime(2019, 2, 3));
   DateTime _targetDateTime = DateTime(2019, 2, 3);
 //  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
-  static Widget _eventIcon = new Container(
-    decoration: new BoxDecoration(
+  static Widget _eventIcon = Container(
+    decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(1000)),
         border: Border.all(color: Colors.blue, width: 2.0)),
-    child: new Icon(
+    child: Icon(
       Icons.person,
       color: Colors.amber,
     ),
   );
 
-  EventList<Event> _markedDateMap = new EventList<Event>(
+  EventList<Event> _markedDateMap = EventList<Event>(
     events: {
-      new DateTime(2021, 9, 26): [
-        new Event(
-          date: new DateTime(2021, 9, 26),
+      DateTime(2021, 9, 26): [
+        Event(
+          date: DateTime(2021, 9, 26),
         ),
       ],
     },
   );
   @override
   void initState() {
-    tabController = new TabController(length: 2, vsync: this);
+    tabController = TabController(length: 2, vsync: this);
 
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
@@ -136,9 +128,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
               alignment: Alignment.center,
               height: 200,
               child: Stack(
-                
                 children: [
-                  
                   Align(
                     alignment: Alignment.center,
                     child: Column(
@@ -155,24 +145,44 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                               .copyWith(height: 1, color: Colors.black),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
-                              showDialog(context: context, builder: (context){
-                              return AlertDialog(
-                                title: Align(alignment: Alignment.center,child: Text("قيم تجربتك",style: TextStyle(color: Color(0xffCB997E)),)),
-                                content: RatingEditor(rating: widget.ratingEditor,),
-                                actionsAlignment: MainAxisAlignment.start,
-                                actions: [
-                                  ElevatedButton(onPressed: (){}, child: Text("إرسال",style: TextStyle(color: Colors.white),)),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(primary: Colors.grey),
-                                    onPressed: (){}, child: Text("إلغاء",style: TextStyle(color: Colors.white),)),
-                                ],
-                                
-                              );
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "قيم تجربتك",
+                                            style: TextStyle(
+                                                color: Color(0xffCB997E)),
+                                          )),
+                                      content: RatingEditor(
+                                        rating: widget.ratingEditor,
+                                      ),
+                                      actionsAlignment: MainAxisAlignment.start,
+                                      actions: [
+                                        ElevatedButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              "إرسال",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )),
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.grey),
+                                            onPressed: () {},
+                                            child: Text(
+                                              "إلغاء",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )),
+                                      ],
+                                    );
+                                  });
                             });
-                            });
-                            
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -191,18 +201,27 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                     ),
                   ),
                   Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      
-                      children: [
-                        Text("15.00",style: Theme.of(context).textTheme.bodyText1!.copyWith(height:0.2,color:Color(0xffCB997E)),),
-                        Text("ريال / ساعة",style: Theme.of(context).textTheme.bodyText1,),
-                      ],
-                    ),
-                  )),
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "15.00",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                      height: 0.2, color: Color(0xffCB997E)),
+                            ),
+                            Text(
+                              "ريال / ساعة",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ],
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -213,7 +232,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                   unselectedLabelColor: Color(0xffA9A890),
                   controller: tabController,
                   indicatorWeight: 4,
-                  tabs: [
+                  tabs: const [
                     Tab(
                       text: "الاوقات المتاحة",
                     ),
@@ -334,17 +353,21 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                         ),
                       ),
                     ])),
-               widget.canProceed?Container(
-                    margin: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProviderProfileEdit()));
-                        },
-                        child: Text(
-                          "تعديل بياناتي",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w900, color: Colors.white),
-                        ))):Container()
+                widget.canProceed
+                    ? Container(
+                        margin: EdgeInsets.all(10),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ProviderProfileEdit()));
+                            },
+                            child: Text(
+                              "تعديل بياناتي",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white),
+                            )))
+                    : Container()
               ],
             )
           ],

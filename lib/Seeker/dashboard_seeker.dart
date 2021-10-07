@@ -42,6 +42,7 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
 
   @override
   Widget build(BuildContext context) {
+    print("here");
     map["تسويق"] = "illustrationn5.png";
     map["اللغة والترجمة"] = "illustrationn3.png";
     map["كيمياء"] = "illustrationn4.png";
@@ -101,7 +102,7 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
                       ),
-                      itemCount: snapshot.data!.length,
+                      itemCount: snapshot.data?.length,
                       itemBuilder: (BuildContext ctx, index) {
                         return GestureDetector(
                           onTap: () {

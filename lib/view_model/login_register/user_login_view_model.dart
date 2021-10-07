@@ -20,21 +20,24 @@ void seekerLogin({
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
 
-    for (var user in userList) {
+    List<SeekerData> userData =
+        userList.where((element) => element.email == email).toList();
+    if (userData.isEmpty) {
+      Navigator.pop(context);
+      MessageDialog.showSnackBar("ليس لديك حساب كمستفيد", context);
+    }
+    for (var user in userData) {
       if (user.email == email) {
         currentUsername = user.name;
         Navigator.pop(context);
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DashboardSeeker(
-                username: user.name!,
-              ),
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DashboardSeeker(
+              username: user.name!,
             ),
-            (route) => false);
-      } else {
-        Navigator.pop(context);
-        MessageDialog.showSnackBar("ليس لديك حساب كمستفيد", context);
+          ),
+        );
       }
     }
   } on FirebaseAuthException catch (e) {
@@ -64,14 +67,24 @@ void providerLogin({
     MessageDialog.showWaitingDialog(context, message: "جاري تسجيل الدخول");
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    for (var user in userList) {
+
+    List<ProviderData> userData =
+        userList.where((element) => element.email == email).toList();
+    if (userData.isEmpty) {
+      Navigator.pop(context);
+      MessageDialog.showSnackBar("ليس لديك حساب كمستشار", context);
+    }
+    for (var user in userData) {
       if (user.email == email && user.isApproved == true) {
         Navigator.pop(context);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const ProviderDashboard(),
+            builder: (context) {
+              return const ProviderDashboard();
+            },
           ),
         );
+        return;
       } else if (user.email == email && user.isApproved == false) {
         Navigator.pop(context);
         MessageDialog.showMessageDialog(
@@ -87,9 +100,6 @@ void providerLogin({
             );
           },
         );
-      } else {
-        Navigator.pop(context);
-        MessageDialog.showSnackBar("ليس لديك حساب كمستشار", context);
       }
     }
   } on FirebaseAuthException catch (e) {

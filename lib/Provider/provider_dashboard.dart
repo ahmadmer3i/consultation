@@ -18,7 +18,6 @@ class _ProviderDashboardState extends State<ProviderDashboard>
     with SingleTickerProviderStateMixin {
   TabController? tabController;
   @override
-  @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
     tabController!.animateTo(widget.tabIndex!);

@@ -70,7 +70,7 @@ class _MyRequestsState extends State<MyRequests> {
               future: getConsults,
               builder: (context, AsyncSnapshot<List<ConsultData>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return snapshot.data == null
+                  return consultsList.isNotEmpty
                       ? ListView.builder(
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) {

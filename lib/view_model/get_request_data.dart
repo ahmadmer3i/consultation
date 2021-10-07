@@ -9,8 +9,11 @@ Stream<List<ConsultData>> get getRequestData
   var firebase = FirebaseFirestore.instance;
   var auth = FirebaseAuth.instance;
   return firebase.collection("consults").snapshots().map((event) => event.docs
-      .where((element) => element.data()["uid"] == auth.currentUser!.uid)
+      .where((element) =>
+          element.data()["uid"] == auth.currentUser!.uid &&
+          element.data()["isDeleted"] == false)
       .map((e) => ConsultData(
+          docId: e.id,
           uid: e.data()["uid"],
           topic: e.data()["topic"],
           detail: e.data()["details"],
@@ -30,4 +33,10 @@ Stream<List<ConsultData>> get getRequestData
   //   }
   // }
   // return snapshotC;
+}
+
+void deleteItem({required String docId}) {
+  FirebaseFirestore.instance.collection("consults").doc(docId).update(
+    {"isDeleted": true},
+  );
 }

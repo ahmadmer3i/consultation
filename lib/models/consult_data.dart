@@ -5,10 +5,12 @@ class ConsultData {
   String topic;
   String detail;
   Timestamp date;
+  String docId;
   ConsultData({
     required this.uid,
     required this.topic,
     required this.detail,
     required this.date,
+    required this.docId,
   });
 }

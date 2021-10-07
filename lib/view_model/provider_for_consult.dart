@@ -8,7 +8,7 @@ Future<List<ProviderData>> getProviderForTopics(List<ProviderData> data,
       await FirebaseFirestore.instance.collection(providerCollection).get();
 
   for (var doc in snapshot.docs) {
-    if (doc["isApproved"] == true) {
+    if (doc["isApproved"] == true && doc["instant"] == true) {
       for (var providerTopic in doc["topics"]) {
         if (providerTopic == topic) {
           data.add(

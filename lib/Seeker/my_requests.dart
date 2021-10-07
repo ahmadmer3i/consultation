@@ -8,6 +8,7 @@ import 'package:consultation/view_model/get_request_data.dart';
 import 'package:consultation/view_model/provider_for_consult.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MyRequests extends StatefulWidget {
   const MyRequests({Key? key}) : super(key: key);
@@ -75,9 +76,13 @@ class _MyRequestsState extends State<MyRequests> {
                       ? ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            consultsList.sort((b, a) {
-                              return a.date.compareTo(b.date);
-                            });
+                            consultsList.sort(
+                              (b, a) {
+                                var aDate = a.date;
+                                var bDate = b.date;
+                                return aDate.compareTo(bDate);
+                              },
+                            );
 
                             return Container(
                               margin: const EdgeInsets.all(10),
@@ -111,7 +116,9 @@ class _MyRequestsState extends State<MyRequests> {
                                             onPressed: () {
                                               setState(
                                                 () {
-                                                  request = false;
+                                                  deleteItem(
+                                                      docId: consultsList[index]
+                                                          .docId);
                                                 },
                                               );
                                             },
@@ -127,7 +134,11 @@ class _MyRequestsState extends State<MyRequests> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            " 17 سبتمبر 2021",
+                                            DateFormat.yMMMd('ar').format(
+                                                consultsList[index]
+                                                    .date
+                                                    .toDate()),
+                                            // " 17 سبتمبر 2021",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .subtitle1!
@@ -136,7 +147,10 @@ class _MyRequestsState extends State<MyRequests> {
                                                 ),
                                           ),
                                           Text(
-                                            "8:00 - 6:00 مساءً",
+                                            DateFormat.jm('ar').format(
+                                                consultsList[index]
+                                                    .date
+                                                    .toDate()),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .subtitle1!

@@ -1,14 +1,18 @@
 import 'package:consultation/components.dart';
+import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/models/provider_data.dart';
+import 'package:consultation/view_model/get_request_data.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_rating/flutter_rating.dart';
 
 class Offers extends StatefulWidget {
   final List<ProviderData> providerData;
+  final String docId;
   const Offers({
     Key? key,
     required this.providerData,
+    required this.docId,
   }) : super(key: key);
 
   @override
@@ -51,6 +55,18 @@ class _OffersState extends State<Offers> {
                         context: context,
                         builder: (_) => MyBottomSheet(
                           price: widget.providerData[index].price!,
+                          onPressed: () {
+                            Navigator.pop(context);
+                            setPayment(
+                              context,
+                              providerId: widget.providerData[index].uid!,
+                              docId: widget.docId,
+                              price: widget.providerData[index].price!,
+                              payment: selectedPaymentMethod == 0
+                                  ? "Apple Pay"
+                                  : "STC Pay",
+                            );
+                          },
                         ),
                       );
                     },

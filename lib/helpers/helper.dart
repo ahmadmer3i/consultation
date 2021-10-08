@@ -15,3 +15,4 @@ var providerInstant = false;
 var providerScheduled = false;
 String providerCollection = "provider";
 String seekerCollection = "seeker";
+int selectedPaymentMethod = 0;

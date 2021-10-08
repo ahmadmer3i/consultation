@@ -483,7 +483,12 @@ class _MyProviderBottomNavigationBarState
 
 class MyBottomSheet extends StatefulWidget {
   final double price;
-  const MyBottomSheet({Key? key, required this.price}) : super(key: key);
+  final VoidCallback onPressed;
+  const MyBottomSheet({
+    Key? key,
+    required this.price,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   _MyBottomSheetState createState() => _MyBottomSheetState();
@@ -491,7 +496,6 @@ class MyBottomSheet extends StatefulWidget {
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
   int selectedMethod = 0;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -517,23 +521,23 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                     .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
               )),
           Align(
-              alignment: Alignment.center,
-              child: Text(
-                "${widget.price}",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline2!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
-              )),
-          Align(
-              alignment: Alignment.center,
-              child: Text(
-                "ریال",
-                style: Theme.of(context).textTheme.headline6!.copyWith(
+            alignment: Alignment.center,
+            child: Text(
+              "${widget.price}",
+              style: Theme.of(context).textTheme.headline2!.copyWith(
                     color: Colors.black,
-                    height: 1,
-                    fontWeight: FontWeight.w700),
-              )),
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              "ریال",
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: Colors.black, height: 1, fontWeight: FontWeight.w700),
+            ),
+          ),
           Align(
             alignment: Alignment.topRight,
             child: Text(
@@ -548,69 +552,79 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(5))),
+              color: Colors.white,
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
+              ),
+            ),
             child: DropdownButton(
-                hint: Text(
-                  "جنس*",
-                  style: TextStyle(
-                      color: Color(0xffFFE8D6),
-                      decoration: TextDecoration.none),
+              hint: Text(
+                "جنس*",
+                style: TextStyle(
+                  color: Color(0xffFFE8D6),
+                  decoration: TextDecoration.none,
                 ),
-                onChanged: (int? value) {
-                  setState(() {
+              ),
+              onChanged: (int? value) {
+                setState(
+                  () {
                     selectedMethod = value!;
-                  });
-                },
-                focusColor: Colors.white,
-                style: TextStyle(color: Colors.white),
-                value: selectedMethod,
-                dropdownColor: Colors.white,
-                isExpanded: true,
-                items: [
-                  DropdownMenuItem(
-                      value: 0,
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "Assets/applePay.png",
-                            width: 50,
-                          ),
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                "Apple Pay",
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ))
-                        ],
-                      )),
-                  DropdownMenuItem(
-                      value: 1,
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            "Assets/stcPay.png",
-                            width: 50,
-                          ),
-                          Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                "STC Pay",
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ))
-                        ],
-                      )),
-                ]),
+                    selectedPaymentMethod = value;
+                  },
+                );
+              },
+              focusColor: Colors.white,
+              style: TextStyle(color: Colors.white),
+              value: selectedMethod,
+              dropdownColor: Colors.white,
+              isExpanded: true,
+              items: [
+                DropdownMenuItem(
+                    value: 0,
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          "Assets/applePay.png",
+                          width: 50,
+                        ),
+                        Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Apple Pay",
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ))
+                      ],
+                    )),
+                DropdownMenuItem(
+                  value: 1,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "Assets/stcPay.png",
+                        width: 50,
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "STC Pay",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ))
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                "دفع",
-                style:
-                    TextStyle(fontWeight: FontWeight.w900, color: Colors.white),
-              ))
+            onPressed: widget.onPressed,
+            child: Text(
+              "دفع",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );

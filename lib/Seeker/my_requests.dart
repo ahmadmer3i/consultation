@@ -21,7 +21,7 @@ class _MyRequestsState extends State<MyRequests> {
   bool request = true;
 
   Future<List<ConsultData>>? getConsults;
-  List<ConsultData> consultsList = [];
+  List<ConsultData>? consultsList = [];
 
   @override
   void initState() {
@@ -71,203 +71,221 @@ class _MyRequestsState extends State<MyRequests> {
               stream: getRequestData,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
-                  consultsList = snapshot.data!.toList();
-                  return consultsList.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            consultsList.sort(
-                              (b, a) {
-                                var aDate = a.date;
-                                var bDate = b.date;
-                                return aDate.compareTo(bDate);
-                              },
-                            );
+                  if (snapshot.hasData) {
+                    consultsList = snapshot.data?.toList();
+                    return consultsList!.isNotEmpty
+                        ?
+                        // ListView.builder(
+                        //         itemCount: snapshot.data!.length,
+                        //         itemBuilder: (context, index) {
+                        //           consultsList.sort(
+                        //             (b, a) {
+                        //               var aDate = a.date;
+                        //               var bDate = b.date;
+                        //               return aDate.compareTo(bDate);
+                        //             },
+                        //           );
 
-                            return Container(
-                              margin: const EdgeInsets.all(10),
-                              padding: const EdgeInsets.all(20),
-                              decoration: const BoxDecoration(
-                                color: Color(0xffFFE8D6),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
+                        // return
+                        Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(20),
+                            decoration: const BoxDecoration(
+                              color: Color(0xffFFE8D6),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
                               ),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            consultsList[index].topic,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                          ),
-                                          IconButton(
-                                            onPressed: consultsList.length > 1
-                                                ? () {
-                                                    deleteItem(context,
-                                                        docId:
-                                                            consultsList[index]
-                                                                .docId);
-                                                  }
-                                                : () {
-                                                    deleteItem(context,
-                                                        docId:
-                                                            consultsList[index]
-                                                                .docId);
-                                                    Navigator.pop(context);
-                                                  },
-                                            icon: const Icon(
-                                              Icons.delete_outline_outlined,
-                                              color: Colors.grey,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            DateFormat.yMMMd('ar').format(
-                                                consultsList[index]
-                                                    .date
-                                                    .toDate()),
-                                            // " 17 سبتمبر 2021",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                          ),
-                                          Text(
-                                            DateFormat.jm('ar').format(
-                                                consultsList[index]
-                                                    .date
-                                                    .toDate()),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                          )
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        child: Text(
-                                          consultsList[index].detail,
-                                          textAlign: TextAlign.center,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          consultsList![0].topic,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1!
                                               .copyWith(
-                                                height: 1.2,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                         ),
+                                        IconButton(
+                                          onPressed: () {
+                                            deleteItem(context,
+                                                docId: consultsList![0].docId);
+                                          },
+                                          icon: const Icon(
+                                            Icons.delete_outline_outlined,
+                                            color: Colors.grey,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          DateFormat.yMMMd('ar').format(
+                                              consultsList![0].date.toDate()),
+                                          // " 17 سبتمبر 2021",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1!
+                                              .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        ),
+                                        Text(
+                                          DateFormat.jm('ar').format(
+                                              consultsList![0].date.toDate()),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1!
+                                              .copyWith(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.only(top: 20),
+                                      child: Text(
+                                        consultsList![0].detail,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                              height: 1.2,
+                                            ),
                                       ),
-                                    ],
-                                  ),
-                                  FutureBuilder(
-                                    builder: (context, snapshot) {
-                                      List<ProviderData> providerTopic = [];
-                                      Future<List<ProviderData>> getProvider =
-                                          getProviderForTopics(
-                                        providerTopic,
-                                        topic: consultsList[index].topic,
-                                      );
-                                      return FutureBuilder(
-                                        future: getProvider,
-                                        builder: (context, snapshot) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "عروض : ${providerTopic.length}",
+                                    ),
+                                  ],
+                                ),
+                                FutureBuilder(
+                                  builder: (context, snapshot) {
+                                    List<ProviderData> providerTopic = [];
+                                    Future<List<ProviderData>> getProvider =
+                                        getProviderForTopics(
+                                      providerTopic,
+                                      topic: consultsList![0].topic,
+                                    );
+                                    return FutureBuilder(
+                                      future: getProvider,
+                                      builder: (context, snapshot) => Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "عروض : ${providerTopic.length}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1!
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) => Offers(
+                                                    providerData: providerTopic,
+                                                    docId:
+                                                        consultsList![0].docId,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text(
+                                              "مشاهدة العروض",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle1!
                                                   .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Offers(
-                                                      providerData:
-                                                          providerTopic,
-                                                    ),
+                                                    color: Colors.white,
                                                   ),
-                                                );
-                                              },
-                                              child: Text(
-                                                "مشاهدة العروض",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1!
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                    ),
-                                              ),
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "لا یوجد استشارات",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline5!
-                                  .copyWith(
-                                    color: Colors.grey,
-                                  ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ConsultationDetailsInstant(
-                                      topic: "",
+                            // );
+                            // },
+                            // )
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "لا یوجد استشارات",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                      color: Colors.grey,
                                     ),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                "استشر الآن",
-                                style: TextStyle(color: Colors.white),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ConsultationDetailsInstant(
+                                        topic: "",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "استشر الآن",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          );
+                  } else {
+                    return MessageDialog.showLoadingDialog(context,
+                        message: "يرجى الإنتظار");
+                  }
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "لا یوجد استشارات",
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                              color: Colors.grey,
+                            ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const ConsultationDetailsInstant(
+                                topic: "",
                               ),
                             ),
-                          ],
-                        );
-                } else {
-                  return MessageDialog.showLoadingDialog(context,
-                      message: "يرجى الإنتظار");
+                          );
+                        },
+                        child: const Text(
+                          "استشر الآن",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  );
                 }
               },
             ),

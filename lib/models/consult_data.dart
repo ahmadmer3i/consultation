@@ -7,6 +7,11 @@ class ConsultData {
   Timestamp date;
   String docId;
   bool isDeleted;
+  String status;
+  String payment;
+  bool isPaid;
+  double price;
+  String providerId;
   ConsultData({
     required this.uid,
     required this.topic,
@@ -14,5 +19,10 @@ class ConsultData {
     required this.date,
     required this.docId,
     this.isDeleted = false,
+    required this.status,
+    required this.price,
+    required this.providerId,
+    required this.isPaid,
+    required this.payment,
   });
 }

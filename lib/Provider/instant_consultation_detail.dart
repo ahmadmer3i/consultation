@@ -1,9 +1,18 @@
 import 'package:consultation/Components.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
+import 'package:consultation/models/consult_data.dart';
+import 'package:consultation/models/seeker_data.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class InstantConsultationDetail extends StatefulWidget {
-  const InstantConsultationDetail({Key? key}) : super(key: key);
+  ConsultData consultData;
+  SeekerData seekerData;
+  InstantConsultationDetail({
+    Key? key,
+    required this.consultData,
+    required this.seekerData,
+  }) : super(key: key);
 
   @override
   _InstantConsultationDetailState createState() =>
@@ -42,7 +51,7 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "خالد عبدالله",
+                          widget.seekerData.name!,
                           style: Theme.of(context).textTheme.button!.copyWith(
                                 color: const Color(0xffCB997E),
                               ),
@@ -52,18 +61,21 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
                   ),
                 ),
                 Text(
-                  "تصميم غرافيك",
+                  widget.consultData.topic,
                   style: Theme.of(context).textTheme.button!.copyWith(),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "17  سبتمبر 2021",
+                      DateFormat.yMMMd('ar')
+                          .format(widget.consultData.date.toDate()),
                       style: Theme.of(context).textTheme.button!.copyWith(),
                     ),
                     Text(
-                      "6:00 - 8:00 مساء  ",
+                      DateFormat.jm('ar').format(
+                        widget.consultData.date.toDate(),
+                      ),
                       style: Theme.of(context).textTheme.button!.copyWith(),
                     ),
                   ],
@@ -71,14 +83,14 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    ":تفاصيل",
+                    "التفاصيل:",
                     style: Theme.of(context).textTheme.button!.copyWith(
                           color: const Color(0xffCB997E),
                         ),
                   ),
                 ),
                 Text(
-                  "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
+                  widget.consultData.detail,
                   style: Theme.of(context).textTheme.button!.copyWith(),
                 ),
               ],

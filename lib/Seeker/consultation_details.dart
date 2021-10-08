@@ -47,6 +47,7 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                         context: context,
                         builder: (_) => MyBottomSheet(
                           price: 100,
+                          onPressed: () {},
                         ),
                       );
                     },

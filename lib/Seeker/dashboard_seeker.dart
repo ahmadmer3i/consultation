@@ -2,6 +2,7 @@ import 'package:consultation/Seeker/consultation_details_instant.dart';
 import 'package:consultation/Seeker/list_consultants.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/topic.dart';
+import 'package:consultation/view_model/get_request_data.dart';
 import 'package:consultation/view_model/get_topics_data.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,8 @@ class DashboardSeeker extends StatefulWidget {
 class _DashboardSeekerState extends State<DashboardSeeker> {
   Future<List<Topic>>? getTopics;
   List<Topic> topicsList = [];
+  Future<bool>? checkActive;
+
   List<String> list = [
     "تصميم غرافيك",
     "تكنولوجيا المعلومات",
@@ -38,11 +41,11 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
   void initState() {
     super.initState();
     getTopics = getTopicsData(topicsList);
+    checkActive = checkConsult();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("here");
     map["تسويق"] = "illustrationn5.png";
     map["اللغة والترجمة"] = "illustrationn3.png";
     map["كيمياء"] = "illustrationn4.png";
@@ -142,28 +145,45 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                                                 ),
                                           ),
                                         ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ConsultationDetailsInstant(
-                                                  topic:
-                                                      topicsList[index].title,
+                                        FutureBuilder(
+                                          future: checkActive,
+                                          builder: (context,
+                                              AsyncSnapshot<bool> snapshot) {
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              return ElevatedButton(
+                                                onPressed: snapshot.data!
+                                                    ? () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ConsultationDetailsInstant(
+                                                              topic: topicsList[
+                                                                      index]
+                                                                  .title,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                    : null,
+                                                child: Text(
+                                                  "فورية",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline6!
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
                                                 ),
-                                              ),
-                                            );
+                                              );
+                                            } else {
+                                              return const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }
                                           },
-                                          child: Text(
-                                            "فورية",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                          ),
                                         ),
                                       ],
                                     ),

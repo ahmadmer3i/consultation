@@ -14,6 +14,11 @@ void saveConsult({
       "details": details,
       "isDeleted": false,
       "date": DateTime.now(),
+      "status": "pending",
+      "payment": "",
+      "isPaid": false,
+      "price": 0,
+      "providerId": "",
     },
   );
 }

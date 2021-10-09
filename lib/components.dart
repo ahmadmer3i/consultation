@@ -651,18 +651,24 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
     return Container(
       height: 500,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(50),
+        ),
+      ),
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
             Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "تأكيد الدفع",
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Color(0xffCB997E), fontWeight: FontWeight.w700),
-                )),
+              alignment: Alignment.center,
+              child: Text(
+                "تأكيد الدفع",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Color(0xffCB997E),
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+            ),
             MyTextFieldDark(
               textController: priceController,
               label: "الرجاء تحديد السعر",
@@ -672,20 +678,24 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
               ),
             ),
             ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  updateInstantStatus(
-                    docId: widget.docId,
-                    data: widget.data,
-                    price: priceController.text,
-                    isSent: true,
-                  );
-                },
-                child: Text(
-                  "دفع",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w900, color: Colors.white),
-                ))
+              onPressed: () {
+                Navigator.pop(context);
+                updateInstantStatus(
+                  docId: widget.docId,
+                  data: widget.data,
+                  price: priceController.text,
+                  isSent: true,
+                );
+                Navigator.pop(context);
+              },
+              child: Text(
+                "دفع",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),

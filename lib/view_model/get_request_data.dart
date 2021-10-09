@@ -115,4 +115,5 @@ void setPayment(
     SetOptions(merge: true),
   );
   Navigator.pop(context);
+  Navigator.pop(context);
 }

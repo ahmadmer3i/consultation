@@ -1,13 +1,14 @@
 import 'package:consultation/components.dart';
 import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/models/provider_data.dart';
+import 'package:consultation/view_model/get_provider_offer.dart';
 import 'package:consultation/view_model/get_request_data.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_rating/flutter_rating.dart';
 
 class Offers extends StatefulWidget {
-  final List<ProviderData> providerData;
+  final List<Map<String, dynamic>> providerData;
   final String docId;
   const Offers({
     Key? key,
@@ -54,14 +55,18 @@ class _OffersState extends State<Offers> {
                         ),
                         context: context,
                         builder: (_) => MyBottomSheet(
-                          price: widget.providerData[index].price!,
+                          price: double.parse(
+                              (widget.providerData[index]["price"]!)),
                           onPressed: () {
                             Navigator.pop(context);
                             setPayment(
                               context,
-                              providerId: widget.providerData[index].uid!,
+                              providerData: widget.providerData[index],
+                              providerId: widget.providerData[index]
+                                  ["consultId"],
                               docId: widget.docId,
-                              price: widget.providerData[index].price!,
+                              price: double.parse(
+                                  widget.providerData[index]["price"]),
                               payment: selectedPaymentMethod == 0
                                   ? "Apple Pay"
                                   : "STC Pay",
@@ -88,11 +93,31 @@ class _OffersState extends State<Offers> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      widget.providerData[index].name!,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    ),
+                                    FutureBuilder(builder: (context, snapshot) {
+                                      Future<ProviderData>? getData =
+                                          getProviderOffer(
+                                              id: widget.providerData[index]
+                                                  ["consultId"]);
+                                      return FutureBuilder(
+                                          future: getData,
+                                          builder: (context,
+                                              AsyncSnapshot<ProviderData>
+                                                  snapshot) {
+                                            print(snapshot.error);
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              print(snapshot.data?.name);
+                                              return Text(
+                                                "${snapshot.data?.name}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1,
+                                              );
+                                            } else {
+                                              return const CircularProgressIndicator();
+                                            }
+                                          });
+                                    }),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -116,7 +141,9 @@ class _OffersState extends State<Offers> {
                               Column(
                                 children: [
                                   Text(
-                                    "${widget.providerData[index].price?.toStringAsFixed(2)}",
+                                    double.parse(
+                                            widget.providerData[index]["price"])
+                                        .toStringAsFixed(2),
                                     style: Theme.of(context)
                                         .textTheme
                                         .subtitle1!

@@ -71,6 +71,8 @@ class _MyRequestsState extends State<MyRequests> {
               stream: getRequestData,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
+                  print(snapshot.connectionState);
+                  print(snapshot.error);
                   if (snapshot.hasData) {
                     consultsList = snapshot.data?.toList();
                     return consultsList!.isNotEmpty
@@ -183,7 +185,7 @@ class _MyRequestsState extends State<MyRequests> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            "عروض : ${providerTopic.length}",
+                                            "عروض : ${consultsList![0].providers.length}",
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .subtitle1!
@@ -196,7 +198,9 @@ class _MyRequestsState extends State<MyRequests> {
                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) => Offers(
-                                                    providerData: providerTopic,
+                                                    providerData:
+                                                        consultsList![0]
+                                                            .providers,
                                                     docId:
                                                         consultsList![0].docId,
                                                   ),

@@ -9,6 +9,7 @@ import 'package:consultation/Seeker/my_requests.dart';
 import 'package:consultation/Seeker/seeker_chat.dart';
 import 'package:consultation/Seeker/seeker_notification.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/view_model/provider/provider_update_instant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
@@ -632,13 +633,17 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
 }
 
 class MyOfferBottomSheet extends StatefulWidget {
-  const MyOfferBottomSheet({Key? key}) : super(key: key);
+  final String docId;
+  final Map data;
+  const MyOfferBottomSheet({Key? key, required this.docId, required this.data})
+      : super(key: key);
 
   @override
   _MyOfferBottomSheetState createState() => _MyOfferBottomSheetState();
 }
 
 class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
+  final priceController = TextEditingController();
   int selectedMethod = 0;
 
   @override
@@ -659,6 +664,7 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
                       color: Color(0xffCB997E), fontWeight: FontWeight.w700),
                 )),
             MyTextFieldDark(
+              textController: priceController,
               label: "الرجاء تحديد السعر",
               iconButton: IconButton(
                 icon: Text("ریال"),
@@ -668,6 +674,11 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
+                  updateInstantStatus(
+                    docId: widget.docId,
+                    data: widget.data,
+                    price: priceController.text,
+                  );
                 },
                 child: Text(
                   "دفع",

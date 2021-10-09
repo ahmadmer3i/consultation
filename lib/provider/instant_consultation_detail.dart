@@ -2,16 +2,19 @@ import 'package:consultation/Components.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/seeker_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InstantConsultationDetail extends StatefulWidget {
   final ConsultData consultData;
   final SeekerData seekerData;
+  final Map data;
   const InstantConsultationDetail({
     Key? key,
     required this.consultData,
     required this.seekerData,
+    required this.data,
   }) : super(key: key);
 
   @override
@@ -97,23 +100,29 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
             ),
             Align(
               alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+              child: widget.consultData.providerId !=
+                      FirebaseAuth.instance.currentUser!.uid
+                  ? ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) => MyOfferBottomSheet(
+                            docId: widget.consultData.docId,
+                            data: widget.data,
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "قبول العرض",
+                        style: TextStyle(color: Colors.white),
                       ),
-                    ),
-                    context: context,
-                    builder: (_) => const MyOfferBottomSheet(),
-                  );
-                },
-                child: const Text(
-                  "قبول العرض",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+                    )
+                  : Container(),
             ),
           ],
         ),

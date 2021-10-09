@@ -7,27 +7,44 @@ import 'package:flutter/cupertino.dart';
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> get getRequestData {
+  List<Map<String, dynamic>> consults = [];
+  // var consultsData = _firebase
+  //     .collection("consults")
+  //     .where("uid" == _auth.currentUser!.uid && "status" == "approved")
+  //     .get()
+  //     .then((value) => value.docs
+  //         .where((element) => element.data()["providers"] != null))
+  //     .then(
+  //       (value) => value.forEach(
+  //         (element) {
+  //           consults.add(element.data()["providers"]);
+  //         },
+  //       ),
+  //     );
+  // print(consults.length);
   return _firebase.collection("consults").snapshots().map(
         (event) => event.docs
-            .where(
-              (element) =>
-                  element.data()["uid"] == _auth.currentUser!.uid &&
-                  element.data()["isDeleted"] == false &&
-                  (element.data()["status"] == "active" ||
-                      element.data()["status"] == "pending"),
-            )
+            .where((element) {
+              element.data()["providers"].forEach((e) {
+                if (e["status"] == "تم ارسال العرض") {
+                  consults.add(e);
+                  print(consults.length);
+                }
+              });
+              return element.data()["uid"] == _auth.currentUser!.uid;
+            })
             .map(
               (e) => ConsultData(
-                docId: e.id,
-                price: e.data()["price"],
-                providerId: e.data()["providerId"],
-                uid: e.data()["uid"],
-                isDeleted: e.data()["isDeleted"],
+                providers: consults,
+                price: double.parse(e.data()["price"].toString()),
                 payment: e.data()["payment"],
                 isPaid: e.data()["isPaid"],
+                uid: e.data()["uid"],
                 topic: e.data()["topic"],
                 detail: e.data()["details"],
                 date: e.data()["date"],
+                docId: e.id,
+                isDeleted: e.data()["isDeleted"],
                 status: e.data()["status"],
               ),
             )
@@ -58,19 +75,35 @@ Future<bool> checkConsult() async {
 
 void setPayment(
   BuildContext context, {
+  required Map providerData,
   required String providerId,
   required String docId,
   required double price,
   required String payment,
 }) async {
   MessageDialog.showWaitingDialog(context, message: "جاري عملية الدفع");
+  var _firebase = FirebaseFirestore.instance;
+  List<dynamic> items = [];
+  var _auth = FirebaseAuth.instance;
+  int index;
+  var collection = _firebase.collection("consults");
+  var snapshot = await collection.doc(docId).get();
+  items = snapshot.data()!["providers"];
+  index = items.indexWhere((element) => element["consultId"] == providerId);
+  print("index: $index");
+  print("items $items");
+  print("data: $providerData");
+  items[index]["isApproved"] = true;
+  items[index]["status"] = "تم قبول العرض";
+
   await _firebase.collection("consults").doc(docId).set(
     {
       "providerId": providerId,
       "price": price,
-      "status": "pending",
+      "status": "active",
       "payment": payment,
-      "isPaid": false,
+      "isPaid": true,
+      "providers": items,
     },
     SetOptions(merge: true),
   );

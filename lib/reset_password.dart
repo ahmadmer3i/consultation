@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:consultation/components.dart';
-import 'package:consultation/widgets/dialog.dart';
+import 'package:consultation/view_model/login_register/reset_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -82,21 +82,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         ),
                         ElevatedButton(
                             onPressed: () async {
-                              try {
-                                await auth.sendPasswordResetEmail(
-                                    email: _email);
-                                MessageDialog.showSnackBar(
-                                    "تم إرسال رابط إعاده التعيين على بريدك الألكتروني",
-                                    context);
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == "invalid-email") {
-                                  MessageDialog.showSnackBar(
-                                      "خطأ في البريد المستخدم", context);
-                                } else if (e.code == "user-not-found") {
-                                  MessageDialog.showSnackBar(
-                                      "ليس لديك حساب ", context);
-                                }
-                              }
+                              resetPassword(context, email: _email);
                             },
                             child: Text(
                               "إعاده تعيين ",

@@ -23,7 +23,7 @@ void seekerLogin({
     List<SeekerData> userData =
         userList.where((element) => element.email == email).toList();
     if (userData.isEmpty) {
-
+      Navigator.pop(context);
       MessageDialog.showSnackBar("ليس لديك حساب كمستفيد", context);
     }
     for (var user in userData) {

@@ -18,8 +18,9 @@ void saveConsult({
         consults.add({
           "consultId": docs.id,
           "isApproved": false,
-          "price": 0,
-          "status": "قيد الدراسة"
+          "price": "",
+          "status": "قيد الدراسة",
+          "isSent": false,
         });
       }
     }

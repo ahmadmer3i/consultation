@@ -678,6 +678,7 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
                     docId: widget.docId,
                     data: widget.data,
                     price: priceController.text,
+                    isSent: true,
                   );
                 },
                 child: Text(

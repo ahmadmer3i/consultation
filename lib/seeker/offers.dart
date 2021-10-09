@@ -141,8 +141,9 @@ class _OffersState extends State<Offers> {
                               Column(
                                 children: [
                                   Text(
-                                    double.parse(
-                                            widget.providerData[index]["price"])
+                                    double.parse(widget.providerData[index]
+                                                ["price"]
+                                            .toString())
                                         .toStringAsFixed(2),
                                     style: Theme.of(context)
                                         .textTheme

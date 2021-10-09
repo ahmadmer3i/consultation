@@ -82,7 +82,8 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                 builder: (context, snapshot) {
                                   Future<SeekerData> getSeeker =
                                       getSeekerDataPerInstant(
-                                          seekerId: instants[index].uid);
+                                    seekerId: instants[index].uid,
+                                  );
                                   return FutureBuilder(
                                     future: getSeeker,
                                     builder: (

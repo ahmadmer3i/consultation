@@ -31,6 +31,8 @@ class _MyRequestsState extends State<MyRequests> {
 
   @override
   Widget build(BuildContext context) {
+    List<ProviderData> providerTopic = [];
+    Future<List<ProviderData>>? getProvider;
     return Scaffold(
       appBar: MyAppBar(),
       body: Column(
@@ -70,6 +72,7 @@ class _MyRequestsState extends State<MyRequests> {
             child: StreamBuilder<List<ConsultData>>(
               stream: getRequestData,
               builder: (context, snapshot) {
+                consultsList = [];
                 if (snapshot.connectionState == ConnectionState.active) {
                   print(snapshot.connectionState);
                   print(snapshot.error);
@@ -172,53 +175,61 @@ class _MyRequestsState extends State<MyRequests> {
                                 ),
                                 FutureBuilder(
                                   builder: (context, snapshot) {
-                                    List<ProviderData> providerTopic = [];
-                                    Future<List<ProviderData>> getProvider =
-                                        getProviderForTopics(
+                                    getProvider = getProviderForTopics(
                                       providerTopic,
                                       topic: consultsList![0].topic,
                                     );
                                     return FutureBuilder(
                                       future: getProvider,
-                                      builder: (context, snapshot) => Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "عروض : ${consultsList![0].providers.length}",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) => Offers(
-                                                    providerData:
-                                                        consultsList![0]
-                                                            .providers,
-                                                    docId:
-                                                        consultsList![0].docId,
-                                                  ),
+                                      builder: (context,
+                                          AsyncSnapshot<List<ProviderData>>
+                                              snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "عروض : ${consultsList?[0].providers.length}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Offers(
+                                                        providerData:
+                                                            consultsList![0]
+                                                                .providers,
+                                                        docId: consultsList![0]
+                                                            .docId,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  "مشاهدة العروض",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle1!
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                      ),
                                                 ),
-                                              );
-                                            },
-                                            child: Text(
-                                              "مشاهدة العروض",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1!
-                                                  .copyWith(
-                                                    color: Colors.white,
-                                                  ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                              ),
+                                            ],
+                                          );
+                                        } else {
+                                          return CircularProgressIndicator();
+                                        }
+                                      },
                                     );
                                   },
                                 ),

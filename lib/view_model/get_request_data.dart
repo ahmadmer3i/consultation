@@ -25,12 +25,19 @@ Stream<List<ConsultData>> get getRequestData {
   return _firebase.collection("consults").snapshots().map(
         (event) => event.docs
             .where((element) {
-              element.data()["providers"].forEach((e) {
-                if (e["status"] == "تم ارسال العرض") {
+              var elements = element.data()["providers"];
+              consults = [];
+              for (var e in elements) {
+                if (e["isApproved"] == true) {
+                  consults.clear();
+                  print(e["isApproved"]);
+                  print("length = ${consults.length}");
+                  break;
+                } else if (e["status"] == "تم ارسال العرض") {
                   consults.add(e);
                   print(consults.length);
                 }
-              });
+              }
               return element.data()["uid"] == _auth.currentUser!.uid;
             })
             .map(

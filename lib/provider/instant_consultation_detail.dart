@@ -101,9 +101,11 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
             Align(
               alignment: Alignment.center,
               child: widget.consultData.providerId !=
-                      FirebaseAuth.instance.currentUser!.uid
+                          FirebaseAuth.instance.currentUser!.uid &&
+                      widget.data["isSent"] == false
                   ? ElevatedButton(
                       onPressed: () {
+                        print(widget.data["isSent"]);
                         showModalBottomSheet(
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(

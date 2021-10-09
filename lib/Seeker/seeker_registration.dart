@@ -259,24 +259,7 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                                 gender: _gender,
                                 context: context,
                               );
-                              // UserCredential credential =
-                              //     await auth.createUserWithEmailAndPassword(
-                              //         email: _email, password: _password);
-                              //
-                              // FirebaseFirestore.instance
-                              //     .collection('seeker')
-                              //     .add({
-                              //   "name": _name,
-                              //   "username": _username,
-                              //   "email": _email,
-                              //   "gender": selectedGender,
-                              //   "date of birth": _dateOfBirth,
-                              //   "password": _password,
-                              //   "Type": "seeker"
-                              // });
 
-                              // Navigator.of(context).push(MaterialPageRoute(
-                              //     builder: (context) => DashboardSeeker()));
                             },
                             child: Text(
                               "التسجیل",

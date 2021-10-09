@@ -25,6 +25,7 @@ class ProviderRegistration extends StatefulWidget {
 class _ProviderRegistrationState extends State<ProviderRegistration> {
   var key = GlobalKey<FormState>();
   int selectedGender = 0;
+  late bool _isObscure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,12 +201,19 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               textController: widget.passwordController,
                               isObscure: true,
                               label: "كلمة المرور",
-                              suffixIcon: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.white38,
-                                ),
+                                  suffixIcon: IconButton(
+                                  icon: Icon(
+                                   _isObscure
+                                  ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  ),
+                                  onPressed: () {
+                                  setState(
+                                  () {
+                                  _isObscure = !_isObscure;
+                                  },
+                                  );
+                                  },
                               ),
                             ),
                           ),
@@ -216,11 +224,18 @@ class _ProviderRegistrationState extends State<ProviderRegistration> {
                               isObscure: true,
                               label: "تأكيد كلمة المرور*",
                               suffixIcon: IconButton(
-                                onPressed: () {},
                                 icon: Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.white38,
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
+                                onPressed: () {
+                                  setState(
+                                        () {
+                                      _isObscure = !_isObscure;
+                                    },
+                                  );
+                                },
                               ),
                             ),
                           ),

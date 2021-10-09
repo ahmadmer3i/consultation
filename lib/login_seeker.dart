@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:consultation/components.dart';
 import 'package:consultation/login_provider.dart';
 import 'package:consultation/models/seeker_data.dart';
 import 'package:consultation/pre_register.dart';
+import 'package:consultation/reset_password.dart';
 import 'package:consultation/view_model/get_seeker_data.dart';
 import 'package:consultation/view_model/login_register/user_login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,11 +90,9 @@ class _LoginSeekerState extends State<LoginSeeker> {
                         children: [
                           Container(
                             margin: EdgeInsets.only(bottom: 20, top: 20),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                // hintText: "البريد الألكتروني",
-                                labelText: "البريد الألكتروني",
-                              ), //كود التحقق من الايميل و الباسورد
+                            child: MyTextField(
+                                label: "البريد الألكتروني",
+
                               onChanged: (value) {
                                 // تاخذ قيه الايميل وتحفظه في الفاليو
                                 setState(
@@ -105,40 +105,41 @@ class _LoginSeekerState extends State<LoginSeeker> {
                           ),
                           Container(
                             margin: EdgeInsets.only(bottom: 10),
-                            child: TextField(
+                            child: MyTextField(
                               onChanged: (value) {
-                                setState(
-                                  () {
-                                    _password =
-                                        value; //تاخذ قيمه الباسورد وتحفظها في الفاليو
-                                  },
-                                );
+                              setState(
+                              () {
+                              _password = value;
                               },
-                              obscureText:
-                                  _isObscure, // كود اخفاء الباسورد (العين )
-                              decoration: InputDecoration(
-                                labelText: " كلمة المرور*",
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isObscure == true
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        _isObscure = !_isObscure; //toggle
-                                      },
-                                    );
-                                  },
-                                ),
+                              );
+                              },
+                              isObscure: _isObscure,
+
+                              label: " كلمة المرور*",
+                              suffixIcon: IconButton(
+                              icon: Icon(
+                              _isObscure
+                              ? Icons.visibility
+                                  : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                              setState(
+                              () {
+                              _isObscure = !_isObscure;
+                              },
+                              );
+                              },
+                              ),
                               ),
                             ),
-                          ),
+
                           Align(
                             alignment: Alignment.centerLeft,
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ResetPassword()));
+
+                              },
                               child: Text(
                                 "هل نسيت كلمة السر؟",
                                 style: Theme.of(context)

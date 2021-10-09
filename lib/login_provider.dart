@@ -1,5 +1,7 @@
+import 'package:consultation/components.dart';
 import 'package:consultation/login_seeker.dart';
 import 'package:consultation/pre_register.dart';
+import 'package:consultation/reset_password.dart';
 import 'package:consultation/view_model/get_provider_data.dart';
 import 'package:consultation/view_model/login_register/user_login_view_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -78,10 +80,10 @@ class _LoginProviderState extends State<LoginProvider> {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(bottom: 20, top: 20),
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                labelText: "البريد الألكتروني",
-                              ), //كود التحقق من الايميل و الباسورد
+                            child: MyTextField(
+
+                                label: "البريد الألكتروني",
+                               //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -93,7 +95,7 @@ class _LoginProviderState extends State<LoginProvider> {
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
-                            child: TextField(
+                            child: MyTextField(
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -101,9 +103,9 @@ class _LoginProviderState extends State<LoginProvider> {
                                   },
                                 );
                               },
-                              obscureText: _isObscure,
-                              decoration: InputDecoration(
-                                labelText: " كلمة المرور*",
+                              isObscure: _isObscure,
+
+                                label: " كلمة المرور*",
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     _isObscure
@@ -118,13 +120,15 @@ class _LoginProviderState extends State<LoginProvider> {
                                     );
                                   },
                                 ),
-                              ),
+
                             ),
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: MaterialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ResetPassword()));
+                              },
                               child: Text(
                                 "هل نسيت كلمة السر؟",
                                 style: Theme.of(context)

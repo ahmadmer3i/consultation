@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class InstantConsultationDetail extends StatefulWidget {
-  ConsultData consultData;
-  SeekerData seekerData;
-  InstantConsultationDetail({
+  final ConsultData consultData;
+  final SeekerData seekerData;
+  const InstantConsultationDetail({
     Key? key,
     required this.consultData,
     required this.seekerData,
@@ -96,23 +96,25 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
               ],
             ),
             Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        context: context,
-                        builder: (_) => const MyOfferBottomSheet(),
-                      );
-                    },
-                    child: const Text(
-                      "قبول العرض",
-                      style: TextStyle(color: Colors.white),
-                    )))
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    context: context,
+                    builder: (_) => const MyOfferBottomSheet(),
+                  );
+                },
+                child: const Text(
+                  "قبول العرض",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),

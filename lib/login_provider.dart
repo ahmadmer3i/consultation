@@ -81,9 +81,8 @@ class _LoginProviderState extends State<LoginProvider> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 20, top: 20),
                             child: MyTextField(
-
-                                label: "البريد الألكتروني",
-                               //كود التحقق من الايميل و الباسورد
+                              label: "البريد الألكتروني",
+                              //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -104,30 +103,30 @@ class _LoginProviderState extends State<LoginProvider> {
                                 );
                               },
                               isObscure: _isObscure,
-
-                                label: " كلمة المرور*",
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _isObscure
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        _isObscure = !_isObscure;
-                                      },
-                                    );
-                                  },
+                              label: " كلمة المرور*",
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
-
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      _isObscure = !_isObscure;
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: MaterialButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ResetPassword()));
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ResetPassword()));
                               },
                               child: Text(
                                 "هل نسيت كلمة السر؟",

@@ -57,6 +57,7 @@ void providerRegister(
     required String bank,
     required List<String> topics,
     required BuildContext context,
+    required rate,
     required}) async {
   try {
     await FirebaseAuth.instance
@@ -81,6 +82,7 @@ void providerRegister(
         "price": price,
         "topics": topics,
         "isApproved": false,
+        "rate": rate,
       },
     );
     currentUsername = name;

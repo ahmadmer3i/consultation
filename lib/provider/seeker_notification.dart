@@ -12,7 +12,9 @@ class _ProviderNotificationState extends State<ProviderNotification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        autoLeading: false,
+      ),
       body: Column(
         children: [
           Align(

@@ -114,7 +114,8 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                           );
                         } else {
                           return Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
                             child: Align(
                               alignment: Alignment.topLeft,
                               child: ConstrainedBox(

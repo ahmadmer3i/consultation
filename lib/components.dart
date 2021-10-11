@@ -1,14 +1,13 @@
 // ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
-
-import 'package:consultation/Provider/Provider_profile.dart';
-import 'package:consultation/Provider/provider_chat.dart';
-import 'package:consultation/Provider/provider_dashboard.dart';
-import 'package:consultation/Provider/seeker_notification.dart';
-import 'package:consultation/Seeker/dashboard_seeker.dart';
-import 'package:consultation/Seeker/my_requests.dart';
-import 'package:consultation/Seeker/seeker_chat.dart';
-import 'package:consultation/Seeker/seeker_notification.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/provider/provider_chat.dart';
+import 'package:consultation/provider/provider_dashboard.dart';
+import 'package:consultation/provider/provider_profile.dart';
+import 'package:consultation/provider/seeker_notification.dart';
+import 'package:consultation/seeker/dashboard_seeker.dart';
+import 'package:consultation/seeker/my_requests.dart';
+import 'package:consultation/seeker/seeker_chat.dart';
+import 'package:consultation/seeker/seeker_notification.dart';
 import 'package:consultation/view_model/provider/provider_update_instant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
@@ -366,7 +365,7 @@ class _MyAppBarState extends State<MyAppBar> {
                 color: Colors.white,
               ))
           : null,
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: true,
       centerTitle: true,
       title: Image.asset("Assets/Logo4.png"),
       backgroundColor: Color(0xff6B705C),
@@ -391,22 +390,28 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
     return BottomNavigationBar(
       onTap: (index) {
         if (index == 4) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DashboardSeeker(
-                    username: currentUsername!,
-                  )));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => DashboardSeeker(
+                        username: currentUsername!,
+                      )),
+              (route) => false);
         } else if (index == 3) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => SeekerChat()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => SeekerChat()),
+              (route) => false);
         } else if (index == 2) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SeekerNotification()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => SeekerNotification()),
+              (route) => false);
         } else if (index == 1) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MyRequests()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => MyRequests()),
+              (route) => false);
         } else if (index == 0) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => SeekerProfile()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => SeekerProfile()),
+              (route) => false);
         }
       },
       currentIndex: widget.selectedIndex!,
@@ -448,17 +453,21 @@ class _MyProviderBottomNavigationBarState
     return BottomNavigationBar(
       onTap: (index) {
         if (index == 3) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ProviderDashboard()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ProviderDashboard()),
+              (route) => false);
         } else if (index == 2) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ProviderChat()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ProviderChat()),
+              (route) => false);
         } else if (index == 1) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => ProviderNotification()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ProviderNotification()),
+              (route) => false);
         } else if (index == 0) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ProviderProfile()));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => ProviderProfile()),
+              (route) => false);
         }
       },
       currentIndex: widget.selectedIndex!,
@@ -744,16 +753,19 @@ class ReportStatusState extends State<ReportStatus> {
                             : Color(0xff6B705C)),
                   )))),
           Expanded(
-              child: Container(
-                  color: widget.selectedIndex == 2 ? Color(0xffCB997E) : null,
-                  child: Center(
-                      child: Text(
-                    "منتھیۃ",
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: widget.selectedIndex == 2
-                            ? Color(0xffFFE8D6)
-                            : Color(0xff6B705C)),
-                  )))),
+            child: Container(
+              color: widget.selectedIndex == 2 ? Color(0xffCB997E) : null,
+              child: Center(
+                child: Text(
+                  "منتھیۃ",
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: widget.selectedIndex == 2
+                          ? Color(0xffFFE8D6)
+                          : Color(0xff6B705C)),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

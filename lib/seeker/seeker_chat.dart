@@ -7,7 +7,9 @@ import 'package:consultation/seeker/seeker_chat_open.dart';
 import 'package:consultation/view_model/get_chat_data.dart';
 import 'package:consultation/view_model/get_provider_data.dart';
 import 'package:consultation/view_model/get_provider_offer.dart';
+import 'package:consultation/view_model/messages_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeekerChat extends StatefulWidget {
   const SeekerChat({Key? key, this.tabIndex = 0}) : super(key: key);
@@ -31,229 +33,262 @@ class _SeekerChatState extends State<SeekerChat>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(),
-      body: Column(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "دردشة",
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: Color(0xffCB997E)),
-            ),
+    return BlocConsumer<MessagesCubit, MessagesState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          appBar: MyAppBar(
+            autoLeading: false,
           ),
-          TabBar(
-            labelColor: Color(0xff696E5A),
-            unselectedLabelColor: Color(0xffA9A890),
-            controller: tabController,
-            indicatorWeight: 4,
-            tabs: const [
-              Tab(
-                text: "انتظار",
+          body: Column(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "دردشة",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(color: Color(0xffCB997E)),
+                ),
               ),
-              Tab(
-                text: "منتھیۃ",
+              TabBar(
+                labelColor: Color(0xff696E5A),
+                unselectedLabelColor: Color(0xffA9A890),
+                controller: tabController,
+                indicatorWeight: 4,
+                tabs: const [
+                  Tab(
+                    text: "انتظار",
+                  ),
+                  Tab(
+                    text: "منتھیۃ",
+                  ),
+                ],
               ),
+              Expanded(
+                child: TabBarView(
+                  controller: tabController,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: StreamBuilder<List<ConsultData>>(
+                          stream: getChatData(status: "active"),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              print(snapshot.error);
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      MessagesCubit.get(context)
+                                          .resetIsClosing();
+                                      MessagesCubit.get(context).resetRating();
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => SeekerChatOpen(
+                                            seekerId: snapshot.data![index].uid,
+                                            providerId: snapshot
+                                                .data![index].providerId!,
+                                            uid: snapshot.data![index].uid,
+                                            consultId:
+                                                snapshot.data![index].consultId,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Color(0xffFFE8D6)),
+                                      padding: EdgeInsets.all(10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10),
+                                                child: FutureBuilder(
+                                                    future: getProviderOffer(
+                                                        id: snapshot
+                                                            .data![index]
+                                                            .providerId!),
+                                                    builder: (context,
+                                                        AsyncSnapshot<
+                                                                ProviderData>
+                                                            snapshot) {
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .done) {
+                                                        return Text(
+                                                          "${snapshot.data?.name}",
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .subtitle1,
+                                                        );
+                                                      } else {
+                                                        return CircularProgressIndicator();
+                                                      }
+                                                    }),
+                                              )
+                                            ],
+                                          ),
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: const [
+                                              CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor:
+                                                    Color(0xff6B705C),
+                                              ),
+                                              Text(
+                                                "10",
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Colors.white),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      child: StreamBuilder<List<ConsultData>>(
+                          stream: getChatData(status: "ended"),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              return ListView.separated(
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: 5,
+                                ),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return FutureBuilder(
+                                      future: getProviderOffer(
+                                          id: snapshot
+                                              .data![index].providerId!),
+                                      builder: (context,
+                                          AsyncSnapshot<ProviderData>
+                                              snapshotEnded) {
+                                        if (snapshotEnded.connectionState ==
+                                            ConnectionState.done) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SeekerChatOpen(
+                                                    seekerId: snapshot
+                                                        .data![index].uid,
+                                                    providerId: snapshot
+                                                        .data![index]
+                                                        .providerId!,
+                                                    uid: snapshot
+                                                        .data![index].uid,
+                                                    consultId: snapshot
+                                                        .data![index].consultId,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Color(0xffFFE8D6)),
+                                              padding: EdgeInsets.all(10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      CircleAvatar(),
+                                                      Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 10),
+                                                        child: Text(
+                                                          snapshotEnded
+                                                              .data!.name!,
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .subtitle1,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Stack(
+                                                    alignment: Alignment.center,
+                                                    children: const [
+                                                      CircleAvatar(
+                                                        radius: 10,
+                                                        backgroundColor:
+                                                            Color(0xff6B705C),
+                                                      ),
+                                                      Text(
+                                                        "10",
+                                                        style: TextStyle(
+                                                          fontSize: 11,
+                                                          color: Colors.white,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      });
+                                },
+                              );
+                            } else {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          }),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-          Expanded(
-            child: TabBarView(controller: tabController, children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                child: StreamBuilder<List<ConsultData>>(
-                    stream: getChatData(status: "active"),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => SeekerChatOpen(
-                                      seekerId: snapshot.data![index].uid,
-                                      providerId:
-                                          snapshot.data![index].providerId!,
-                                      uid: snapshot.data![index].uid,
-                                      consultId:
-                                          snapshot.data![index].consultId,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffFFE8D6)),
-                                padding: EdgeInsets.all(10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircleAvatar(),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          child: FutureBuilder(
-                                              future: getProviderOffer(
-                                                  id: snapshot.data![index]
-                                                      .providerId!),
-                                              builder: (context,
-                                                  AsyncSnapshot<ProviderData>
-                                                      snapshot) {
-                                                if (snapshot.connectionState ==
-                                                    ConnectionState.done) {
-                                                  return Text(
-                                                    "${snapshot.data?.name}",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle1,
-                                                  );
-                                                } else {
-                                                  return CircularProgressIndicator();
-                                                }
-                                              }),
-                                        )
-                                      ],
-                                    ),
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: const [
-                                        CircleAvatar(
-                                          radius: 10,
-                                          backgroundColor: Color(0xff6B705C),
-                                        ),
-                                        Text(
-                                          "10",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.white),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-              Container(
-                margin: EdgeInsets.all(10),
-                child: StreamBuilder<List<ConsultData>>(
-                    stream: getChatData(status: "ended"),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            return FutureBuilder(
-                                future: getProviderOffer(
-                                    id: snapshot.data![index].providerId!),
-                                builder: (context,
-                                    AsyncSnapshot<ProviderData> snapshotEnded) {
-                                  if (snapshotEnded.connectionState ==
-                                      ConnectionState.done) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SeekerChatOpen(
-                                              uid: snapshot
-                                                  .data![index].providerId!,
-                                              consultId: snapshot
-                                                  .data![index].consultId,
-                                              providerId: snapshot
-                                                  .data![index].providerId!,
-                                              seekerId:
-                                                  snapshot.data![index].uid,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Color(0xffFFE8D6)),
-                                        padding: EdgeInsets.all(10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                CircleAvatar(),
-                                                Container(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 10),
-                                                  child: Text(
-                                                    snapshotEnded.data!.name!,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle1,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            Stack(
-                                              alignment: Alignment.center,
-                                              children: const [
-                                                CircleAvatar(
-                                                  radius: 10,
-                                                  backgroundColor:
-                                                      Color(0xff6B705C),
-                                                ),
-                                                Text(
-                                                  "10",
-                                                  style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.white,
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    return Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                });
-                          },
-                        );
-                      } else {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    }),
-              ),
-            ]),
-          )
-        ],
-      ),
-      bottomNavigationBar: MyBottomNavigationBar(
-        selectedIndex: 3,
-      ),
+          bottomNavigationBar: MyBottomNavigationBar(
+            selectedIndex: 3,
+          ),
+        );
+      },
     );
   }
 }

@@ -15,7 +15,9 @@ class _SeekerProfileState extends State<SeekerProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        autoLeading: false,
+      ),
       body: Container(
         padding: const EdgeInsets.all(10),
         child: Column(

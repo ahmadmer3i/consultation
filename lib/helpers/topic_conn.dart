@@ -32,6 +32,7 @@ void saveConsult({
       "uid": FirebaseAuth.instance.currentUser!.uid,
       "topic": topic,
       "details": details,
+      "isActive": true,
       "isDeleted": false,
       "date": DateTime.now(),
       "consultId": id,

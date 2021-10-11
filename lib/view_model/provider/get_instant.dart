@@ -6,10 +6,15 @@ var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> get getInstantData {
   List<Map<String, dynamic>> consults = [];
-  return _firebase.collection("consults").snapshots().map(
+  return _firebase
+      .collection("consults")
+      .orderBy("date", descending: true)
+      .snapshots()
+      .map(
         (event) => event.docs
             .where((element) {
               if (element.data()["providerId"] != null &&
+                  element.data()["isDeleted"] == false &&
                   element.data()["providerId"] != _auth.currentUser!.uid) {
                 return false;
               }
@@ -40,6 +45,7 @@ Stream<List<ConsultData>> get getInstantData {
                 providerId: e.data()["providerId"],
                 isDeleted: e.data()["isDeleted"],
                 status: e.data()["status"],
+                isActive: e.data()["isActive"],
               ),
             )
             .toList(),

@@ -90,46 +90,46 @@ class _OffersState extends State<Offers> {
                               const CircleAvatar(),
                               Container(
                                 padding: const EdgeInsets.all(5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    FutureBuilder(builder: (context, snapshot) {
-                                      Future<ProviderData>? getData =
-                                          getProviderOffer(
-                                              id: widget.providerData[index]
-                                                  ["consultId"]);
-                                      return FutureBuilder(
-                                          future: getData,
-                                          builder: (context,
-                                              AsyncSnapshot<ProviderData>
-                                                  snapshot) {
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.done) {
-                                              return Text(
-                                                "${snapshot.data?.name}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1,
-                                              );
-                                            } else {
-                                              return const CircularProgressIndicator();
-                                            }
-                                          });
-                                    }),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text("3.0"),
-                                        StarRating(
-                                          rating: 1,
-                                          size: 20,
-                                          borderColor: const Color(0xff6B705C),
-                                          color: const Color(0xff6B705C),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                child: FutureBuilder(
+                                  future: getProviderOffer(
+                                      id: widget.providerData[index]
+                                          ["consultId"]),
+                                  builder: (context,
+                                      AsyncSnapshot<ProviderData> snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${snapshot.data?.name}",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                snapshot.data!.rate.toString(),
+                                              ),
+                                              StarRating(
+                                                rating: snapshot.data!.rate,
+                                                size: 20,
+                                                borderColor:
+                                                    const Color(0xff6B705C),
+                                                color: const Color(0xff6B705C),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    } else {
+                                      return const CircularProgressIndicator();
+                                    }
+                                  },
                                 ),
                               )
                             ],

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/models/message_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,4 +68,75 @@ class MessagesCubit extends Cubit<MessagesState> {
   }
 
   var scroll = ScrollController();
+  var isLoading = false;
+  var isClosing = false;
+
+  void calculateRating({required providerId}) async {
+    var counter = 0;
+    var ratings = 0.0;
+    isLoading = true;
+    await FirebaseFirestore.instance
+        .collection(providerCollection)
+        .doc(providerId)
+        .get()
+        .then(
+          (value) => FirebaseFirestore.instance
+              .collection(providerCollection)
+              .doc(providerId)
+              .collection("ratings")
+              .get()
+              .then(
+            (value) async {
+              if (value.docs.isNotEmpty) {
+                for (var v in value.docs) {
+                  counter++;
+                  ratings += double.parse(
+                    v.data()["rating"].toString(),
+                  );
+                }
+                ratings /= counter;
+                await FirebaseFirestore.instance
+                    .collection(providerCollection)
+                    .doc(providerId)
+                    .update(
+                  {"rate": ratings},
+                );
+                isLoading = false;
+                emit(MessageRatingSuccessState());
+              }
+            },
+          ),
+        );
+  }
+
+  void setIsClosing() {
+    isClosing = true;
+    print("status $isClosing");
+    emit(MessageClosingSuccessState());
+  }
+
+  void endChat({required consultId}) {
+    FirebaseFirestore.instance
+        .collection("consults")
+        .doc(consultId)
+        .update({"status": "ended", "isActive": false}).then(
+            (value) => isClosing == false);
+    emit(MessageEndingSuccessState());
+  }
+
+  void resetIsClosing() {
+    isClosing = false;
+    emit(MessageResetClosingSuccessState());
+  }
+
+  double rating = 0.0;
+  void setRating(double rate) {
+    rating = rate;
+    emit(MessageSetRatingSuccessState());
+  }
+
+  void resetRating() {
+    rating = 0;
+    emit(MessageResetRatingSuccessState());
+  }
 }

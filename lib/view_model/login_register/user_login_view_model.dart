@@ -1,9 +1,9 @@
-import 'package:consultation/Provider/provider_dashboard.dart';
-import 'package:consultation/Seeker/dashboard_seeker.dart';
 import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/login_provider.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/models/seeker_data.dart';
+import 'package:consultation/provider/provider_dashboard.dart';
+import 'package:consultation/seeker/dashboard_seeker.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,14 +30,11 @@ void seekerLogin({
       if (user.email == email) {
         currentUsername = user.name;
         Navigator.pop(context);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DashboardSeeker(
-              username: user.name!,
-            ),
-          ),
-        );
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    DashboardSeeker(username: userData[0].name!)),
+            (route) => false);
       }
     }
   } on FirebaseAuthException catch (e) {
@@ -76,14 +73,9 @@ void providerLogin({
     }
     for (var user in userData) {
       if (user.email == email && user.isApproved == true) {
-        Navigator.pop(context);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) {
-              return const ProviderDashboard();
-            },
-          ),
-        );
+        Navigator.of(context, rootNavigator: false).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => ProviderDashboard()),
+            (route) => false);
         return;
       } else if (user.email == email && user.isApproved == false) {
         Navigator.pop(context);

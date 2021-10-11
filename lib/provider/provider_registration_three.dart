@@ -198,6 +198,7 @@ class _ProviderRegistrationThreeState extends State<ProviderRegistrationThree> {
                                     ? providerBank = "بنك الرياض"
                                     : providerBank = "بنك الجزيرة";
                                 providerRegister(
+                                  rate: 5,
                                   name: providerName,
                                   password: providerPassword,
                                   email: providerEmail,

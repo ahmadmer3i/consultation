@@ -91,8 +91,7 @@ class _LoginSeekerState extends State<LoginSeeker> {
                           Container(
                             margin: EdgeInsets.only(bottom: 20, top: 20),
                             child: MyTextField(
-                                label: "البريد الألكتروني",
-
+                              label: "البريد الألكتروني",
                               onChanged: (value) {
                                 // تاخذ قيه الايميل وتحفظه في الفاليو
                                 setState(
@@ -107,38 +106,36 @@ class _LoginSeekerState extends State<LoginSeeker> {
                             margin: EdgeInsets.only(bottom: 10),
                             child: MyTextField(
                               onChanged: (value) {
-                              setState(
-                              () {
-                              _password = value;
-                              },
-                              );
+                                setState(
+                                  () {
+                                    _password = value;
+                                  },
+                                );
                               },
                               isObscure: _isObscure,
-
                               label: " كلمة المرور*",
                               suffixIcon: IconButton(
-                              icon: Icon(
-                              _isObscure
-                              ? Icons.visibility
-                                  : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                              setState(
-                              () {
-                              _isObscure = !_isObscure;
-                              },
-                              );
-                              },
-                              ),
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                ),
+                                onPressed: () {
+                                  setState(
+                                    () {
+                                      _isObscure = !_isObscure;
+                                    },
+                                  );
+                                },
                               ),
                             ),
-
+                          ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: MaterialButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ResetPassword()));
-
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ResetPassword()));
                               },
                               child: Text(
                                 "هل نسيت كلمة السر؟",
@@ -156,7 +153,7 @@ class _LoginSeekerState extends State<LoginSeeker> {
                             alignment: Alignment.center,
                             child: MaterialButton(
                               onPressed: () {
-                                Navigator.of(context).push(
+                                Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     builder: (context) => LoginProvider(),
                                   ),

@@ -5,7 +5,6 @@ import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/view_model/get_request_data.dart';
-import 'package:consultation/view_model/provider_for_consult.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,7 +33,9 @@ class _MyRequestsState extends State<MyRequests> {
     List<ProviderData> providerTopic = [];
     Future<List<ProviderData>>? getProvider;
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        autoLeading: false,
+      ),
       body: Column(
         children: [
           Align(
@@ -72,11 +73,10 @@ class _MyRequestsState extends State<MyRequests> {
             child: StreamBuilder<List<ConsultData>>(
               stream: getRequestData,
               builder: (context, snapshot) {
-                consultsList = [];
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    consultsList = snapshot.data?.toList();
-                    return consultsList!.isNotEmpty
+                    print(snapshot.data!.length);
+                    return snapshot.data!.isNotEmpty
                         ?
                         // ListView.builder(
                         //         itemCount: snapshot.data!.length,
@@ -109,7 +109,7 @@ class _MyRequestsState extends State<MyRequests> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          consultsList![0].topic,
+                                          snapshot.data![0].topic,
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1!
@@ -120,7 +120,7 @@ class _MyRequestsState extends State<MyRequests> {
                                         IconButton(
                                           onPressed: () {
                                             deleteItem(context,
-                                                docId: consultsList![0].docId);
+                                                docId: snapshot.data![0].docId);
                                           },
                                           icon: const Icon(
                                             Icons.delete_outline_outlined,
@@ -135,7 +135,7 @@ class _MyRequestsState extends State<MyRequests> {
                                       children: [
                                         Text(
                                           DateFormat.yMMMd('ar').format(
-                                              consultsList![0].date.toDate()),
+                                              snapshot.data![0].date.toDate()),
                                           // " 17 سبتمبر 2021",
                                           style: Theme.of(context)
                                               .textTheme
@@ -146,7 +146,7 @@ class _MyRequestsState extends State<MyRequests> {
                                         ),
                                         Text(
                                           DateFormat.jm('ar').format(
-                                              consultsList![0].date.toDate()),
+                                              snapshot.data![0].date.toDate()),
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1!
@@ -159,7 +159,7 @@ class _MyRequestsState extends State<MyRequests> {
                                     Container(
                                       padding: const EdgeInsets.only(top: 20),
                                       child: Text(
-                                        consultsList![0].detail,
+                                        snapshot.data![0].detail,
                                         textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
@@ -171,65 +171,41 @@ class _MyRequestsState extends State<MyRequests> {
                                     ),
                                   ],
                                 ),
-                                FutureBuilder(
-                                  builder: (context, snapshot) {
-                                    getProvider = getProviderForTopics(
-                                      providerTopic,
-                                      topic: consultsList![0].topic,
-                                    );
-                                    return FutureBuilder(
-                                      future: getProvider,
-                                      builder: (context,
-                                          AsyncSnapshot<List<ProviderData>>
-                                              snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.done) {
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                "عروض : ${consultsList?[0].providers.length}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .subtitle1!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                              ),
-                                              ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Offers(
-                                                        providerData:
-                                                            consultsList![0]
-                                                                .providers,
-                                                        docId: consultsList![0]
-                                                            .docId,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                child: Text(
-                                                  "مشاهدة العروض",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1!
-                                                      .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        } else {
-                                          return const CircularProgressIndicator();
-                                        }
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "عروض : ${snapshot.data![0].providers.length}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .copyWith(
+                                              fontWeight: FontWeight.w700),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => Offers(
+                                              providerData:
+                                                  snapshot.data![0].providers,
+                                              docId: snapshot.data![0].docId,
+                                            ),
+                                          ),
+                                        );
                                       },
-                                    );
-                                  },
+                                      child: Text(
+                                        "مشاهدة العروض",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

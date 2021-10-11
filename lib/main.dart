@@ -3,8 +3,11 @@
 import 'package:consultation/login_provider.dart';
 import 'package:consultation/login_seeker.dart';
 import 'package:consultation/splash_screen.dart';
+import 'package:consultation/tools/bloc_observer.dart';
+import 'package:consultation/view_model/messages_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 //we used async and await because the method type is future
@@ -12,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 
@@ -33,35 +37,38 @@ class MyApp extends StatelessWidget {
       800: Color.fromRGBO(30, 30, 30, .9),
       900: Color.fromRGBO(30, 30, 30, 1),
     };
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      // ignore: prefer_const_literals_to_create_immutables
-      localizationsDelegates: [
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      // ignore: prefer_const_literals_to_create_immutables
-      supportedLocales: [
-        Locale("ar", "IR"),
-      ],
-      locale: Locale("ar", "IR"),
+    return BlocProvider(
+      create: (context) => MessagesCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // ignore: prefer_const_literals_to_create_immutables
+        localizationsDelegates: [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        // ignore: prefer_const_literals_to_create_immutables
+        supportedLocales: [
+          Locale("ar", "IR"),
+        ],
+        locale: Locale("ar", "IR"),
 
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Color(0xffCB997E),
-        fontFamily: "Janna",
-        primarySwatch: MaterialColor(0xFFCB997E, color),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: Color(0xffCB997E),
+          fontFamily: "Janna",
+          primarySwatch: MaterialColor(0xFFCB997E, color),
+        ),
+        home: LoginSeeker(),
+        initialRoute: "/SplashScreen",
+        routes: {
+          // When navigating to the "/" route, build the FirstScreen widget.
+          '/LoginSeeker': (context) => const LoginSeeker(),
+          '/SplashScreen': (context) => const SplashScreen(),
+          // When navigating to the "/second" route, build the SecondScreen widget.
+          '/LoginProvider': (context) => const LoginProvider(),
+        },
       ),
-      home: LoginSeeker(),
-      initialRoute: "/SplashScreen",
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/LoginSeeker': (context) => const LoginSeeker(),
-        '/SplashScreen': (context) => const SplashScreen(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/LoginProvider': (context) => const LoginProvider(),
-      },
     );
   }
 }

@@ -8,57 +8,51 @@ var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> get getRequestData {
   List<Map<String, dynamic>> consults = [];
-  // var consultsData = _firebase
-  //     .collection("consults")
-  //     .where("uid" == _auth.currentUser!.uid && "status" == "approved")
-  //     .get()
-  //     .then((value) => value.docs
-  //         .where((element) => element.data()["providers"] != null))
-  //     .then(
-  //       (value) => value.forEach(
-  //         (element) {
-  //           consults.add(element.data()["providers"]);
-  //         },
-  //       ),
-  //     );
-  // print(consults.length);
   return _firebase.collection("consults").snapshots().map(
-        (event) => event.docs
-            .where((element) {
-              if (element.data()["status"] != "active") {
-                var elements = element.data()["providers"];
-                consults = [];
-                for (var e in elements) {
-                  if (e["isApproved"] == true) {
-                    consults.clear();
-                    break;
-                  } else if (e["status"] == "تم ارسال العرض") {
-                    consults.add(e);
-                  }
-                }
-              } else {
+        (event) => event.docs.where((element) {
+          if (element.data()["isActive"] == true &&
+              element.data()["isDeleted"] == false) {
+            print("here" + element.id);
+            print(consults);
+            consults.clear();
+            var elements = element.data()["providers"];
+
+            for (var e in elements) {
+              print(e["isSent"]);
+              if (e["isSent"] == true && e["isApproved"] == false) {
+                print("sent");
+                consults.add(e);
+                print(consults);
+              } else if (e["isApproved"] == true) {
                 consults.clear();
                 return false;
               }
-              return element.data()["uid"] == _auth.currentUser!.uid;
-            })
-            .map(
-              (e) => ConsultData(
-                providers: consults,
-                consultId: e.id,
-                price: double.parse(e.data()["price"].toString()),
-                payment: e.data()["payment"],
-                isPaid: e.data()["isPaid"],
-                uid: e.data()["uid"],
-                topic: e.data()["topic"],
-                detail: e.data()["details"],
-                date: e.data()["date"],
-                docId: e.id,
-                isDeleted: e.data()["isDeleted"],
-                status: e.data()["status"],
-              ),
-            )
-            .toList(),
+            }
+          } else {
+            return false;
+          }
+          print("here again $consults");
+          return element.data()["uid"] == _auth.currentUser!.uid;
+        }).map(
+          (e) {
+            print("here again 3 $consults");
+            return ConsultData(
+              providers: consults,
+              consultId: e.id,
+              price: double.parse(e.data()["price"].toString()),
+              payment: e.data()["payment"],
+              isPaid: e.data()["isPaid"],
+              uid: e.data()["uid"],
+              topic: e.data()["topic"],
+              detail: e.data()["details"],
+              date: e.data()["date"],
+              docId: e.id,
+              isDeleted: e.data()["isDeleted"],
+              status: e.data()["status"],
+              isActive: e.data()["isActive"],
+            );
+          },
+        ).toList(),
       );
 }
 

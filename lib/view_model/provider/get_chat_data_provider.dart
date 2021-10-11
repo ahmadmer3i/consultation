@@ -38,6 +38,7 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
                 isDeleted: e.data()["isDeleted"],
                 status: e.data()["status"],
                 providerId: e.data()["providerId"],
+                isActive: e.data()["isActive"],
               ),
             )
             .toList(),

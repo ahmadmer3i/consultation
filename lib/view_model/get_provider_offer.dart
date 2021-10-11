@@ -8,6 +8,7 @@ Future<ProviderData> getProviderOffer({required String id}) async {
       .doc(id)
       .get();
   return ProviderData(
+      rate: double.parse(snapshot.data()!["rate"].toString()),
       password: snapshot.data()!["password"],
       email: snapshot.data()!["email"],
       name: snapshot.data()!["name"],

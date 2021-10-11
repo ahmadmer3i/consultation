@@ -20,7 +20,11 @@ Stream<List<ConsultData>> getChatData({required String status}) {
   //       ),
   //     );
   // print(consults.length);
-  var data = _firebase.collection("consults").snapshots().map(
+  var data = _firebase
+      .collection("consults")
+      .orderBy("date", descending: true)
+      .snapshots()
+      .map(
         (event) => event.docs
             .where((element) {
               if (element.data()["status"] == status) {
@@ -57,6 +61,7 @@ Stream<List<ConsultData>> getChatData({required String status}) {
                 isDeleted: e.data()["isDeleted"],
                 status: e.data()["status"],
                 providerId: e.data()["providerId"],
+                isActive: e.data()["isActive"],
               ),
             )
             .toList(),

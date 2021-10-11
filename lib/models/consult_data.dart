@@ -13,8 +13,10 @@ class ConsultData {
   double price;
   String? providerId;
   String consultId;
+  bool isActive;
   List<Map<String, dynamic>> providers;
   ConsultData({
+    required this.isActive,
     required this.uid,
     required this.topic,
     required this.detail,

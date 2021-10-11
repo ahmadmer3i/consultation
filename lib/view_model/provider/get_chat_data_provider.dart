@@ -9,7 +9,6 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
   var data = firebase.collection("consults").snapshots().map(
         (event) => event.docs
             .where((element) {
-              print(element.data()["status"]);
               isExist = element.data()["providerId"] ==
                       FirebaseAuth.instance.currentUser!.uid &&
                   element.data()["status"] == status;
@@ -17,7 +16,6 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
                 for (var item in element.data()["providers"]) {
                   consults.add(item);
                 }
-                print(consults);
                 return true;
               } else {
                 return false;
@@ -44,6 +42,5 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
             )
             .toList(),
       );
-  print("data: $data");
   return data;
 }

@@ -66,7 +66,6 @@ class _SeekerChatState extends State<SeekerChat>
                 child: StreamBuilder<List<ConsultData>>(
                     stream: getChatData(status: "active"),
                     builder: (context, snapshot) {
-                      print("e: ${snapshot.error}");
                       if (snapshot.connectionState == ConnectionState.active) {
                         return ListView.builder(
                           shrinkWrap: true,
@@ -157,7 +156,6 @@ class _SeekerChatState extends State<SeekerChat>
                 child: StreamBuilder<List<ConsultData>>(
                     stream: getChatData(status: "ended"),
                     builder: (context, snapshot) {
-                      print("e: ${snapshot.error}");
                       if (snapshot.connectionState == ConnectionState.active) {
                         return ListView.builder(
                           shrinkWrap: true,

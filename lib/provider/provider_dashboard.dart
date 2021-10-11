@@ -70,11 +70,9 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                   child: StreamBuilder<List<ConsultData>>(
                     stream: getInstantData,
                     builder: (context, snapshot) {
-                      print(snapshot.error);
                       if (snapshot.connectionState == ConnectionState.active) {
                         if (snapshot.hasData) {
                           List<ConsultData> instants = snapshot.data!;
-                          print(instants);
                           return ListView.builder(
                             itemCount: instants.length,
                             itemBuilder: (context, index) {

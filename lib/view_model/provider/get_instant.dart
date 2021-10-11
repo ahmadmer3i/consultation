@@ -5,14 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> get getInstantData {
-  var counter = 0;
   List<Map<String, dynamic>> consults = [];
   return _firebase.collection("consults").snapshots().map(
         (event) => event.docs
             .where((element) {
               if (element.data()["providerId"] != null &&
                   element.data()["providerId"] != _auth.currentUser!.uid) {
-                print(element.data()["providerId"]);
                 return false;
               }
               element.data()["providers"].forEach(
@@ -22,7 +20,6 @@ Stream<List<ConsultData>> get getInstantData {
                   }
                 },
               );
-              print(consults);
               if (consults.isNotEmpty) {
                 return true;
               }

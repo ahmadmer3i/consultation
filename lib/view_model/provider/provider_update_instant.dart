@@ -10,13 +10,11 @@ void updateInstantStatus(
   var collection = _firebase.collection("consults");
   var snapshot = await collection.doc(docId).get();
   items = snapshot.data()!["providers"];
-  print("items $items");
   index = items
       .indexWhere((element) => element["consultId"] == _auth.currentUser!.uid);
   items[index]["price"] = price;
   items[index]["status"] = "تم ارسال العرض";
   items[index]["isSent"] = true;
-  print(items);
   _firebase
       .collection("consults")
       .doc(docId)

@@ -35,7 +35,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
     "12:15",
   ];
   //Map<String,bool> times=new Map<String,bool>();
-  int seletedIndex = 0;
+  int selectedIndex = 0;
   var tabController;
   DateTime? _selectedDate;
   DateTime _currentDate = DateTime.now();
@@ -241,7 +241,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                     ),
                   ],
                 ),
-                Container(
+                SizedBox(
                     height: 600,
                     child: TabBarView(controller: tabController, children: [
                       Column(
@@ -257,7 +257,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                                   return GestureDetector(
                                     onTap: () {
                                       setState(() {
-                                        seletedIndex = index;
+                                        selectedIndex = index;
                                       });
                                     },
                                     child: Container(
@@ -266,11 +266,11 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                                       padding: EdgeInsets.symmetric(
                                           vertical: 0, horizontal: 20),
                                       decoration: BoxDecoration(
-                                        color: seletedIndex == index
+                                        color: selectedIndex == index
                                             ? Color(0xff6B705C)
                                             : Color(0xffFAFAFA),
                                         border: Border.all(
-                                            color: seletedIndex == index
+                                            color: selectedIndex == index
                                                 ? Color(0xffFAFAFA)
                                                 : Color(0xff6B705C),
                                             width: 2),
@@ -280,7 +280,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                                           child: Text(
                                         times.elementAt(index),
                                         style: TextStyle(
-                                            color: seletedIndex == index
+                                            color: selectedIndex == index
                                                 ? Color(0xffFAFAFA)
                                                 : Color(0xff6B705C),
                                             fontWeight: FontWeight.bold),
@@ -311,7 +311,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                                   .headline4!
                                   .copyWith(color: Color(0xffCB997E)),
                             ),
-                            Container(
+                            SizedBox(
                               height: 200,
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,

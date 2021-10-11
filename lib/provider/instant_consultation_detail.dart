@@ -105,7 +105,6 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
                       widget.data["isSent"] == false
                   ? ElevatedButton(
                       onPressed: () {
-                        print(widget.data["isSent"]);
                         showModalBottomSheet(
                           shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(

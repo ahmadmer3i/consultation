@@ -6,14 +6,12 @@ void saveConsult({
   required String topic,
   required String details,
 }) async {
-  var id = Uuid().v1();
-  print(id);
+  var id = const Uuid().v1();
   var _firestore = FirebaseFirestore.instance;
   var snapshots = await _firestore
       .collection("provider")
       .where("instant", isEqualTo: true)
       .get();
-  print(snapshots.docs);
   List<Map<String, dynamic>> consults = [];
   for (var docs in snapshots.docs) {
     for (var doc in docs["topics"]) {

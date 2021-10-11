@@ -103,10 +103,8 @@ class _OffersState extends State<Offers> {
                                           builder: (context,
                                               AsyncSnapshot<ProviderData>
                                                   snapshot) {
-                                            print(snapshot.error);
                                             if (snapshot.connectionState ==
                                                 ConnectionState.done) {
-                                              print(snapshot.data?.name);
                                               return Text(
                                                 "${snapshot.data?.name}",
                                                 style: Theme.of(context)

@@ -64,8 +64,6 @@ class _ProviderChatState extends State<ProviderChat>
                     stream: getChatDataProvider(status: "active"),
                     builder: (ctx, snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
-                        print("error : ${snapshot.error.toString()}");
-                        print(snapshot.data?.length);
                         return Container(
                           margin: EdgeInsets.all(10),
                           child: ListView.separated(

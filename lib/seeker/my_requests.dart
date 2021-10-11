@@ -74,8 +74,6 @@ class _MyRequestsState extends State<MyRequests> {
               builder: (context, snapshot) {
                 consultsList = [];
                 if (snapshot.connectionState == ConnectionState.active) {
-                  print(snapshot.connectionState);
-                  print(snapshot.error);
                   if (snapshot.hasData) {
                     consultsList = snapshot.data?.toList();
                     return consultsList!.isNotEmpty
@@ -227,7 +225,7 @@ class _MyRequestsState extends State<MyRequests> {
                                             ],
                                           );
                                         } else {
-                                          return CircularProgressIndicator();
+                                          return const CircularProgressIndicator();
                                         }
                                       },
                                     );

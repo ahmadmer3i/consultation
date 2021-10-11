@@ -202,8 +202,6 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  print("pressed");
-                                  print(widget.seekerId);
                                   MessagesCubit.get(context).sendChat(
                                     messageId: widget.seekerId,
                                     consultId: widget.consultId,

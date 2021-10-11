@@ -26,7 +26,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
     "11:45",
     "12:15",
   ];
-  int seletedIndex = 0;
+  int selectedIndex = 0;
   DateTime? _selectedDate;
   // DateTime _currentDate = DateTime.now();
   // DateTime _currentDate2 = DateTime.now();
@@ -138,7 +138,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                seletedIndex = index;
+                                selectedIndex = index;
                               });
                             },
                             child: Container(
@@ -147,11 +147,11 @@ class _CalendarManagementState extends State<CalendarManagement> {
                               padding: EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 20),
                               decoration: BoxDecoration(
-                                color: seletedIndex == index
+                                color: selectedIndex == index
                                     ? Color(0xff6B705C)
                                     : Color(0xffFAFAFA),
                                 border: Border.all(
-                                    color: seletedIndex == index
+                                    color: selectedIndex == index
                                         ? Color(0xffFAFAFA)
                                         : Color(0xff6B705C),
                                     width: 2),
@@ -161,7 +161,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
                                   child: Text(
                                 times.elementAt(index),
                                 style: TextStyle(
-                                    color: seletedIndex == index
+                                    color: selectedIndex == index
                                         ? Color(0xffFAFAFA)
                                         : Color(0xff6B705C),
                                     fontWeight: FontWeight.bold),

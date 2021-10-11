@@ -77,8 +77,12 @@ class _ScheduledConsultationDetailState
                 alignment: Alignment.center,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ProviderChatOpen()));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ProviderChatOpen(
+                              consultId: "", seekerId: "", providerId: ""),
+                        ),
+                      );
                     },
                     child: const Text(
                       "قبول العرض",

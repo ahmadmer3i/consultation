@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 void saveConsult({
   required String topic,
   required String details,
 }) async {
+  var id = Uuid().v1();
+  print(id);
   var _firestore = FirebaseFirestore.instance;
   var snapshots = await _firestore
       .collection("provider")
@@ -26,13 +29,14 @@ void saveConsult({
     }
   }
 
-  await _firestore.collection("consults").doc().set(
+  await _firestore.collection("consults").doc(id).set(
     {
       "uid": FirebaseAuth.instance.currentUser!.uid,
       "topic": topic,
       "details": details,
       "isDeleted": false,
       "date": DateTime.now(),
+      "consultId": id,
       "status": "pending",
       "payment": "",
       "isPaid": false,

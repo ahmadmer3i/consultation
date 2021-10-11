@@ -53,6 +53,7 @@ Stream<List<ConsultData>> getChatData({required String status}) {
                 detail: e.data()["details"],
                 date: e.data()["date"],
                 docId: e.id,
+                consultId: e.id,
                 isDeleted: e.data()["isDeleted"],
                 status: e.data()["status"],
                 providerId: e.data()["providerId"],

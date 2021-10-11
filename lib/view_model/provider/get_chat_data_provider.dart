@@ -27,6 +27,7 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
             })
             .map(
               (e) => ConsultData(
+                consultId: e.id,
                 providers: consults,
                 price: double.parse(e.data()["price"].toString()),
                 payment: e.data()["payment"],

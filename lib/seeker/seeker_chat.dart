@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:consultation/Seeker/seeker_chat_open.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/provider_data.dart';
+import 'package:consultation/seeker/seeker_chat_open.dart';
 import 'package:consultation/view_model/get_chat_data.dart';
 import 'package:consultation/view_model/get_provider_data.dart';
 import 'package:consultation/view_model/get_provider_offer.dart';
@@ -77,7 +77,12 @@ class _SeekerChatState extends State<SeekerChat>
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => SeekerChatOpen(
-                                      uid: snapshot.data![index].providerId!,
+                                      seekerId: snapshot.data![index].uid,
+                                      providerId:
+                                          snapshot.data![index].providerId!,
+                                      uid: snapshot.data![index].uid,
+                                      consultId:
+                                          snapshot.data![index].consultId,
                                     ),
                                   ),
                                 );
@@ -173,6 +178,12 @@ class _SeekerChatState extends State<SeekerChat>
                                                 SeekerChatOpen(
                                               uid: snapshot
                                                   .data![index].providerId!,
+                                              consultId: snapshot
+                                                  .data![index].consultId,
+                                              providerId: snapshot
+                                                  .data![index].providerId!,
+                                              seekerId:
+                                                  snapshot.data![index].uid,
                                             ),
                                           ),
                                         );

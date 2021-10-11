@@ -12,6 +12,7 @@ class ConsultData {
   bool isPaid;
   double price;
   String? providerId;
+  String consultId;
   List<Map<String, dynamic>> providers;
   ConsultData({
     required this.uid,
@@ -26,5 +27,6 @@ class ConsultData {
     required this.providers,
     required this.isPaid,
     required this.payment,
+    required this.consultId,
   });
 }

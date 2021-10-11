@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:consultation/Provider/provider_chat_open.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/seeker_data.dart';
+import 'package:consultation/provider/provider_chat_open.dart';
 import 'package:consultation/view_model/provider/get_chat_data_provider.dart';
 import 'package:consultation/view_model/provider/get_seeker_offer.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +80,12 @@ class _ProviderChatState extends State<ProviderChat>
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => ProviderChatOpen(),
+                                      builder: (context) => ProviderChatOpen(
+                                          providerId:
+                                              snapshot.data![index].providerId!,
+                                          seekerId: snapshot.data![index].uid,
+                                          consultId:
+                                              snapshot.data![index].consultId),
                                     ),
                                   );
                                 },
@@ -171,6 +176,11 @@ class _ProviderChatState extends State<ProviderChat>
                                     MaterialPageRoute(
                                       builder: (context) => ProviderChatOpen(
                                         isClosed: true,
+                                        seekerId: snapshot.data![index].uid,
+                                        providerId:
+                                            snapshot.data![index].providerId!,
+                                        consultId:
+                                            snapshot.data![index].consultId,
                                       ),
                                     ),
                                   );

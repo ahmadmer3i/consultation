@@ -46,6 +46,8 @@ dependencies:
   smooth_star_rating: ^1.1.1
   firebase_auth: ^3.1.2
   intl: ^0.17.0
+  flutter_bloc: ^7.3.0
+  uuid: ^3.0.5
 
 
 

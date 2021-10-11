@@ -45,6 +45,7 @@ Stream<List<ConsultData>> get getRequestData {
             .map(
               (e) => ConsultData(
                 providers: consults,
+                consultId: e.id,
                 price: double.parse(e.data()["price"].toString()),
                 payment: e.data()["payment"],
                 isPaid: e.data()["isPaid"],

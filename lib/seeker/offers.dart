@@ -171,7 +171,7 @@ class _OffersState extends State<Offers> {
           ],
         ),
       ),
-      bottomNavigationBar: const MyBottomNavigationBar(),
+      bottomNavigationBar: MyBottomNavigationBar(),
     );
   }
 }

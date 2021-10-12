@@ -28,7 +28,7 @@ void seekerLogin({
     }
     for (var user in userData) {
       if (user.email == email) {
-        currentUsername = user.name;
+        currentUsername = user.name!;
         Navigator.pop(context);
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(

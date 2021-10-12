@@ -74,16 +74,15 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.active) {
                         if (snapshot.hasData) {
-                          List<ConsultData> instants = snapshot.data!;
                           return ListView.separated(
                             separatorBuilder: (context, index) => SizedBox(
                               height: 5,
                             ),
-                            itemCount: instants.length,
+                            itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return FutureBuilder(
                                 future: getSeekerDataPerInstant(
-                                    seekerId: instants[index].uid),
+                                    seekerId: snapshot.data![index].uid),
                                 builder: (
                                   context,
                                   AsyncSnapshot<SeekerData> snapshotSeeker,
@@ -97,9 +96,10 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                             builder: (context) =>
                                                 InstantConsultationDetail(
                                               seekerData: snapshotSeeker.data!,
-                                              consultData: instants[index],
-                                              data:
-                                                  instants[index].providers[0],
+                                              consultData:
+                                                  snapshot.data![index],
+                                              data: snapshot
+                                                  .data![index].providers[0],
                                             ),
                                           ),
                                         );
@@ -173,7 +173,7 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Text(
-                                                    instants[index].topic,
+                                                    snapshot.data![index].topic,
                                                     style: TextStyle(
                                                       color: Color(0xffCB997E),
                                                       fontWeight:
@@ -185,8 +185,8 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                   alignment:
                                                       Alignment.centerRight,
                                                   child: Text(
-                                                    instants[index].providers[0]
-                                                        ["status"],
+                                                    snapshot.data![index]
+                                                        .providers[0]["status"],
                                                     style: TextStyle(
                                                       color: Color(0xff6B705C),
                                                     ),

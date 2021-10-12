@@ -281,7 +281,7 @@ class _MyRequestsState extends State<MyRequests> {
           )
         ],
       ),
-      bottomNavigationBar: const MyBottomNavigationBar(
+      bottomNavigationBar: MyBottomNavigationBar(
         selectedIndex: 1,
       ),
     );

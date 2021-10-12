@@ -377,14 +377,25 @@ class _MyAppBarState extends State<MyAppBar> {
 
 class MyBottomNavigationBar extends StatefulWidget {
   final int? selectedIndex;
-  const MyBottomNavigationBar({Key? key, this.selectedIndex = 0})
-      : super(key: key);
+
+  const MyBottomNavigationBar({
+    Key? key,
+    this.selectedIndex = 0,
+  }) : super(key: key);
 
   @override
   _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
 }
 
 class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
+  List<Widget> screens = [
+    SeekerProfile(),
+    MyRequests(),
+    SeekerChat(),
+    SeekerNotification(),
+    DashboardSeeker(username: currentUsername)
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -393,7 +404,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (context) => DashboardSeeker(
-                        username: currentUsername!,
+                        username: currentUsername,
                       )),
               (route) => false);
         } else if (index == 3) {
@@ -406,12 +417,14 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
               (route) => false);
         } else if (index == 1) {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MyRequests()),
-              (route) => false);
+            MaterialPageRoute(builder: (context) => MyRequests()),
+            (route) => false,
+          );
         } else if (index == 0) {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => SeekerProfile()),
-              (route) => false);
+            MaterialPageRoute(builder: (context) => SeekerProfile()),
+            (route) => false,
+          );
         }
       },
       currentIndex: widget.selectedIndex!,

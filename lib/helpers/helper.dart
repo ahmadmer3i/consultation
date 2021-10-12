@@ -1,4 +1,4 @@
-String? currentUsername;
+String currentUsername = "";
 List<String> selectedItems = [];
 String? providerGender = "M";
 String providerEmail = "";

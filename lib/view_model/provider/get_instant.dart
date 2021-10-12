@@ -21,7 +21,9 @@ Stream<List<ConsultData>> get getInstantData {
               element.data()["providers"].forEach(
                 (elements) {
                   if (elements["consultId"] == _auth.currentUser!.uid) {
+                    consults.clear();
                     consults.add(elements);
+                    print(elements["consultId"]);
                   }
                 },
               );

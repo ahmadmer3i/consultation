@@ -14,7 +14,7 @@ class ConsultData {
   String? providerId;
   String consultId;
   bool isActive;
-  List<Map<String, dynamic>> providers;
+  List<ProviderConsult> providers;
   ConsultData({
     required this.isActive,
     required this.uid,
@@ -31,4 +31,29 @@ class ConsultData {
     required this.payment,
     required this.consultId,
   });
+}
+
+class ProviderConsult {
+  String? consultId;
+  bool? isApproved;
+  bool? isSent;
+  double? price;
+  String? status;
+
+  ProviderConsult.fromJson(Map<String, dynamic> json) {
+    consultId = json["consultId"];
+    isApproved = json["isApproved"];
+    isSent = json["isSent"];
+    price = double.tryParse(json["price"].toString());
+    status = json["status"];
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'price': price,
+      'isApproved': isApproved,
+      'isSent': isSent,
+      'consultId': consultId,
+      'status': status,
+    };
+  }
 }

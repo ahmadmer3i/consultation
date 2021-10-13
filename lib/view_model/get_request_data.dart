@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> get getRequestData {
-  List<Map<String, dynamic>> consults = [];
+  List<ProviderConsult> consults = [];
   return _firebase.collection("consults").snapshots().map(
         (event) => event.docs.where((element) {
           if (element.data()["isActive"] == true &&
@@ -21,7 +21,7 @@ Stream<List<ConsultData>> get getRequestData {
               print(e["isSent"]);
               if (e["isSent"] == true && e["isApproved"] == false) {
                 print("sent");
-                consults.add(e);
+                consults.add(ProviderConsult.fromJson(e));
                 print(consults);
               } else if (e["isApproved"] == true) {
                 consults.clear();
@@ -79,7 +79,7 @@ Future<bool> checkConsult() async {
 
 void setPayment(
   BuildContext context, {
-  required Map providerData,
+  required ProviderConsult providerData,
   required String providerId,
   required String docId,
   required double price,

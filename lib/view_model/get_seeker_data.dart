@@ -48,3 +48,22 @@ Future<SeekerData> getSeekerDataPerInstant({
     password: snapshots["password"],
   );
 }
+
+SeekerData? seekerData1;
+void getSeekerDataPerInstant1({
+  required String seekerId,
+}) {
+  var _firebase = FirebaseFirestore.instance; // Firebase Connection instant;
+  _firebase.collection("seeker").doc(seekerId).get().then((value) =>
+      seekerData1 = SeekerData(
+        email: value["email"],
+        gender: value["gender"],
+        date: value["dateOfBirth"],
+        name: value["name"],
+        uid: value["uid"],
+        username: value["username"],
+        password: value["password"],
+      )); //get all data from the collection "seeker" and store it in snapshot
+
+  // loop over all docs in the collection seeker and add it to data list
+}

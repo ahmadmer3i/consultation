@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 Stream<List<ConsultData>> getChatDataProvider({required String status}) {
   var firebase = FirebaseFirestore.instance;
-  List<Map<String, dynamic>> consults = [];
+  List<ProviderConsult> consults = [];
   bool isExist = false;
   var data = firebase.collection("consults").snapshots().map(
         (event) => event.docs
@@ -14,7 +14,7 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
                   element.data()["status"] == status;
               if (isExist) {
                 for (var item in element.data()["providers"]) {
-                  consults.add(item);
+                  consults.add(ProviderConsult.fromJson(item));
                 }
                 return true;
               } else {

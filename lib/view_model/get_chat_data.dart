@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
 Stream<List<ConsultData>> getChatData({required String status}) {
-  List<Map<String, dynamic>> consults = [];
+  List<ProviderConsult> consults = [];
   // var consultsData = _firebase
   //     .collection("consults")
   //     .where("uid" == _auth.currentUser!.uid && "status" == "approved")
@@ -36,7 +36,7 @@ Stream<List<ConsultData>> getChatData({required String status}) {
                     consults.clear();
                     break;
                   } else if (e["status"] == "تم ارسال العرض") {
-                    consults.add(e);
+                    consults.add(ProviderConsult.fromJson(e));
                   }
                 }
               } else {

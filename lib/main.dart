@@ -5,6 +5,7 @@ import 'package:consultation/login_seeker.dart';
 import 'package:consultation/splash_screen.dart';
 import 'package:consultation/tools/bloc_observer.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
+import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,8 +38,15 @@ class MyApp extends StatelessWidget {
       800: Color.fromRGBO(30, 30, 30, .9),
       900: Color.fromRGBO(30, 30, 30, 1),
     };
-    return BlocProvider(
-      create: (context) => MessagesCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => MessagesCubit(),
+        ),
+        BlocProvider(
+          create: (context) => InstantCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // ignore: prefer_const_literals_to_create_immutables

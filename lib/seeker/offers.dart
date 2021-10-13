@@ -1,5 +1,6 @@
 import 'package:consultation/components.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/view_model/get_provider_offer.dart';
 import 'package:consultation/view_model/get_request_data.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
 class Offers extends StatefulWidget {
-  final List<Map<String, dynamic>> providerData;
+  final List<ProviderConsult> providerData;
   final String docId;
   const Offers({
     Key? key,
@@ -56,17 +57,16 @@ class _OffersState extends State<Offers> {
                         context: context,
                         builder: (_) => MyBottomSheet(
                           price: double.parse(
-                              (widget.providerData[index]["price"]!)),
+                              (widget.providerData[index].price).toString()),
                           onPressed: () {
                             Navigator.pop(context);
                             setPayment(
                               context,
                               providerData: widget.providerData[index],
-                              providerId: widget.providerData[index]
-                                  ["consultId"],
+                              providerId: widget.providerData[index].consultId!,
                               docId: widget.docId,
                               price: double.parse(
-                                  widget.providerData[index]["price"]),
+                                  widget.providerData[index].price!.toString()),
                               payment: selectedPaymentMethod == 0
                                   ? "Apple Pay"
                                   : "STC Pay",
@@ -92,8 +92,8 @@ class _OffersState extends State<Offers> {
                                 padding: const EdgeInsets.all(5),
                                 child: FutureBuilder(
                                   future: getProviderOffer(
-                                      id: widget.providerData[index]
-                                          ["consultId"]),
+                                      id: widget
+                                          .providerData[index].consultId!),
                                   builder: (context,
                                       AsyncSnapshot<ProviderData> snapshot) {
                                     if (snapshot.connectionState ==
@@ -139,8 +139,8 @@ class _OffersState extends State<Offers> {
                               Column(
                                 children: [
                                   Text(
-                                    double.parse(widget.providerData[index]
-                                                ["price"]
+                                    double.parse(widget
+                                            .providerData[index].price!
                                             .toString())
                                         .toStringAsFixed(2),
                                     style: Theme.of(context)

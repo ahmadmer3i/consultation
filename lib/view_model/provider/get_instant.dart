@@ -4,31 +4,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
-Stream<List<ConsultData>> get getInstantData {
-  List<Map<String, dynamic>> consults = [];
+Stream<List<ConsultData>>? get getInstantData {
+  List<ProviderConsult> consults = [];
+
   return _firebase
       .collection("consults")
       .orderBy("date", descending: true)
       .snapshots()
       .map(
         (event) => event.docs
-            .where((element) {
-              if (element.data()["providerId"] != null &&
-                  element.data()["isDeleted"] == false &&
-                  element.data()["providerId"] != _auth.currentUser!.uid) {
-                return false;
-              }
-              element.data()["providers"].forEach(
-                (elements) {
-                  if (elements["consultId"] == _auth.currentUser!.uid) {
-                    consults.clear();
-                    consults.add(elements);
-                    print(elements["consultId"]);
+            .where((elements) {
+              if (elements.data()["isDeleted"] == false) {
+                // print("------");
+                if (elements.data()["providerId"] == null ||
+                    elements.data()["providerId"] == _auth.currentUser!.uid) {
+                  print("------");
+                  for (var e in elements.data()["providers"]) {
+                    if (e["consultId"] == _auth.currentUser!.uid) {
+                      print(e);
+                      consults.add(ProviderConsult.fromJson(e));
+                      return true;
+                    }
                   }
-                },
-              );
-              if (consults.isNotEmpty) {
-                return true;
+                }
               }
               return false;
             })

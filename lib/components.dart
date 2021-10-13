@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, file_names, prefer_const_literals_to_create_immutables, import_of_legacy_library_into_null_safe
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/provider/provider_chat.dart';
 import 'package:consultation/provider/provider_dashboard.dart';
 import 'package:consultation/provider/provider_profile.dart';
@@ -656,7 +657,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
 
 class MyOfferBottomSheet extends StatefulWidget {
   final String docId;
-  final Map data;
+  final ProviderConsult data;
   const MyOfferBottomSheet({Key? key, required this.docId, required this.data})
       : super(key: key);
 
@@ -705,7 +706,7 @@ class _MyOfferBottomSheetState extends State<MyOfferBottomSheet> {
                 updateInstantStatus(
                   docId: widget.docId,
                   data: widget.data,
-                  price: priceController.text,
+                  price: double.parse(priceController.text.toString()),
                   isSent: true,
                 );
                 Navigator.pop(context);

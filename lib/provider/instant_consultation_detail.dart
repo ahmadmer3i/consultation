@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 class InstantConsultationDetail extends StatefulWidget {
   final ConsultData consultData;
   final SeekerData seekerData;
-  final Map data;
+  final ProviderConsult data;
   const InstantConsultationDetail({
     Key? key,
     required this.consultData,
@@ -103,7 +103,7 @@ class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
               alignment: Alignment.center,
               child: widget.consultData.providerId !=
                           FirebaseAuth.instance.currentUser!.uid &&
-                      widget.data["isSent"] == false
+                      widget.data.isSent == false
                   ? ElevatedButton(
                       onPressed: () {
                         showModalBottomSheet(

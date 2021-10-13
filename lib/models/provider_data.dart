@@ -6,7 +6,7 @@ class ProviderData {
   bool? isApproved;
   double? price;
   double? rate;
-
+  List<dynamic>? topics;
   ProviderData({
     required this.password,
     required this.email,
@@ -14,6 +14,7 @@ class ProviderData {
     required this.uid,
     required this.isApproved,
     required this.price,
+    this.topics,
     this.rate = 5,
   });
 
@@ -23,7 +24,16 @@ class ProviderData {
     name = json["name"];
     uid = json["uid"];
     isApproved = json["isApproved"];
-    price = json["price"] as double;
+    price = double.parse(json["price"].toString());
     rate = json["rate"] as double;
+    topics = json["topics"];
+  }
+}
+
+class Topic {
+  String? topic;
+
+  Topic.fromJson(Map<String, dynamic> json) {
+    topic = json["topics"];
   }
 }

@@ -18,6 +18,7 @@ Future<List<ProviderData>> getProviderForTopics(List<ProviderData> data,
             name: doc["name"],
             uid: doc.id,
             isApproved: doc["isApproved"],
+            topics: doc["topics"],
           ),
         );
       }

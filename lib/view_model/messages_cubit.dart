@@ -50,11 +50,14 @@ class MessagesCubit extends Cubit<MessagesState> {
         .listen((event) {
       messages = [];
       for (var e in event.docs) {
-        messages.add(MessageData(
+        messages.add(
+          MessageData(
             message: e.data()["message"],
             dateTime: e.data()["date"],
             receiverId: e.data()["receiverId"],
-            senderId: e.data()['senderId']));
+            senderId: e.data()['senderId'],
+          ),
+        );
       }
       if (scroll.hasClients) {
         scroll.animateTo(

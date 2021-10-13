@@ -33,7 +33,7 @@ class InstantCubit extends Cubit<InstantState> {
     ).then((value) {
       _firebase
           .collection("consults")
-          .orderBy("date", descending: false)
+          .orderBy("date", descending: true)
           .snapshots()
           .listen(
         (event) {
@@ -42,7 +42,10 @@ class InstantCubit extends Cubit<InstantState> {
           for (var e in event.docs) {
             emit(InstantInstantDataLoadingState());
             if (providerData1!.topics!.contains(e.data()["topic"])) {
-              if (e.data()["status"] != "ended" ||
+              if ((e.data()["status"] != "ended" &&
+                      e.data()["status"] == "active" &&
+                      e.data()["providerId"] ==
+                          FirebaseAuth.instance.currentUser!.uid) ||
                   e.data()["providerId"] == null ||
                   e.data()["providerId"] ==
                       FirebaseAuth.instance.currentUser!.uid) {
@@ -51,7 +54,6 @@ class InstantCubit extends Cubit<InstantState> {
                           FirebaseAuth.instance.currentUser!.uid &&
                       data != null) {
                     consultProvider.add(ProviderConsult.fromJson(data));
-
                     print(data["status"]);
                     consultData.add(ConsultData(
                       consultId: e.data()["consultId"],
@@ -67,6 +69,7 @@ class InstantCubit extends Cubit<InstantState> {
                       payment: e.data()["payment"],
                       isPaid: e.data()["isPaid"],
                     ));
+
                     print(consultProvider.length);
                     emit(InstantInstantDataSuccess());
                   }

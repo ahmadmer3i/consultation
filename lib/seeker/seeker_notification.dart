@@ -75,7 +75,7 @@ class _SeekerNotificationState extends State<SeekerNotification> {
           ))
         ],
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: const MyBottomNavigationBar(
         selectedIndex: 2,
       ),
     );

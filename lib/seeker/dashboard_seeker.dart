@@ -239,7 +239,7 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: const MyBottomNavigationBar(
         selectedIndex: 4,
       ),
     );

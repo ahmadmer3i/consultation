@@ -12,17 +12,12 @@ Stream<List<ConsultData>> get getRequestData {
         (event) => event.docs.where((element) {
           if (element.data()["isActive"] == true &&
               element.data()["isDeleted"] == false) {
-            print("here" + element.id);
-            print(consults);
             consults.clear();
             var elements = element.data()["providers"];
 
             for (var e in elements) {
-              print(e["isSent"]);
               if (e["isSent"] == true && e["isApproved"] == false) {
-                print("sent");
                 consults.add(ProviderConsult.fromJson(e));
-                print(consults);
               } else if (e["isApproved"] == true) {
                 consults.clear();
                 return false;
@@ -31,11 +26,9 @@ Stream<List<ConsultData>> get getRequestData {
           } else {
             return false;
           }
-          print("here again $consults");
           return element.data()["uid"] == _auth.currentUser!.uid;
         }).map(
           (e) {
-            print("here again 3 $consults");
             return ConsultData(
               providers: consults,
               consultId: e.id,

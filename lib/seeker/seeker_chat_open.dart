@@ -44,7 +44,6 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
         return BlocConsumer<MessagesCubit, MessagesState>(
           listener: (context, state) {},
           builder: (context, state) {
-            print(MessagesCubit.get(context).isClosing);
             return Scaffold(
               appBar: MyAppBar(
                 onPressed: !MessagesCubit.get(context).isClosing

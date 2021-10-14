@@ -74,7 +74,7 @@ void providerLogin({
     for (var user in userData) {
       if (user.email == email && user.isApproved == true) {
         Navigator.of(context, rootNavigator: false).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ProviderDashboard()),
+            MaterialPageRoute(builder: (context) => const ProviderDashboard()),
             (route) => false);
         return;
       } else if (user.email == email && user.isApproved == false) {

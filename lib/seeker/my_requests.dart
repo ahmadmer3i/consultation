@@ -3,7 +3,6 @@ import 'package:consultation/Seeker/offers.dart';
 import 'package:consultation/Seeker/seeker_chat.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
-import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/view_model/get_request_data.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +29,6 @@ class _MyRequestsState extends State<MyRequests> {
 
   @override
   Widget build(BuildContext context) {
-    List<ProviderData> providerTopic = [];
-    Future<List<ProviderData>>? getProvider;
     return Scaffold(
       appBar: MyAppBar(
         autoLeading: false,
@@ -75,7 +72,6 @@ class _MyRequestsState extends State<MyRequests> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.active) {
                   if (snapshot.hasData) {
-                    print(snapshot.data!.length);
                     return snapshot.data!.isNotEmpty
                         ?
                         // ListView.builder(
@@ -281,7 +277,7 @@ class _MyRequestsState extends State<MyRequests> {
           )
         ],
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: const MyBottomNavigationBar(
         selectedIndex: 1,
       ),
     );

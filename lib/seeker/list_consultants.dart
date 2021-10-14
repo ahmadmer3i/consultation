@@ -161,7 +161,7 @@ class _ListConsultantsState extends State<ListConsultants> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(selectedIndex: 0),
+      bottomNavigationBar: const MyBottomNavigationBar(selectedIndex: 0),
     );
   }
 }

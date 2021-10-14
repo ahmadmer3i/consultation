@@ -77,7 +77,6 @@ class _SeekerChatState extends State<SeekerChat>
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.active) {
-                              print(snapshot.error);
                               return ListView.builder(
                                 shrinkWrap: true,
                                 itemCount: snapshot.data?.length,

@@ -117,7 +117,7 @@ class _SeekerProfileState extends State<SeekerProfile> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(),
+      bottomNavigationBar: const MyBottomNavigationBar(),
     );
   }
 }

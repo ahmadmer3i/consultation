@@ -25,7 +25,6 @@ class InstantConsultationDetail extends StatefulWidget {
 class _InstantConsultationDetailState extends State<InstantConsultationDetail> {
   @override
   Widget build(BuildContext context) {
-    print(widget.consultData.docId);
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(

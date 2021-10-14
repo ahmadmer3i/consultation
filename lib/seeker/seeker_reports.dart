@@ -148,7 +148,7 @@ class _SeekerReportsState extends State<SeekerReports> {
           )
         ],
       ),
-      bottomNavigationBar: MyBottomNavigationBar(),
+      bottomNavigationBar: const MyBottomNavigationBar(),
     );
   }
 }

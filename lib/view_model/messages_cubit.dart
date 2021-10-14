@@ -114,7 +114,6 @@ class MessagesCubit extends Cubit<MessagesState> {
 
   void setIsClosing() {
     isClosing = true;
-    print("status $isClosing");
     emit(MessageClosingSuccessState());
   }
 

@@ -54,7 +54,6 @@ class InstantCubit extends Cubit<InstantState> {
                           FirebaseAuth.instance.currentUser!.uid &&
                       data != null) {
                     consultProvider.add(ProviderConsult.fromJson(data));
-                    print(data["status"]);
                     consultData.add(ConsultData(
                       consultId: e.data()["consultId"],
                       isActive: e.data()["isActive"],
@@ -69,8 +68,6 @@ class InstantCubit extends Cubit<InstantState> {
                       payment: e.data()["payment"],
                       isPaid: e.data()["isPaid"],
                     ));
-
-                    print(consultProvider.length);
                     emit(InstantInstantDataSuccess());
                   }
                 }
@@ -81,60 +78,6 @@ class InstantCubit extends Cubit<InstantState> {
       );
       emit(InstantProviderDataSuccess());
     });
-  }
-
-  void getConsultData() {
-    emit(InstantInstantDataLoadingState());
-    getProviderData();
-
-    if (providerData1 == null) {
-      emit(InstantInstantDataLoadingState());
-    }
-    _firebase
-        .collection("consults")
-        .orderBy("date", descending: false)
-        .snapshots()
-        .listen(
-      (event) {
-        consultProvider = [];
-        consultData = [];
-        for (var e in event.docs) {
-          emit(InstantInstantDataLoadingState());
-          if (providerData1!.topics!.contains(e.data()["topic"])) {
-            if (e.data()["status"] != "ended" ||
-                e.data()["providerId"] == null ||
-                e.data()["providerId"] ==
-                    FirebaseAuth.instance.currentUser!.uid) {
-              for (var data in e.data()["providers"]) {
-                if (data["consultId"] ==
-                        FirebaseAuth.instance.currentUser!.uid &&
-                    data != null) {
-                  consultProvider.add(ProviderConsult.fromJson(data));
-
-                  print(data["status"]);
-                  consultData.add(ConsultData(
-                    consultId: e.data()["consultId"],
-                    isActive: e.data()["isActive"],
-                    uid: e.data()["uid"],
-                    topic: e.data()["topic"],
-                    detail: e.data()["details"],
-                    date: e.data()["date"],
-                    docId: e.data()["consultId"],
-                    status: e.data()["status"],
-                    price: double.parse(e.data()["price"].toString()),
-                    providers: consultProvider,
-                    payment: e.data()["payment"],
-                    isPaid: e.data()["isPaid"],
-                  ));
-                  print(consultProvider.length);
-                }
-              }
-            }
-          }
-        }
-      },
-    );
-    emit(InstantInstantDataSuccess());
   }
 
   void getSeekerDataPerInstant({

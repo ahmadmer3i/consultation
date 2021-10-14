@@ -73,6 +73,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
 
   @override
   Widget build(BuildContext context) {
+    var cubit = InstantCubit.get(context);
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
       locale: "fa",
       dayButtonColor: Color(0xffDDBEA9),
@@ -188,8 +189,8 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                  "${InstantCubit.get(context).providerData1!.rate!}"),
+                              Text(cubit.providerData1!.rate!
+                                  .toStringAsFixed(1)),
                               StarRating(
                                 rating: InstantCubit.get(context)
                                     .providerData1!

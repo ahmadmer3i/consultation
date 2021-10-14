@@ -14,7 +14,7 @@ void updateInstantStatus(
   var collection = _firebase.collection("consults");
   var snapshot = await collection.doc(docId).get();
   for (var e in snapshot.data()!["providers"]) {
-    items.add(ProviderConsult.fromJson(e));
+    items.add(ProviderConsult.fromDatabase(e));
   }
   index = items
       .indexWhere((element) => element.consultId == _auth.currentUser!.uid);
@@ -23,7 +23,7 @@ void updateInstantStatus(
   items[index].isSent = true;
   List<Map<String, dynamic>> updatedItems = [];
   for (var element in items) {
-    updatedItems.add(element.toMap());
+    updatedItems.add(element.toDatabase());
     print(element);
   }
   _firebase.collection("consults").doc(docId).set({"providers": updatedItems},

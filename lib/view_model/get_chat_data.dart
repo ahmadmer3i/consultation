@@ -36,7 +36,7 @@ Stream<List<ConsultData>> getChatData({required String status}) {
                     consults.clear();
                     break;
                   } else if (e["status"] == "تم ارسال العرض") {
-                    consults.add(ProviderConsult.fromJson(e));
+                    consults.add(ProviderConsult.fromDatabase(e));
                   }
                 }
               } else {

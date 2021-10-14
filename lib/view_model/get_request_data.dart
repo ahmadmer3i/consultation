@@ -17,7 +17,7 @@ Stream<List<ConsultData>> get getRequestData {
 
             for (var e in elements) {
               if (e["isSent"] == true && e["isApproved"] == false) {
-                consults.add(ProviderConsult.fromJson(e));
+                consults.add(ProviderConsult.fromDatabase(e));
               } else if (e["isApproved"] == true) {
                 consults.clear();
                 return false;

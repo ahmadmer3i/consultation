@@ -40,14 +40,17 @@ class ProviderConsult {
   double? price;
   String? status;
 
-  ProviderConsult.fromJson(Map<String, dynamic> json) {
+  ProviderConsult.fromDatabase(Map<String, dynamic> json) {
+    // from database
     consultId = json["consultId"];
     isApproved = json["isApproved"];
     isSent = json["isSent"];
-    price = double.tryParse(json["price"].toString());
+    price = double.tryParse(
+        json["price"].toString()); // will show error if not converted;
     status = json["status"];
   }
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toDatabase() {
+    // to database
     return {
       'price': price,
       'isApproved': isApproved,

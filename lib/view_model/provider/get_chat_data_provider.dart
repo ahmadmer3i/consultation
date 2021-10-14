@@ -14,7 +14,7 @@ Stream<List<ConsultData>> getChatDataProvider({required String status}) {
                   element.data()["status"] == status;
               if (isExist) {
                 for (var item in element.data()["providers"]) {
-                  consults.add(ProviderConsult.fromJson(item));
+                  consults.add(ProviderConsult.fromDatabase(item));
                 }
                 return true;
               } else {

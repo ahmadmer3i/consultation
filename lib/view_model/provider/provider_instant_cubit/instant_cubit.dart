@@ -27,6 +27,7 @@ class InstantCubit extends Cubit<InstantState> {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then(
+      // instead of using async and await
       (value) {
         providerData1 = ProviderData.fromJson(value.data()!);
       },
@@ -36,6 +37,7 @@ class InstantCubit extends Cubit<InstantState> {
           .orderBy("date", descending: true)
           .snapshots()
           .listen(
+        // monitor the changes on the upcoming data
         (event) {
           consultProvider = [];
           consultData = [];
@@ -53,8 +55,9 @@ class InstantCubit extends Cubit<InstantState> {
                   if (data["consultId"] ==
                           FirebaseAuth.instance.currentUser!.uid &&
                       data != null) {
-                    consultProvider.add(ProviderConsult.fromJson(data));
+                    consultProvider.add(ProviderConsult.fromDatabase(data));
                     consultData.add(ConsultData(
+                      // == fromJson custom constructor
                       consultId: e.data()["consultId"],
                       isActive: e.data()["isActive"],
                       uid: e.data()["uid"],
@@ -78,24 +81,5 @@ class InstantCubit extends Cubit<InstantState> {
       );
       emit(InstantProviderDataSuccess());
     });
-  }
-
-  void getSeekerDataPerInstant({
-    required String seekerId,
-  }) {
-    var _firebase = FirebaseFirestore.instance; // Firebase Connection instant;
-    _firebase.collection("seeker").doc(seekerId).get().then((value) =>
-        seekerData1 = SeekerData(
-          email: value["email"],
-          gender: value["gender"],
-          date: value["dateOfBirth"],
-          name: value["name"],
-          uid: value["uid"],
-          username: value["username"],
-          password: value["password"],
-        )); //get all data from the collection "seeker" and store it in snapshot
-
-    emit(InstantSeekerDataSuccess());
-    // loop over all docs in the collection seeker and add it to data list
   }
 }

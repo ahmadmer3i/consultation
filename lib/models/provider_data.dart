@@ -19,7 +19,7 @@ class ProviderData {
     this.experience,
     this.rate = 5,
   });
-
+// Custom Constructor
   ProviderData.fromJson(Map<String, dynamic> json) {
     password = json["password"];
     email = json["email"];

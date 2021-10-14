@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -103,8 +102,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                                     .collection("provider")
                                                     .doc(widget.providerId)
                                                     .collection("ratings")
-                                                    .doc(FirebaseAuth.instance
-                                                        .currentUser!.uid)
+                                                    .doc()
                                                     .set(
                                                   {
                                                     "rating": MessagesCubit.get(

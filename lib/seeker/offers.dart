@@ -113,7 +113,8 @@ class _OffersState extends State<Offers> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                snapshot.data!.rate.toString(),
+                                                snapshot.data!.rate!
+                                                    .toStringAsFixed(1),
                                               ),
                                               StarRating(
                                                 rating: snapshot.data!.rate,

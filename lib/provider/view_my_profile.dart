@@ -2,6 +2,7 @@
 
 import 'package:consultation/Provider/provider_edit_profile.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -138,7 +139,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                           radius: 50,
                         ),
                         Text(
-                          "محمد علی",
+                          InstantCubit.get(context).providerData1!.name!,
                           style: Theme.of(context)
                               .textTheme
                               .headline4!
@@ -187,9 +188,12 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("3.0"),
+                              Text(
+                                  "${InstantCubit.get(context).providerData1!.rate!}"),
                               StarRating(
-                                rating: widget.ratingEditor,
+                                rating: InstantCubit.get(context)
+                                    .providerData1!
+                                    .rate,
                                 size: 20,
                                 borderColor: Color(0xff6B705C),
                                 color: Color(0xff6B705C),
@@ -208,7 +212,10 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "15.00",
+                              InstantCubit.get(context)
+                                  .providerData1!
+                                  .price!
+                                  .toStringAsFixed(2),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!
@@ -301,7 +308,10 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                         child: Column(
                           children: [
                             Text(
-                              "خريج جامعة الملك سعود عام 2022 م صاحب البرنامج الاستشاري وحاصل على الشهادة الدولية للمسابقة الحائز على الميدالية الذهبية على مستوى المملكة في الذكاء الاصطناعي.",
+                              InstantCubit.get(context)
+                                  .providerData1!
+                                  .experience!,
+                              // "خريج جامعة الملك سعود عام 2022 م صاحب البرنامج الاستشاري وحاصل على الشهادة الدولية للمسابقة الحائز على الميدالية الذهبية على مستوى المملكة في الذكاء الاصطناعي.",
                               textAlign: TextAlign.center,
                             ),
                             Text(

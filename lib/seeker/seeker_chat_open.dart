@@ -69,9 +69,12 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                 child: Center(
                                   // new widget so i need child its under container
                                   child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     // اذا ابي فوق او تحت بعض استخدم كولم
                                     children: [
                                       //list collection of widgets
+                                      Text("قيم تجربتك"),
                                       Directionality(
                                         textDirection: ui.TextDirection.ltr,
                                         child: SmoothStarRating(
@@ -87,8 +90,8 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                           isReadOnly: false,
                                           filledIconData: Icons.star_outlined,
                                           halfFilledIconData: Icons.star_half,
-                                          color: Colors.yellow,
-                                          borderColor: Colors.yellow,
+                                          color: Colors.amber,
+                                          borderColor: Colors.amber,
                                           spacing: 0.0,
                                         ),
                                       ),

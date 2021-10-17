@@ -40,6 +40,7 @@ void saveConsult({
       "payment": "",
       "isPaid": false,
       "price": 0,
+      "isDeletedProvider": false,
       "providerId": null,
       "providers": consults,
     },

@@ -38,9 +38,6 @@ class _ProviderDashboardState extends State<ProviderDashboard>
       return BlocConsumer<InstantCubit, InstantState>(
         listener: (context, state) {},
         builder: (context, state) {
-          // print(
-          //     "here this ${InstantCubit.get(context).consultData[1].providers[0].consultId}");
-          // print("length ${InstantCubit.get(context).consultProvider.length}");
           return Scaffold(
             appBar: MyAppBar(
               autoLeading: false,
@@ -169,7 +166,16 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                             Icons.delete,
                                                             color: Colors.grey,
                                                           ),
-                                                          onPressed: () {},
+                                                          onPressed: () => InstantCubit
+                                                                  .get(context)
+                                                              .deletedItemProvider(
+                                                                  context,
+                                                                  docId: InstantCubit
+                                                                          .get(
+                                                                              context)
+                                                                      .consultData[
+                                                                          index]
+                                                                      .docId),
                                                         ),
                                                       )
                                                     ],

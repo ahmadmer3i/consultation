@@ -158,82 +158,98 @@ class _ProviderChatState extends State<ProviderChat>
                 Container(
                   margin: EdgeInsets.all(10),
                   child: StreamBuilder<List<ConsultData>>(
-                      stream: getChatDataProvider(status: "ended"),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.active) {
-                          return ListView.separated(
-                            itemCount: snapshot.data!.length,
-                            separatorBuilder: (context, index) {
-                              return SizedBox(
-                                height: 10,
-                              );
-                            },
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => ProviderChatOpen(
-                                        isClosed: true,
-                                        seekerId: snapshot.data![index].uid,
-                                        providerId:
-                                            snapshot.data![index].providerId!,
-                                        consultId:
-                                            snapshot.data![index].consultId,
-                                      ),
+                    stream: getChatDataProvider(status: "ended"),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        return ListView.separated(
+                          itemCount: snapshot.data!.length,
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => ProviderChatOpen(
+                                      isClosed: true,
+                                      seekerId: snapshot.data![index].uid,
+                                      providerId:
+                                          snapshot.data![index].providerId!,
+                                      consultId:
+                                          snapshot.data![index].consultId,
                                     ),
-                                  );
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Color(0xffFFE8D6)),
-                                  padding: EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xffFFE8D6)),
+                                padding: EdgeInsets.all(10),
+                                child: FutureBuilder(
+                                  future: getSeekerOffer(
+                                      id: snapshot.data![index].uid),
+                                  builder: (context,
+                                      AsyncSnapshot<SeekerData>
+                                          seekerSnapshot) {
+                                    if (seekerSnapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          CircleAvatar(),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10),
-                                            child: Text(
-                                              "خالد عبدالله",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1,
-                                            ),
+                                          Row(
+                                            children: [
+                                              CircleAvatar(),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 10),
+                                                child: Text(
+                                                  "${seekerSnapshot.data?.name}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .subtitle1,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                      Stack(
-                                        alignment: Alignment.center,
-                                        children: const [
-                                          CircleAvatar(
-                                            radius: 10,
-                                            backgroundColor: Color(0xff6B705C),
-                                          ),
-                                          Text(
-                                            "10",
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white),
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: const [
+                                              CircleAvatar(
+                                                radius: 10,
+                                                backgroundColor:
+                                                    Color(0xff6B705C),
+                                              ),
+                                              Text(
+                                                "10",
+                                                style: TextStyle(
+                                                    fontSize: 11,
+                                                    color: Colors.white),
+                                              )
+                                            ],
                                           )
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      );
+                                    } else {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                  },
                                 ),
-                              );
-                            },
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      }),
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    },
+                  ),
                 ),
               ],
             ),

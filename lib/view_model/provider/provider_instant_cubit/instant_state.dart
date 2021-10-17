@@ -16,3 +16,7 @@ class InstantInstantDataLoadingState extends InstantState {}
 class InstantInstantDataSuccess extends InstantState {}
 
 class InstantSeekerDataSuccess extends InstantState {}
+
+class InstantProviderDataDeleteLoading extends InstantState {}
+
+class InstantProviderDataDeletedSuccess extends InstantState {}

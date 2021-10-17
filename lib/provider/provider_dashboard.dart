@@ -10,6 +10,7 @@ import 'package:consultation/view_model/provider/provider_instant_cubit/instant_
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class ProviderDashboard extends StatefulWidget {
   const ProviderDashboard({
@@ -226,11 +227,57 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                     ),
                                                   ],
                                                 ),
-                                                Text(
-                                                  "خريج جامعة الملك سعود عام 2022 م صاحب البرنامج الاستشاري وحاصل على الشهادة الدولية للمسابقة الحائز على الميدالية الذهبية على مستوى المملكة في الذكاء الاصطناعي.",
-                                                  style: TextStyle(
-                                                    height: 1.5,
-                                                  ),
+                                                SizedBox(
+                                                  height: 4,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          "تاريخ الميلاد",
+                                                          style: TextStyle(
+                                                            height: 1.5,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "${snapshotSeeker.data!.date!}",
+                                                          style: TextStyle(
+                                                            height: 1.5,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        Text(
+                                                          "تاريخ تقديم الاستشارة",
+                                                          style: TextStyle(
+                                                            height: 1.5,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          " ${DateFormat.yMMMd('ar').format(InstantCubit.get(context).consultData[index].date.toDate())}",
+                                                          style: TextStyle(
+                                                            height: 1.5,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
                                                 )
                                               ],
                                             ),

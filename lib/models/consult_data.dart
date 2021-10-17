@@ -39,9 +39,11 @@ class ProviderConsult {
   bool? isSent;
   double? price;
   String? status;
+  bool? isDeletedProvider;
 
   ProviderConsult.fromDatabase(Map<String, dynamic> json) {
     // from database
+    isDeletedProvider = json["isDeleted"] ?? false;
     consultId = json["consultId"];
     isApproved = json["isApproved"];
     isSent = json["isSent"];
@@ -57,6 +59,7 @@ class ProviderConsult {
       'isSent': isSent,
       'consultId': consultId,
       'status': status,
+      'isDeleted': isDeletedProvider,
     };
   }
 }

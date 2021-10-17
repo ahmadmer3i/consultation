@@ -166,16 +166,23 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                             Icons.delete,
                                                             color: Colors.grey,
                                                           ),
-                                                          onPressed: () => InstantCubit
-                                                                  .get(context)
-                                                              .deletedItemProvider(
-                                                                  context,
-                                                                  docId: InstantCubit
+                                                          onPressed: () => InstantCubit.get(context).deleteInstantProvider(
+                                                              docId: InstantCubit.get(
+                                                                      context)
+                                                                  .consultData[
+                                                                      index]
+                                                                  .docId,
+                                                              data: InstantCubit
                                                                           .get(
                                                                               context)
                                                                       .consultData[
-                                                                          index]
-                                                                      .docId),
+                                                                  index],
+                                                              price: InstantCubit
+                                                                      .get(
+                                                                          context)
+                                                                  .consultProvider[
+                                                                      index]
+                                                                  .price!),
                                                         ),
                                                       )
                                                     ],

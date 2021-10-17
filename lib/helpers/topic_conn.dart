@@ -22,6 +22,7 @@ void saveConsult({
           "price": 0,
           "status": "قيد الدراسة",
           "isSent": false,
+          "isDeleted": false,
         });
       }
     }

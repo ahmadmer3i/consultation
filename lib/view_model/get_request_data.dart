@@ -11,6 +11,7 @@ Stream<List<ConsultData>> get getRequestData {
   return _firebase.collection("consults").snapshots().map(
         (event) => event.docs.where((element) {
           if (element.data()["isActive"] == true &&
+              element.data()["uid"] == _auth.currentUser!.uid &&
               element.data()["isDeleted"] == false) {
             consults.clear();
             var elements = element.data()["providers"];

@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/models/seeker_data.dart';
-import 'package:consultation/widgets/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -87,20 +86,6 @@ class InstantCubit extends Cubit<InstantState> {
     });
   }
 
-  void deletedItemProvider(BuildContext ctx, {required String docId}) {
-    emit(InstantProviderDataDeleteLoading());
-    MessageDialog.showWaitingDialog(ctx, message: "يرجى الانتظار");
-
-    FirebaseFirestore.instance.collection("consults").doc(docId).set(
-      {
-        "isDeletedProvider": true,
-      },
-      SetOptions(merge: true),
-    ).then((value) {});
-    Navigator.pop(ctx);
-    emit(InstantProviderDataDeletedSuccess());
-  }
-
   void deleteInstantProvider(
       {required docId, required data, required double price, isSent}) async {
     var _firebase = FirebaseFirestore.instance;
@@ -114,9 +99,6 @@ class InstantCubit extends Cubit<InstantState> {
     }
     index = items
         .indexWhere((element) => element.consultId == _auth.currentUser!.uid);
-    items[index].price = price;
-    items[index].status = "تم ارسال العرض";
-    items[index].isSent = true;
     items[index].isDeletedProvider = true;
     List<Map<String, dynamic>> updatedItems = [];
     for (var element in items) {

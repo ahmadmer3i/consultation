@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/message_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,12 +118,32 @@ class MessagesCubit extends Cubit<MessagesState> {
     emit(MessageClosingSuccessState());
   }
 
-  void endChat({required consultId}) {
+  void endChat({required consultId, providerId}) {
     FirebaseFirestore.instance
         .collection("consults")
         .doc(consultId)
-        .update({"status": "ended", "isActive": false}).then(
-            (value) => isClosing == false);
+        .update({"status": "ended", "isActive": false})
+        .then((value) => isClosing == false)
+        .then((value) async {
+          List<ProviderConsult> items = [];
+          int index;
+          var collection = FirebaseFirestore.instance.collection("consults");
+          var snapshot = await collection.doc(consultId).get();
+          for (var e in snapshot.data()!["providers"]) {
+            items.add(ProviderConsult.fromDatabase(e));
+          }
+          index =
+              items.indexWhere((element) => element.consultId == providerId);
+          items[index].status = "منتهية";
+          List<Map<String, dynamic>> updatedItems = [];
+          for (var element in items) {
+            updatedItems.add(element.toDatabase());
+          }
+          FirebaseFirestore.instance.collection("consults").doc(consultId).set(
+              {"providers": updatedItems},
+              SetOptions(
+                  merge: true)).onError((error, stackTrace) => print(error));
+        });
     emit(MessageEndingSuccessState());
   }
 

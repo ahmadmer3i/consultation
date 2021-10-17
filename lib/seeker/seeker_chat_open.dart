@@ -121,6 +121,8 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                                   (value) =>
                                                       MessagesCubit.get(context)
                                                           .endChat(
+                                                              providerId: widget
+                                                                  .providerId,
                                                               consultId: widget
                                                                   .consultId),
                                                 );

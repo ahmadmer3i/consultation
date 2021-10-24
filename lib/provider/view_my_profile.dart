@@ -75,7 +75,7 @@ class _ViewMyProfileState extends State<ViewMyProfile>
   Widget build(BuildContext context) {
     var cubit = InstantCubit.get(context);
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      locale: "fa",
+      locale: "ar",
       dayButtonColor: Color(0xffDDBEA9),
       daysTextStyle:
           TextStyle(fontWeight: FontWeight.w900, color: Colors.black),
@@ -113,10 +113,12 @@ class _ViewMyProfileState extends State<ViewMyProfile>
       selectedDayButtonColor: Color(0xff6B705C),
       onCalendarChanged: (DateTime date) {
         // ignore: unnecessary_this
-        this.setState(() {
-          _targetDateTime = date;
-          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-        });
+        this.setState(
+          () {
+            _targetDateTime = date;
+            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+          },
+        );
       },
     );
 
@@ -148,30 +150,33 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              showDialog(
+                            setState(
+                              () {
+                                showDialog(
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
                                       title: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "قيم تجربتك",
-                                            style: TextStyle(
-                                                color: Color(0xffCB997E)),
-                                          )),
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "قيم تجربتك",
+                                          style: TextStyle(
+                                              color: Color(0xffCB997E)),
+                                        ),
+                                      ),
                                       content: RatingEditor(
                                         rating: widget.ratingEditor,
                                       ),
                                       actionsAlignment: MainAxisAlignment.start,
                                       actions: [
                                         ElevatedButton(
-                                            onPressed: () {},
-                                            child: Text(
-                                              "إرسال",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            )),
+                                          onPressed: () {},
+                                          child: Text(
+                                            "إرسال",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
                                         ElevatedButton(
                                             style: ElevatedButton.styleFrom(
                                                 primary: Colors.grey),
@@ -183,8 +188,10 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                                             )),
                                       ],
                                     );
-                                  });
-                            });
+                                  },
+                                );
+                              },
+                            );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

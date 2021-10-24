@@ -31,34 +31,37 @@ class _AddNewSlotState extends State<AddNewSlot> {
               ),
             ),
             Container(
-                padding: const EdgeInsets.all(10),
-                child: MyTextFieldDark(
-                  textController: dateController,
-                  label: "تاريخ",
-                  iconButton: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime(2101),
-                      ).then((value) {
-                        print(value);
-                        setState(() {
-                          dateController.text = value != null
-                              ? DateFormat.yMMMd('ar').format(value)
-                              : "";
-                          print(dateController.text);
-                        });
+              padding: const EdgeInsets.all(10),
+              child: MyTextFieldDark(
+                textController: dateController,
+                isReadOnly: true,
+                label: "تاريخ",
+                iconButton: IconButton(
+                  icon: const Icon(Icons.calendar_today),
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2101),
+                    ).then((value) {
+                      print(value);
+                      setState(() {
+                        dateController.text = value != null
+                            ? DateFormat.yMMMd('ar').format(value)
+                            : "";
+                        print(dateController.text);
                       });
-                    },
-                  ),
-                )),
+                    });
+                  },
+                ),
+              ),
+            ),
             Container(
                 padding: const EdgeInsets.all(10),
                 child: MyTextFieldDark(
                   textController: timeController,
+                  isReadOnly: true,
                   label: "الوقت",
                   iconButton: IconButton(
                     icon: const Icon(Icons.access_time),
@@ -66,22 +69,24 @@ class _AddNewSlotState extends State<AddNewSlot> {
                       showTimePicker(
                         context: context,
                         initialTime: TimeOfDay.now(),
-                      ).then((value) {
-                        setState(
-                          () {
-                            timeController.text = value != null
-                                ? DateFormat.jm('ar').format(
-                                    DateTime(
-                                        DateTime.now().year,
-                                        DateTime.now().month,
-                                        DateTime.now().day,
-                                        value.hour,
-                                        value.minute),
-                                  )
-                                : "";
-                          },
-                        );
-                      });
+                      ).then(
+                        (value) {
+                          setState(
+                            () {
+                              timeController.text = value != null
+                                  ? DateFormat.jm('ar').format(
+                                      DateTime(
+                                          DateTime.now().year,
+                                          DateTime.now().month,
+                                          DateTime.now().day,
+                                          value.hour,
+                                          value.minute),
+                                    )
+                                  : "";
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                 )),

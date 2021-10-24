@@ -77,7 +77,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
   @override
   Widget build(BuildContext context) {
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      locale: "fa",
+      locale: "ar",
       dayButtonColor: Color(0xffDDBEA9),
       daysTextStyle:
           TextStyle(fontWeight: FontWeight.w900, color: Colors.black),
@@ -85,9 +85,11 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
       todayBorderColor: Color(0xff6B705C),
       selectedDateTime: _selectedDate,
       onDayPressed: (DateTime day, List<Event> events) {
-        setState(() {
-          _selectedDate = day;
-        });
+        setState(
+          () {
+            _selectedDate = day;
+          },
+        );
       },
       todayTextStyle:
           TextStyle(fontWeight: FontWeight.w900, color: Colors.white),
@@ -114,11 +116,12 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
       ),
       selectedDayButtonColor: Color(0xff6B705C),
       onCalendarChanged: (DateTime date) {
-        // ignore: unnecessary_this
-        this.setState(() {
-          _targetDateTime = date;
-          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
-        });
+        setState(
+          () {
+            _targetDateTime = date;
+            _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+          },
+        );
       },
     );
 
@@ -148,43 +151,47 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                       ),
                       GestureDetector(
                         onTap: () {
-                          setState(() {
-                            showDialog(
+                          setState(
+                            () {
+                              showDialog(
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
                                     title: Align(
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          "قيم تجربتك",
-                                          style: TextStyle(
-                                              color: Color(0xffCB997E)),
-                                        )),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "قيم تجربتك",
+                                        style:
+                                            TextStyle(color: Color(0xffCB997E)),
+                                      ),
+                                    ),
                                     content: RatingEditor(
                                       rating: widget.ratingEditor,
                                     ),
                                     //actionsAlignment: MainAxisAlignment.start,
                                     actions: [
                                       ElevatedButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            "إرسال",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
+                                        onPressed: () {},
+                                        child: Text(
+                                          "إرسال",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
                                       ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              primary: Colors.grey),
-                                          onPressed: () {},
-                                          child: Text(
-                                            "إلغاء",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.grey),
+                                        onPressed: () {},
+                                        child: Text(
+                                          "إلغاء",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
                                     ],
                                   );
-                                });
-                          });
+                                },
+                              );
+                            },
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -222,8 +229,10 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                   ],
                 ),
                 SizedBox(
-                    height: 600,
-                    child: TabBarView(controller: tabController, children: [
+                  height: 600,
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
                       Column(
                         children: [
                           Container(
@@ -231,49 +240,60 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                             color: Color(0xffCB997E),
                             height: 70,
                             child: ListView.builder(
-                                itemCount: times.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      setState(() {
+                              itemCount: times.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
                                         selectedIndex = index;
-                                      });
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 5),
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 0, horizontal: 20),
-                                      decoration: BoxDecoration(
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 5,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 0,
+                                      horizontal: 20,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: selectedIndex == index
+                                          ? Color(0xff6B705C)
+                                          : Color(0xffFAFAFA),
+                                      border: Border.all(
                                         color: selectedIndex == index
-                                            ? Color(0xff6B705C)
-                                            : Color(0xffFAFAFA),
-                                        border: Border.all(
-                                            color: selectedIndex == index
-                                                ? Color(0xffFAFAFA)
-                                                : Color(0xff6B705C),
-                                            width: 2),
-                                        borderRadius: BorderRadius.circular(10),
+                                            ? Color(0xffFAFAFA)
+                                            : Color(0xff6B705C),
+                                        width: 2,
                                       ),
-                                      child: Center(
-                                          child: Text(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
                                         times.elementAt(index),
                                         style: TextStyle(
-                                            color: selectedIndex == index
-                                                ? Color(0xffFAFAFA)
-                                                : Color(0xff6B705C),
-                                            fontWeight: FontWeight.bold),
-                                      )),
+                                          color: selectedIndex == index
+                                              ? Color(0xffFAFAFA)
+                                              : Color(0xff6B705C),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-                                  );
-                                }),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                           Container(
-                              height: 500,
-                              width: 500,
-                              color: Color(0xffFFE8D6),
-                              child: _calendarCarouselNoHeader),
+                            height: 500,
+                            width: 500,
+                            color: Color(0xffFFE8D6),
+                            child: _calendarCarouselNoHeader,
+                          ),
                         ],
                       ),
                       Container(
@@ -294,62 +314,73 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                             SizedBox(
                               height: 200,
                               child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return PinchZoom(
-                                                child: Image.network(
-                                                    'https://picsum.photos/200'),
-                                                resetDuration: const Duration(
-                                                    milliseconds: 100),
-                                                maxScale: 2.5,
-                                                onZoomStart: () {
-                                                  // print('Start zooming');
-                                                },
-                                                onZoomEnd: () {
-                                                  // print('Stop zooming');
-                                                },
-                                              );
-                                            });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.all(10),
-                                        height: 200,
-                                        width: 200,
-                                        child: Image.network(
-                                          "https://picsum.photos/200",
-                                          fit: BoxFit.cover,
-                                        ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 10,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return PinchZoom(
+                                            child: Image.network(
+                                              'https://picsum.photos/200',
+                                            ),
+                                            resetDuration: const Duration(
+                                              milliseconds: 100,
+                                            ),
+                                            maxScale: 2.5,
+                                            onZoomStart: () {
+                                              // print('Start zooming');
+                                            },
+                                            onZoomEnd: () {
+                                              // print('Stop zooming');
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.all(10),
+                                      height: 200,
+                                      width: 200,
+                                      child: Image.network(
+                                        "https://picsum.photos/200",
+                                        fit: BoxFit.cover,
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                  );
+                                },
+                              ),
                             )
                           ],
                         ),
                       ),
-                    ])),
+                    ],
+                  ),
+                ),
                 widget.canProceed
                     ? Container(
                         margin: EdgeInsets.all(10),
                         child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ConsultationDetails()));
-                            },
-                            child: Text(
-                              "التالي",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white),
-                            )))
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ConsultationDetails(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "التالي",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )
                     : Container()
               ],
-            )
+            ),
           ],
         ),
       ),

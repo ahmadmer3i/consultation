@@ -56,7 +56,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
   @override
   Widget build(BuildContext context) {
     final _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      locale: "fa",
+      locale: "ar",
       dayButtonColor: Color(0xffDDBEA9),
       daysTextStyle:
           TextStyle(fontWeight: FontWeight.w900, color: Colors.black),

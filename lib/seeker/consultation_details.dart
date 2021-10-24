@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:consultation/components.dart';
+import 'package:consultation/models/provider_data.dart';
 import 'package:flutter/material.dart';
 
 class ConsultationDetails extends StatefulWidget {
-  const ConsultationDetails({Key? key}) : super(key: key);
+  final ProviderData providerData;
+  const ConsultationDetails({Key? key, required this.providerData})
+      : super(key: key);
 
   @override
   _ConsultationDetailsState createState() => _ConsultationDetailsState();
@@ -46,7 +49,7 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                                 top: Radius.circular(20))),
                         context: context,
                         builder: (_) => MyBottomSheet(
-                          price: 100,
+                          price: widget.providerData.price!,
                           onPressed: () {},
                         ),
                       );

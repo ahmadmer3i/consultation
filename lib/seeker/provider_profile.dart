@@ -366,7 +366,9 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => ConsultationDetails(),
+                                builder: (context) => ConsultationDetails(
+                                  providerData: widget.data!,
+                                ),
                               ),
                             );
                           },

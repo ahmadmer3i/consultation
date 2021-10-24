@@ -39,62 +39,68 @@ class _AddNewSlotState extends State<AddNewSlot> {
                 iconButton: IconButton(
                   icon: const Icon(Icons.calendar_today),
                   onPressed: () {
-                    showDatePicker(
+                    showDateRangePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialEntryMode: DatePickerEntryMode.calendar,
                       firstDate: DateTime.now(),
                       lastDate: DateTime(2101),
-                    ).then((value) {
-                      print(value);
-                      setState(() {
-                        dateController.text = value != null
-                            ? DateFormat.yMMMd('ar').format(value)
-                            : "";
-                        print(dateController.text);
-                      });
-                    });
+                    ).then(
+                      (value) {
+                        setState(
+                          () {
+                            // dateController.text = value != null
+                            //     ? DateFormat.yMMMd('ar').format(value)
+                            //     : "";
+                          },
+                        );
+                      },
+                    );
                   },
                 ),
               ),
             ),
             Container(
-                padding: const EdgeInsets.all(10),
-                child: MyTextFieldDark(
-                  textController: timeController,
-                  isReadOnly: true,
-                  label: "الوقت",
-                  iconButton: IconButton(
-                    icon: const Icon(Icons.access_time),
-                    onPressed: () async {
-                      showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                      ).then(
-                        (value) {
-                          setState(
-                            () {
-                              timeController.text = value != null
-                                  ? DateFormat.jm('ar').format(
-                                      DateTime(
-                                          DateTime.now().year,
-                                          DateTime.now().month,
-                                          DateTime.now().day,
-                                          value.hour,
-                                          value.minute),
-                                    )
-                                  : "";
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                )),
+              padding: const EdgeInsets.all(10),
+              child: MyTextFieldDark(
+                textController: timeController,
+                isReadOnly: true,
+                label: "الوقت",
+                iconButton: IconButton(
+                  icon: const Icon(Icons.access_time),
+                  onPressed: () async {
+                    showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    ).then(
+                      (value) {
+                        setState(
+                          () {
+                            timeController.text = value != null
+                                ? DateFormat.jm('ar').format(
+                                    DateTime(
+                                      DateTime.now().year,
+                                      DateTime.now().month,
+                                      DateTime.now().day,
+                                      value.hour,
+                                      value.minute,
+                                    ),
+                                  )
+                                : "";
+                          },
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
             ElevatedButton(
               onPressed: () {},
               child: const Text(
                 "إضافة",
-                style: TextStyle(color: Color(0xffFFE8D6)),
+                style: TextStyle(
+                  color: Color(0xffFFE8D6),
+                ),
               ),
             )
           ],

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:consultation/components.dart';
+import 'package:consultation/models/provider_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -16,8 +17,8 @@ import 'consultation_details.dart';
 class ProviderProfileSchedule extends StatefulWidget {
   final bool canProceed;
   final double ratingEditor = 0;
-
-  const ProviderProfileSchedule({Key? key, this.canProceed = true})
+  final ProviderData? data;
+  const ProviderProfileSchedule({Key? key, this.canProceed = true, this.data})
       : super(key: key);
 
   @override
@@ -139,7 +140,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                         radius: 50,
                       ),
                       Text(
-                        "محمد علی",
+                        "${widget.data?.name}",
                         style: Theme.of(context)
                             .textTheme
                             .headline4!
@@ -188,9 +189,10 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("3.0"),
+                            Text("${widget.data?.rate?.toStringAsFixed(1)}"),
                             StarRating(
-                              rating: widget.ratingEditor,
+                              rating: double.parse(
+                                  widget.data!.rate!.toStringAsFixed(1)),
                               size: 20,
                               borderColor: Color(0xff6B705C),
                               color: Color(0xff6B705C),
@@ -279,7 +281,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                         child: Column(
                           children: [
                             Text(
-                              "خريج جامعة الملك سعود عام 2022 م صاحب البرنامج الاستشاري وحاصل على الشهادة الدولية للمسابقة الحائز على الميدالية الذهبية على مستوى المملكة في الذكاء الاصطناعي.",
+                              "${widget.data?.experience}",
                               textAlign: TextAlign.center,
                             ),
                             Text(

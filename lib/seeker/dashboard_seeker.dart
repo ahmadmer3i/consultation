@@ -131,7 +131,9 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const ListConsultants(),
+                                                    ListConsultants(
+                                                        topic: topicsList[index]
+                                                            .title),
                                               ),
                                             );
                                           },

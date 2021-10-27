@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:consultation/Provider/add_new_slot.dart';
+import 'package:consultation/view_model/provider/time_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/classes/multiple_marked_dates.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:intl/intl.dart';
 
@@ -63,10 +66,15 @@ class _CalendarManagementState extends State<CalendarManagement> {
       todayButtonColor: Color(0xffA6A68E),
       todayBorderColor: Color(0xff6B705C),
       selectedDateTime: _selectedDate,
+      markedDateShowIcon: false,
+      multipleMarkedDates:
+          MultipleMarkedDates(markedDates: TimeCubit.get(context).markedDate),
       onDayPressed: (DateTime day, List<Event> events) {
-        setState(() {
-          _selectedDate = day;
-        });
+        setState(
+          () {
+            _selectedDate = day;
+          },
+        );
       },
       todayTextStyle:
           TextStyle(fontWeight: FontWeight.w900, color: Colors.white),
@@ -100,6 +108,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
         });
       },
     );
+    print(TimeCubit.get(context).markedDate.length);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: FloatingActionButton(
@@ -111,74 +120,93 @@ class _CalendarManagementState extends State<CalendarManagement> {
         child: Icon(Icons.add),
       ),
       appBar: MyAppBar(),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "الأوقات المتاحة",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(color: Color(0xffCB997E)),
-                )),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    color: Color(0xffCB997E),
-                    height: 70,
-                    child: ListView.builder(
-                        itemCount: times.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                              });
-                            },
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 0, horizontal: 20),
-                              decoration: BoxDecoration(
-                                color: selectedIndex == index
-                                    ? Color(0xff6B705C)
-                                    : Color(0xffFAFAFA),
-                                border: Border.all(
+      body: BlocBuilder<TimeCubit, TimeState>(
+        builder: (context, state) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "الأوقات المتاحة",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(color: Color(0xffCB997E)),
+                    )),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        color: Color(0xffCB997E),
+                        height: 70,
+                        child: ListView.builder(
+                          itemCount:
+                              TimeCubit.get(context).timeIntervals.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedIndex = index;
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 5,
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 0,
+                                  horizontal: 20,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: selectedIndex == index
+                                      ? Color(0xff6B705C)
+                                      : Color(0xffFAFAFA),
+                                  border: Border.all(
                                     color: selectedIndex == index
                                         ? Color(0xffFAFAFA)
                                         : Color(0xff6B705C),
-                                    width: 2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
                                   child: Text(
-                                times.elementAt(index),
-                                style: TextStyle(
-                                    color: selectedIndex == index
-                                        ? Color(0xffFAFAFA)
-                                        : Color(0xff6B705C),
-                                    fontWeight: FontWeight.bold),
-                              )),
-                            ),
-                          );
-                        }),
+                                    DateFormat.jm().format(
+                                      DateTime.parse(
+                                        TimeCubit.get(context)
+                                            .timeIntervals[index],
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      color: selectedIndex == index
+                                          ? Color(0xffFAFAFA)
+                                          : Color(0xff6B705C),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 400,
+                        color: Color(0xffFFE8D6),
+                        child: _calendarCarouselNoHeader,
+                      ),
+                    ],
                   ),
-                  Container(
-                      height: 400,
-                      color: Color(0xffFFE8D6),
-                      child: _calendarCarouselNoHeader),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: MyProviderBottomNavigationBar(),
     );

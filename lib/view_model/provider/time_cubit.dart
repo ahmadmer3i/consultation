@@ -4,7 +4,6 @@ import 'package:consultation/helpers/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_calendar_carousel/classes/marked_date.dart';
 import 'package:meta/meta.dart';
 
 part 'time_state.dart';
@@ -30,21 +29,19 @@ class TimeCubit extends Cubit<TimeState> {
     }
     emit(TimeGetDataSuccess());
     print('test');
+    markedDate = [];
     for (var date in timeIntervals) {
       print(DateTime.parse(date));
       markedDate.add(
-        MarkedDate(
-          color: const Color(0xff6B705C),
-          date: DateTime.parse(date),
-        ),
+        DateTime.parse(date),
       );
     }
     print(markedDate.length);
     for (var date in markedDate) {
-      print(date.date);
+      print(date.day);
     }
     emit(TimeGetDateCalenderSuccess());
   }
 
-  List<MarkedDate> markedDate = [];
+  List<DateTime> markedDate = [];
 }

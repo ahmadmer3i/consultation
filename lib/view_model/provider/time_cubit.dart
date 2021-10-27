@@ -33,7 +33,7 @@ class TimeCubit extends Cubit<TimeState> {
     for (var date in timeIntervals) {
       print(DateTime.parse(date));
       markedDate.add(
-        DateTime.parse(date),
+        DateTime.parse(date)
       );
     }
     print(markedDate.length);

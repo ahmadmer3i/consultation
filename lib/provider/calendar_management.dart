@@ -157,7 +157,7 @@ class _CalendarManagementState extends State<CalendarManagement> {
                             height: 70,
                             child: ListView.builder(
                               itemCount:
-                                  TimeCubit.get(context).timeIntervals.length,
+                                  TimeCubit.get(context).timeAvailable.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
@@ -190,20 +190,20 @@ class _CalendarManagementState extends State<CalendarManagement> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Center(
-                                      child: Text(
-                                        DateFormat.jm().format(
-                                          DateTime.parse(
-                                            TimeCubit.get(context)
-                                                .timeIntervals[index],
-                                          ),
-                                        ),
-                                        style: TextStyle(
-                                          color: selectedIndex == index
-                                              ? Color(0xffFAFAFA)
-                                              : Color(0xff6B705C),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                      child: TimeCubit.get(context)
+                                              .timeAvailable
+                                              .isNotEmpty
+                                          ? Text(
+                                              TimeCubit.get(context)
+                                                  .timeAvailable[index],
+                                              style: TextStyle(
+                                                color: selectedIndex == index
+                                                    ? Color(0xffFAFAFA)
+                                                    : Color(0xff6B705C),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            )
+                                          : Container(),
                                     ),
                                   ),
                                 );
@@ -211,70 +211,45 @@ class _CalendarManagementState extends State<CalendarManagement> {
                             ),
                           ),
                           Container(
-                            width: double.infinity,
-                            height: 400,
-                            color: Color(0xffFFE8D6),
-                            child: dp.DayPicker.multi(
-                              onMonthChanged: (dateTime) {
-                                setState(() {});
-                              },
-                              eventDecorationBuilder: (date) {
-                                return date.month == DateTime.now().month &&
-                                        date.year == DateTime.now().year &&
-                                        DateTime.now().day == date.day
-                                    ? dp.EventDecoration(
-                                        boxDecoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color(0xff6B705C),
-                                          ),
-                                          shape: BoxShape.circle,
-                                          color: Color(0xffA6A68E),
+                              width: double.infinity,
+                              height: 400,
+                              color: Color(0xffFFE8D6),
+                              child: dp.DayPicker.single(
+                                  eventDecorationBuilder: (date) {
+                                    List<DateTime> eventsDates =
+                                        TimeCubit.get(context)
+                                            .markedDate
+                                            .map<DateTime>((e) => e)
+                                            .toList();
+
+                                    bool isEventDate = eventsDates.any(
+                                        (DateTime d) =>
+                                            date.year == d.year &&
+                                            date.month == d.month &&
+                                            d.day == date.day);
+
+                                    BoxDecoration roundedBorder = BoxDecoration(
+                                        color: Color(0xff6B705C),
+                                        border: Border.all(
+                                          color: Colors.deepOrange,
                                         ),
-                                      )
-                                    : dp.EventDecoration(
-                                        boxDecoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xffDDBEA9),
-                                        ),
-                                      );
-                              },
-                              datePickerStyles: dp.DatePickerRangeStyles(
-                                dayHeaderStyle: dp.DayHeaderStyle(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontFamily: "Janna",
-                                  ),
-                                ),
-                                disabledDateStyle: TextStyle(color: Colors.red),
-                                firstDayOfWeekIndex: 0,
-                                defaultDateTextStyle: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    color: Colors.black),
-                                currentDateStyle: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white,
-                                  fontFamily: "Janna",
-                                ),
-                                selectedPeriodStartDecoration: BoxDecoration(
-                                  color: Color(0xff6B705C),
-                                ),
-                                selectedSingleDateDecoration: BoxDecoration(
-                                  color: Color(0xff6B705C),
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Color(0xff6B705C),
-                                  ),
-                                ),
-                              ),
-                              selectedDates: TimeCubit.get(context).markedDate,
-                              onChanged: (value) {},
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now().add(
-                                Duration(days: 365),
-                              ),
-                            ),
-                          ),
+                                        shape: BoxShape.circle);
+
+                                    return isEventDate
+                                        ? dp.EventDecoration(
+                                            boxDecoration: roundedBorder)
+                                        : null;
+                                  },
+                                  selectedDate: DateTime.now(),
+                                  onChanged: (day) {
+                                    var dateSelected = day;
+                                    TimeCubit.get(context)
+                                        .getAvailableTime(day);
+                                  },
+                                  firstDate: DateTime.now()
+                                      .subtract(Duration(days: 1)),
+                                  lastDate:
+                                      DateTime.now().add(Duration(days: 365)))),
                         ],
                       ),
                     ),

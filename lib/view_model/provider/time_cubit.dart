@@ -4,6 +4,7 @@ import 'package:consultation/helpers/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 part 'time_state.dart';
@@ -41,5 +42,18 @@ class TimeCubit extends Cubit<TimeState> {
         emit(TimeGetDateCalenderSuccess());
       },
     );
+  }
+
+  List<String> timeAvailable = [];
+  getAvailableTime(DateTime currentDate) {
+    timeAvailable = [];
+    for (var date in markedDate) {
+      if (currentDate.day == date.day &&
+          currentDate.month == date.month &&
+          currentDate.year == date.year) {
+        timeAvailable.add(DateFormat.jm().format(date));
+      }
+    }
+    emit(TimeAvailableTimeGetSuccess());
   }
 }

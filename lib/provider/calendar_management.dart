@@ -231,23 +231,29 @@ class _CalendarManagementState extends State<CalendarManagement> {
                                     BoxDecoration roundedBorder = BoxDecoration(
                                         color: Color(0xff6B705C),
                                         border: Border.all(
-                                          color: Colors.deepOrange,
+                                          color: Color(0xffDDBEA9),
                                         ),
                                         shape: BoxShape.circle);
 
                                     return isEventDate
                                         ? dp.EventDecoration(
                                             boxDecoration: roundedBorder)
-                                        : null;
+                                        : dp.EventDecoration(
+                                            boxDecoration: BoxDecoration(
+                                              color: Color(0xffDDBEA9),
+                                              shape: BoxShape.circle,
+                                            ),
+                                          );
                                   },
-                                  selectedDate: DateTime.now(),
+                                  selectedDate: TimeCubit.get(context)
+                                      .selectedDay
+                                      .add(Duration(hours: 2)),
                                   onChanged: (day) {
-                                    var dateSelected = day;
+                                    TimeCubit.get(context).getDate(day);
                                     TimeCubit.get(context)
                                         .getAvailableTime(day);
                                   },
-                                  firstDate: DateTime.now()
-                                      .subtract(Duration(days: 1)),
+                                  firstDate: DateTime.now(),
                                   lastDate:
                                       DateTime.now().add(Duration(days: 365)))),
                         ],

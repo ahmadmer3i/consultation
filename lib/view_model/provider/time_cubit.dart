@@ -56,4 +56,13 @@ class TimeCubit extends Cubit<TimeState> {
     }
     emit(TimeAvailableTimeGetSuccess());
   }
+
+  DateTime selectedDay = DateTime.now();
+  getDate(date) {
+    if (date == DateTime.now().add(Duration(days: 1))) {
+      return;
+    }
+    selectedDay = date;
+    emit(TimeChangeSelectedDate());
+  }
 }

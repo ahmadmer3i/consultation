@@ -15,8 +15,8 @@ class ProviderRegistrationTwo extends StatefulWidget {
 }
 
 class _ProviderRegistrationTwoState extends State<ProviderRegistrationTwo> {
-  bool instant = false;
-  bool scheduled = false;
+  bool instant = true;
+  bool scheduled = true;
   final priceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -136,8 +136,10 @@ class _ProviderRegistrationTwoState extends State<ProviderRegistrationTwo> {
                                       onChanged: (value) {
                                         setState(
                                           () {
+                                            print(value);
                                             instant = value!;
                                             providerInstant = instant;
+                                            print(providerInstant);
                                           },
                                         );
                                       },

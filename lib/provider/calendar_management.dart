@@ -215,6 +215,9 @@ class _CalendarManagementState extends State<CalendarManagement> {
                             height: 400,
                             color: Color(0xffFFE8D6),
                             child: dp.DayPicker.multi(
+                              onMonthChanged: (dateTime) {
+                                setState(() {});
+                              },
                               eventDecorationBuilder: (date) {
                                 return date.month == DateTime.now().month &&
                                         date.year == DateTime.now().year &&

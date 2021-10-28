@@ -16,32 +16,30 @@ class TimeCubit extends Cubit<TimeState> {
   final _auth = FirebaseAuth.instance;
 
   List<String> timeIntervals = [];
+  List<DateTime> markedDate = [];
 
   getTimeIntervals() async {
-    var docs = await _firebase
+    _firebase
         .collection(providerCollection)
         .doc(_auth.currentUser!.uid)
         .collection("availableTime")
-        .get();
-    timeIntervals = [];
-    for (var doc in docs.docs) {
-      timeIntervals.add(doc.id);
-    }
-    emit(TimeGetDataSuccess());
-    print('test');
-    markedDate = [];
-    for (var date in timeIntervals) {
-      print(DateTime.parse(date));
-      markedDate.add(
-        DateTime.parse(date),
-      );
-    }
-    print(markedDate.length);
-    for (var date in markedDate) {
-      print(date.day);
-    }
-    emit(TimeGetDateCalenderSuccess());
-  }
+        .snapshots()
+        .listen(
+      (event) {
+        timeIntervals = [];
+        for (var doc in event.docs) {
+          timeIntervals.add(doc.id);
+        }
+        emit(TimeGetDataSuccess());
 
-  List<DateTime> markedDate = [];
+        markedDate = [];
+        for (var date in timeIntervals) {
+          markedDate.add(
+            DateTime.parse(date),
+          );
+        }
+        emit(TimeGetDateCalenderSuccess());
+      },
+    );
+  }
 }

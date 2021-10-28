@@ -128,16 +128,17 @@ class _CalendarManagementState extends State<CalendarManagement> {
         child: Icon(Icons.add),
       ),
       appBar: MyAppBar(),
-      body: Builder(builder: (context) {
-        TimeCubit.get(context).getTimeIntervals();
-        return BlocConsumer<TimeCubit, TimeState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            return Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Align(
+      body: Builder(
+        builder: (context) {
+          TimeCubit.get(context).getTimeIntervals();
+          return BlocConsumer<TimeCubit, TimeState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Align(
                       alignment: Alignment.center,
                       child: Text(
                         "الأوقات المتاحة",
@@ -145,88 +146,142 @@ class _CalendarManagementState extends State<CalendarManagement> {
                             .textTheme
                             .headline5!
                             .copyWith(color: Color(0xffCB997E)),
-                      )),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          color: Color(0xffCB997E),
-                          height: 70,
-                          child: ListView.builder(
-                            itemCount:
-                                TimeCubit.get(context).timeIntervals.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 5,
-                                  ),
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 0,
-                                    horizontal: 20,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedIndex == index
-                                        ? Color(0xff6B705C)
-                                        : Color(0xffFAFAFA),
-                                    border: Border.all(
-                                      color: selectedIndex == index
-                                          ? Color(0xffFAFAFA)
-                                          : Color(0xff6B705C),
-                                      width: 2,
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            color: Color(0xffCB997E),
+                            height: 70,
+                            child: ListView.builder(
+                              itemCount:
+                                  TimeCubit.get(context).timeIntervals.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(
+                                      () {
+                                        selectedIndex = index;
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 5,
+                                      vertical: 5,
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      DateFormat.jm().format(
-                                        DateTime.parse(
-                                          TimeCubit.get(context)
-                                              .timeIntervals[index],
-                                        ),
-                                      ),
-                                      style: TextStyle(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 0,
+                                      horizontal: 20,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: selectedIndex == index
+                                          ? Color(0xff6B705C)
+                                          : Color(0xffFAFAFA),
+                                      border: Border.all(
                                         color: selectedIndex == index
                                             ? Color(0xffFAFAFA)
                                             : Color(0xff6B705C),
-                                        fontWeight: FontWeight.bold,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        DateFormat.jm().format(
+                                          DateTime.parse(
+                                            TimeCubit.get(context)
+                                                .timeIntervals[index],
+                                          ),
+                                        ),
+                                        style: TextStyle(
+                                          color: selectedIndex == index
+                                              ? Color(0xffFAFAFA)
+                                              : Color(0xff6B705C),
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Container(
-                          height: 400,
-                          color: Color(0xffFFE8D6),
-                          child: dp.DayPicker.multi(
-                            selectedDates: TimeCubit.get(context).markedDate,
-                            onChanged: (value) {},
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime.now().add(
-                              Duration(days: 365),
+                                );
+                              },
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            width: double.infinity,
+                            height: 400,
+                            color: Color(0xffFFE8D6),
+                            child: dp.DayPicker.multi(
+                              eventDecorationBuilder: (date) {
+                                return date.month == DateTime.now().month &&
+                                        date.year == DateTime.now().year &&
+                                        DateTime.now().day == date.day
+                                    ? dp.EventDecoration(
+                                        boxDecoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Color(0xff6B705C),
+                                          ),
+                                          shape: BoxShape.circle,
+                                          color: Color(0xffA6A68E),
+                                        ),
+                                      )
+                                    : dp.EventDecoration(
+                                        boxDecoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Color(0xffDDBEA9),
+                                        ),
+                                      );
+                              },
+                              datePickerStyles: dp.DatePickerRangeStyles(
+                                dayHeaderStyle: dp.DayHeaderStyle(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    fontFamily: "Janna",
+                                  ),
+                                ),
+                                disabledDateStyle: TextStyle(color: Colors.red),
+                                firstDayOfWeekIndex: 0,
+                                defaultDateTextStyle: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black),
+                                currentDateStyle: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  fontFamily: "Janna",
+                                ),
+                                selectedPeriodStartDecoration: BoxDecoration(
+                                  color: Color(0xff6B705C),
+                                ),
+                                selectedSingleDateDecoration: BoxDecoration(
+                                  color: Color(0xff6B705C),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Color(0xff6B705C),
+                                  ),
+                                ),
+                              ),
+                              selectedDates: TimeCubit.get(context).markedDate,
+                              onChanged: (value) {},
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(
+                                Duration(days: 365),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      }),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
       bottomNavigationBar: MyProviderBottomNavigationBar(),
     );
   }

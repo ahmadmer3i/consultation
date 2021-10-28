@@ -201,6 +201,7 @@ class _AddNewSlotState extends State<AddNewSlot> {
 
                     // }
                     // }
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text(

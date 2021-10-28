@@ -28,7 +28,7 @@ class ProviderData {
     experience = json["experience"];
     isApproved = json["isApproved"];
     price = double.parse(json["price"].toString());
-    rate = json["rate"] as double;
+    rate = double.parse(json["rate"].toString());
     topics = json["topics"];
   }
 }

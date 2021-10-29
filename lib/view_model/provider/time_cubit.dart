@@ -174,6 +174,7 @@ class TimeCubit extends Cubit<TimeState> {
       "scheduledTime": selectedTimes,
       "providerId": providerId,
       "payment": payment,
+      "seekerId": _auth.currentUser!.uid,
     }, SetOptions(merge: true)).then(
       (value) => Navigator.pop(context),
     );

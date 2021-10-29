@@ -168,6 +168,7 @@ class TimeCubit extends Cubit<TimeState> {
     required selectedTimes,
     required double payment,
     required providerId,
+    required topic,
   }) {
     _firebase.collection("scheduled").doc().set({
       "scheduledDate": selectedDay,
@@ -175,6 +176,8 @@ class TimeCubit extends Cubit<TimeState> {
       "providerId": providerId,
       "payment": payment,
       "seekerId": _auth.currentUser!.uid,
+      "scheduledDetails": consult,
+      "topic": topic,
     }, SetOptions(merge: true)).then(
       (value) => Navigator.pop(context),
     );

@@ -2,7 +2,7 @@
 
 import 'package:consultation/components.dart';
 import 'package:consultation/models/provider_data.dart';
-import 'package:consultation/view_model/provider/time_cubit.dart';
+import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,9 @@ class ProviderProfileSchedule extends StatefulWidget {
   final bool canProceed;
   final double ratingEditor = 0;
   final ProviderData? data;
-  const ProviderProfileSchedule({Key? key, this.canProceed = true, this.data})
+  final String? topic;
+  const ProviderProfileSchedule(
+      {Key? key, this.canProceed = true, this.data, this.topic})
       : super(key: key);
 
   @override
@@ -133,7 +135,9 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
     );
 
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: MyAppBar(
+        autoLeading: true,
+      ),
       body: Builder(
         builder: (context) {
           TimeCubit.get(context)
@@ -469,6 +473,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                     MaterialPageRoute(
                                       builder: (context) => ConsultationDetails(
                                         providerData: widget.data!,
+                                        topic: widget.topic,
                                       ),
                                     ),
                                   );

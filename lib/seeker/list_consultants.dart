@@ -1,7 +1,7 @@
 import 'package:consultation/Seeker/provider_profile.dart';
 import 'package:consultation/components.dart';
-import 'package:consultation/view_model/provider/time_cubit.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
+import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -73,6 +73,7 @@ class _ListConsultantsState extends State<ListConsultants> {
                                 MaterialPageRoute(
                                   builder: (context) => ProviderProfileSchedule(
                                     data: cubit.providers[index],
+                                    topic: widget.topic,
                                   ),
                                 ),
                               );

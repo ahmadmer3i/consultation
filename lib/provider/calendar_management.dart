@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_final_fields, prefer_const_constructors
 
 import 'package:consultation/Provider/add_new_slot.dart';
-import 'package:consultation/view_model/provider/time_cubit.dart';
+import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';

@@ -60,7 +60,17 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                         builder: (_) => MyBottomSheet(
                           price: widget.providerData.price! *
                               TimeCubit.get(context).reservedTimes.length,
-                          onPressed: () {},
+                          onPressed: () {
+                            TimeCubit.get(context).setSchedule(
+                              context,
+                              selectedDay: TimeCubit.get(context).selectedDay,
+                              selectedTimes:
+                                  TimeCubit.get(context).reservedTimes,
+                              payment: widget.providerData.price! *
+                                  TimeCubit.get(context).reservedTimes.length,
+                              providerId: widget.providerData.uid,
+                            );
+                          },
                         ),
                       );
                     },

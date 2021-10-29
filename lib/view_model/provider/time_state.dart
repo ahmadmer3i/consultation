@@ -28,3 +28,7 @@ class TimeSetReservedTimeSuccess extends TimeState {}
 class TimeSetReservedDaySuccess extends TimeState {}
 
 class TimeResetReservedDaySuccess extends TimeState {}
+
+class TimeSetEventSeekerSuccess extends TimeState {}
+
+class TimeSeekerSetSuccess extends TimeState {}

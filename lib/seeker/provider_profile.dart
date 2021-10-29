@@ -73,7 +73,11 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
+    TimeCubit.get(context).resetReservedTimes();
     TimeCubit.get(context).resetAvailableTimeSeeker();
+    TimeCubit.get(context)
+        .getTimeIntervalsSeeker(providerId: widget.data!.uid!);
+
     super.initState();
   }
 
@@ -134,9 +138,12 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
         builder: (context) {
           TimeCubit.get(context)
               .getTimeIntervalsSeeker(providerId: widget.data!.uid!);
+          TimeCubit.get(context).getSelectedTime();
 
           return BlocConsumer<TimeCubit, TimeState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              print("state: $state");
+            },
             builder: (context, state) {
               return SingleChildScrollView(
                 child: Column(
@@ -255,7 +262,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                     height: 70,
                                     child: ListView.builder(
                                       itemCount: TimeCubit.get(context)
-                                          .timeAvailable
+                                          .timeAvailableSeeker
                                           .length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
@@ -294,11 +301,12 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                             ),
                                             child: Center(
                                               child: TimeCubit.get(context)
-                                                      .timeAvailable
+                                                      .timeAvailableSeeker
                                                       .isNotEmpty
                                                   ? Text(
                                                       TimeCubit.get(context)
-                                                          .timeAvailable[index],
+                                                              .timeAvailableSeeker[
+                                                          index],
                                                       style: TextStyle(
                                                         color: TimeCubit.get(
                                                                         context)
@@ -334,7 +342,8 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                                 TimeCubit.get(context)
                                                     .getDate(day);
                                                 TimeCubit.get(context)
-                                                    .getAvailableTime(day);
+                                                    .getAvailableTimeSeeker(
+                                                        day);
                                                 TimeCubit.get(context)
                                                     .getSelectedTime();
                                                 TimeCubit.get(context)
@@ -346,25 +355,16 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                                 TimeCubit.get(context)
                                                     .getDate(day);
                                                 TimeCubit.get(context)
-                                                    .getAvailableTime(day);
+                                                    .getAvailableTimeSeeker(
+                                                        day);
                                                 TimeCubit.get(context)
                                                     .getSelectedTime();
                                                 TimeCubit.get(context)
                                                     .setReservedDay(day: day);
                                               },
                                         eventDecorationBuilder: (date) {
-                                          List<DateTime> eventsDates =
-                                              TimeCubit.get(context)
-                                                  .markedDate
-                                                  .map<DateTime>((e) => e)
-                                                  .toList();
-
-                                          bool isEventDate = eventsDates.any(
-                                              (DateTime d) =>
-                                                  date.year == d.year &&
-                                                  date.month == d.month &&
-                                                  d.day == date.day);
-
+                                          TimeCubit.get(context)
+                                              .setEvents(date);
                                           BoxDecoration roundedBorder =
                                               BoxDecoration(
                                                   color: Color(0xff6B705C),
@@ -373,7 +373,8 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                                   ),
                                                   shape: BoxShape.circle);
 
-                                          return isEventDate
+                                          return TimeCubit.get(context)
+                                                  .isEventDate
                                               ? dp.EventDecoration(
                                                   boxDecoration: roundedBorder)
                                               : dp.EventDecoration(

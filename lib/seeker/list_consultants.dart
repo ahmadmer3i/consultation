@@ -1,5 +1,6 @@
 import 'package:consultation/Seeker/provider_profile.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/view_model/provider/time_cubit.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +67,8 @@ class _ListConsultantsState extends State<ListConsultants> {
                         itemBuilder: (context, int index) {
                           return GestureDetector(
                             onTap: () {
+                              TimeCubit.get(context).getTimeIntervalsSeeker(
+                                  providerId: cubit.providers[index].uid!);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => ProviderProfileSchedule(

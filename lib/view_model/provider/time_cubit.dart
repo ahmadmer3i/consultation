@@ -19,18 +19,25 @@ class TimeCubit extends Cubit<TimeState> {
   DateTime selectedDay = DateTime.now();
   DateTime reservedDay = DateTime.now();
   String consult = "";
+  bool isEventDate = false;
+
+  var providerId = "";
 
   List<String> timeIntervals = [];
+  List<String> timeIntervalsSeeker = [];
   List<DateTime> markedDate = [];
+  List<DateTime> markedDateSeeker = [];
   List<String> timeAvailable = [];
+  List<String> timeAvailableSeeker = [];
+  List<DateTime> eventsDates = [];
 
   List<bool> selectedTime = [];
   List<String> reservedTimes = [];
 
-  void getTimeIntervals({String? providerId}) async {
+  void getTimeIntervals() async {
     _firebase
         .collection(providerCollection)
-        .doc(providerId ?? _auth.currentUser!.uid)
+        .doc(_auth.currentUser!.uid)
         .collection("availableTime")
         .snapshots()
         .listen(
@@ -60,21 +67,25 @@ class TimeCubit extends Cubit<TimeState> {
         .snapshots()
         .listen(
       (event) {
-        timeIntervals = [];
+        timeIntervalsSeeker = [];
         for (var doc in event.docs) {
-          timeIntervals.add(doc.id);
+          timeIntervalsSeeker.add(doc.id);
         }
         emit(TimeGetDataSeekerSuccess());
 
-        markedDate = [];
-        for (var date in timeIntervals) {
-          markedDate.add(
+        markedDateSeeker = [];
+        for (var date in timeIntervalsSeeker) {
+          markedDateSeeker.add(
             DateTime.parse(date),
           );
         }
         emit(TimeGetDateCalenderSeekerSuccess());
       },
     );
+  }
+
+  getProviderId({required currentProviderId}) {
+    currentProviderId = providerId;
   }
 
   void getAvailableTime(DateTime currentDate) {
@@ -89,6 +100,18 @@ class TimeCubit extends Cubit<TimeState> {
     emit(TimeAvailableTimeGetSuccess());
   }
 
+  void getAvailableTimeSeeker(DateTime currentDate) {
+    timeAvailableSeeker = [];
+    for (var date in markedDateSeeker) {
+      if (currentDate.day == date.day &&
+          currentDate.month == date.month &&
+          currentDate.year == date.year) {
+        timeAvailableSeeker.add(DateFormat.jm().format(date));
+      }
+    }
+    emit(TimeAvailableTimeGetSuccess());
+  }
+
   void getDate(DateTime date) {
     if (date == DateTime.now().add(const Duration(days: 1))) {
       return;
@@ -98,12 +121,12 @@ class TimeCubit extends Cubit<TimeState> {
   }
 
   void resetAvailableTimeSeeker() {
-    timeAvailable = [];
+    timeAvailableSeeker = [];
   }
 
   void getSelectedTime() {
     selectedTime = [];
-    for (var _ in timeAvailable) {
+    for (var _ in timeAvailableSeeker) {
       selectedTime.add(false);
     }
     emit(TimeGetSelectedTimeSeekerSuccess());
@@ -116,10 +139,10 @@ class TimeCubit extends Cubit<TimeState> {
 
   void setReservedTime({required int index}) {
     if (selectedTime[index]) {
-      reservedTimes.add(timeAvailable[index]);
+      reservedTimes.add(timeAvailableSeeker[index]);
       emit(TimeSetReservedTimeSuccess());
     } else {
-      reservedTimes.remove(timeAvailable[index]);
+      reservedTimes.remove(timeAvailableSeeker[index]);
       emit(TimeRemoveReservedTimeSuccess());
     }
   }
@@ -139,17 +162,30 @@ class TimeCubit extends Cubit<TimeState> {
     emit(TimeResetReservedDaySuccess());
   }
 
-  void setSchedule({
+  void setSchedule(
+    context, {
     required DateTime selectedDay,
     required selectedTimes,
     required double payment,
     required providerId,
   }) {
-    _firebase.collection("scheduled").doc(providerId).set({
-      "scheduleDate": selectedDay,
-      "shceduleTime": selectedTimes,
+    _firebase.collection("scheduled").doc().set({
+      "scheduledDate": selectedDay,
+      "scheduledTime": selectedTimes,
       "providerId": providerId,
       "payment": payment,
-    }, SetOptions(merge: true));
+    }, SetOptions(merge: true)).then(
+      (value) => Navigator.pop(context),
+    );
+    emit(TimeSeekerSetSuccess());
+  }
+
+  setEvents(DateTime dateTime) {
+    eventsDates = markedDateSeeker.map<DateTime>((e) => e).toList();
+
+    isEventDate = eventsDates.any((DateTime d) =>
+        dateTime.year == d.year &&
+        dateTime.month == d.month &&
+        d.day == dateTime.day);
   }
 }

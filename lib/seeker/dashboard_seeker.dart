@@ -9,8 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DashboardSeeker extends StatefulWidget {
-  final String username;
-  const DashboardSeeker({Key? key, required this.username}) : super(key: key);
+  final String? username;
+  const DashboardSeeker({Key? key, this.username}) : super(key: key);
 
   @override
   _DashboardSeekerState createState() => _DashboardSeekerState();

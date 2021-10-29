@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/seeker/dashboard_seeker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -179,7 +180,17 @@ class TimeCubit extends Cubit<TimeState> {
       "scheduledDetails": consult,
       "topic": topic,
     }, SetOptions(merge: true)).then(
-      (value) => Navigator.pop(context),
+      (value) {
+        Navigator.pop(context);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DashboardSeeker(
+              username: currentUsername,
+            ),
+          ),
+        );
+      },
     );
     emit(TimeSeekerSetSuccess());
   }

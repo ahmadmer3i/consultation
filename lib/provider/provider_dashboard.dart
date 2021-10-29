@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:consultation/Provider/instant_consultation_detail.dart';
-import 'package:consultation/Provider/scheduled_consultation_detail.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/models/seeker_data.dart';
+import 'package:consultation/provider/scheduled_consultation_detail.dart';
 import 'package:consultation/view_model/get_seeker_data.dart';
 import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
@@ -494,6 +495,7 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                       Builder(
                         builder: (context) {
                           ScheduleCubit.get(context).getScheduledDataProvider();
+
                           return BlocConsumer<ScheduleCubit, ScheduleState>(
                             listener: (context, state) {},
                             builder: (context, state) {
@@ -530,7 +532,51 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                     Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ScheduledConsultationDetail(),
+                                                            ScheduledConsultationDetail(
+                                                          name: snapshot
+                                                              .data!.name!,
+                                                          details: cubit
+                                                              .scheduledData[
+                                                                  index]
+                                                              .scheduledDetails!,
+                                                          topic: cubit
+                                                              .scheduledData[
+                                                                  index]
+                                                              .topic!,
+                                                          time:
+                                                              "${DateFormat.jm('ar').format(
+                                                            DateFormat.jm()
+                                                                .parse(
+                                                              cubit
+                                                                  .scheduledData[
+                                                                      index]
+                                                                  .scheduledTimes!
+                                                                  .first,
+                                                            ),
+                                                          )}  - ${DateFormat.jm('ar').format(
+                                                            DateFormat.jm()
+                                                                .parse(
+                                                                  cubit
+                                                                      .scheduledData[
+                                                                          index]
+                                                                      .scheduledTimes!
+                                                                      .last,
+                                                                )
+                                                                .add(
+                                                                  Duration(
+                                                                      hours: 1),
+                                                                ),
+                                                          )}",
+                                                          date: cubit
+                                                              .scheduledData[
+                                                                  index]
+                                                              .scheduledDate!
+                                                              .toDate(),
+                                                          seekerId: cubit
+                                                              .scheduledData[
+                                                                  index]
+                                                              .seekerId!,
+                                                        ),
                                                       ),
                                                     );
                                                   },
@@ -590,15 +636,47 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Text(DateFormat
-                                                                    .yMMMd('ar')
-                                                                .format(cubit
+                                                            Text(
+                                                              DateFormat.yMMMd(
+                                                                      'ar')
+                                                                  .format(
+                                                                cubit
                                                                     .scheduledData[
                                                                         index]
                                                                     .scheduledDate!
-                                                                    .toDate())),
-                                                            Text(
-                                                                "6:00 - 8:00 مساء"),
+                                                                    .toDate(),
+                                                              ),
+                                                            ),
+                                                            Directionality(
+                                                              textDirection: ui
+                                                                  .TextDirection
+                                                                  .ltr,
+                                                              child: Text(
+                                                                  "${DateFormat.jm('ar').format(
+                                                                DateFormat.jm()
+                                                                    .parse(
+                                                                  cubit
+                                                                      .scheduledData[
+                                                                          index]
+                                                                      .scheduledTimes!
+                                                                      .first,
+                                                                ),
+                                                              )}  - ${DateFormat.jm('ar').format(
+                                                                DateFormat.jm()
+                                                                    .parse(
+                                                                      cubit
+                                                                          .scheduledData[
+                                                                              index]
+                                                                          .scheduledTimes!
+                                                                          .last,
+                                                                    )
+                                                                    .add(
+                                                                      Duration(
+                                                                          hours:
+                                                                              1),
+                                                                    ),
+                                                              )}"),
+                                                            ),
                                                           ],
                                                         )
                                                       ],

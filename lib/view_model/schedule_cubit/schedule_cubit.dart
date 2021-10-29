@@ -29,7 +29,6 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         .then((value) {
       providers = [];
       for (var doc in value.docs) {
-        print(doc.data()["gender"]);
         providers.add(ProviderData.fromJson(doc.data()));
       }
       emit(ScheduleProviderDataSuccessState());

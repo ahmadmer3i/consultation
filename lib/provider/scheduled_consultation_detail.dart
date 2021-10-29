@@ -2,9 +2,25 @@ import 'package:consultation/Components.dart';
 import 'package:consultation/Provider/provider_chat_open.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ScheduledConsultationDetail extends StatefulWidget {
-  const ScheduledConsultationDetail({Key? key}) : super(key: key);
+  final String name;
+  final String details;
+  final String topic;
+  final String time;
+  final DateTime date;
+  final String seekerId;
+
+  const ScheduledConsultationDetail({
+    Key? key,
+    required this.name,
+    required this.details,
+    required this.topic,
+    required this.time,
+    required this.date,
+    required this.seekerId,
+  }) : super(key: key);
 
   @override
   _ScheduledConsultationDetailState createState() =>
@@ -40,7 +56,7 @@ class _ScheduledConsultationDetailState
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          "خالد عبدالله",
+                          widget.name,
                           style: Theme.of(context)
                               .textTheme
                               .button!
@@ -50,44 +66,52 @@ class _ScheduledConsultationDetailState
                     ],
                   ),
                 ),
-                Text("تصميم غرافيك",
+                Text(widget.topic,
                     style: Theme.of(context).textTheme.button!.copyWith()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("17  سبتمبر 2021",
+                    Text(DateFormat.yMMMd('ar').format(widget.date),
                         style: Theme.of(context).textTheme.button!.copyWith()),
-                    Text("6:00 - 8:00 مساء  ",
+                    Text(widget.time,
                         style: Theme.of(context).textTheme.button!.copyWith()),
                   ],
                 ),
                 Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(":تفاصيل",
-                        style: Theme.of(context)
-                            .textTheme
-                            .button!
-                            .copyWith(color: const Color(0xffCB997E)))),
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    ":تفاصيل",
+                    style: Theme.of(context).textTheme.button!.copyWith(
+                          color: const Color(0xffCB997E),
+                        ),
+                  ),
+                ),
                 Text(
-                    "عاجل تصميم شعار لمشروع تجاري في مجال الموضة حيث سيتم تطوي الهوية بعد نجاح المشروع سيكون شعارًا مميزًا ورسميًا يعكس جودة صناعتنا ويجذب المشتري لزيادة المبيعات",
-                    style: Theme.of(context).textTheme.button!.copyWith()),
+                  widget.details,
+                  style: Theme.of(context).textTheme.button!.copyWith(),
+                ),
               ],
             ),
             Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ProviderChatOpen(
-                              consultId: "", seekerId: "", providerId: ""),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "قبول العرض",
-                      style: TextStyle(color: Colors.white),
-                    )))
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProviderChatOpen(
+                        consultId: "",
+                        seekerId: "",
+                        providerId: "",
+                      ),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "قبول العرض",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
           ],
         ),
       ),

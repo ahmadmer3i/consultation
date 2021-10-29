@@ -211,51 +211,53 @@ class _CalendarManagementState extends State<CalendarManagement> {
                             ),
                           ),
                           Container(
-                              width: double.infinity,
-                              height: 400,
-                              color: Color(0xffFFE8D6),
-                              child: dp.DayPicker.single(
-                                  eventDecorationBuilder: (date) {
-                                    List<DateTime> eventsDates =
-                                        TimeCubit.get(context)
-                                            .markedDate
-                                            .map<DateTime>((e) => e)
-                                            .toList();
-
-                                    bool isEventDate = eventsDates.any(
-                                        (DateTime d) =>
-                                            date.year == d.year &&
-                                            date.month == d.month &&
-                                            d.day == date.day);
-
-                                    BoxDecoration roundedBorder = BoxDecoration(
-                                        color: Color(0xff6B705C),
-                                        border: Border.all(
-                                          color: Color(0xffDDBEA9),
-                                        ),
-                                        shape: BoxShape.circle);
-
-                                    return isEventDate
-                                        ? dp.EventDecoration(
-                                            boxDecoration: roundedBorder)
-                                        : dp.EventDecoration(
-                                            boxDecoration: BoxDecoration(
-                                              color: Color(0xffDDBEA9),
-                                              shape: BoxShape.circle,
-                                            ),
-                                          );
-                                  },
-                                  selectedDate: TimeCubit.get(context)
-                                      .selectedDay
-                                      .add(Duration(hours: 2)),
-                                  onChanged: (day) {
-                                    TimeCubit.get(context).getDate(day);
+                            width: double.infinity,
+                            height: 400,
+                            color: Color(0xffFFE8D6),
+                            child: dp.DayPicker.single(
+                              eventDecorationBuilder: (date) {
+                                List<DateTime> eventsDates =
                                     TimeCubit.get(context)
-                                        .getAvailableTime(day);
-                                  },
-                                  firstDate: DateTime.now(),
-                                  lastDate:
-                                      DateTime.now().add(Duration(days: 365)))),
+                                        .markedDate
+                                        .map<DateTime>((e) => e)
+                                        .toList();
+
+                                bool isEventDate = eventsDates.any(
+                                    (DateTime d) =>
+                                        date.year == d.year &&
+                                        date.month == d.month &&
+                                        d.day == date.day);
+
+                                BoxDecoration roundedBorder = BoxDecoration(
+                                    color: Color(0xff6B705C),
+                                    border: Border.all(
+                                      color: Color(0xffDDBEA9),
+                                    ),
+                                    shape: BoxShape.circle);
+
+                                return isEventDate
+                                    ? dp.EventDecoration(
+                                        boxDecoration: roundedBorder)
+                                    : dp.EventDecoration(
+                                        boxDecoration: BoxDecoration(
+                                          color: Color(0xffDDBEA9),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      );
+                              },
+                              selectedDate: TimeCubit.get(context)
+                                  .selectedDay
+                                  .add(Duration(hours: 2)),
+                              onChanged: (day) {
+                                TimeCubit.get(context).getDate(day);
+                                TimeCubit.get(context).getAvailableTime(day);
+                              },
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime.now().add(
+                                Duration(days: 365),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

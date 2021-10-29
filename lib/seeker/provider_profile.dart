@@ -2,11 +2,14 @@
 
 import 'package:consultation/components.dart';
 import 'package:consultation/models/provider_data.dart';
+import 'package:consultation/view_model/provider/time_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel, EventList;
+import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +73,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
   @override
   void initState() {
     tabController = TabController(length: 2, vsync: this);
-
+    TimeCubit.get(context).resetAvailableTimeSeeker();
     super.initState();
   }
 
@@ -127,264 +130,365 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
 
     return Scaffold(
       appBar: MyAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 200,
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                      ),
-                      Text(
-                        "${widget.data?.name}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4!
-                            .copyWith(height: 1, color: Colors.black),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(
-                            () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "قيم تجربتك",
-                                        style:
-                                            TextStyle(color: Color(0xffCB997E)),
-                                      ),
-                                    ),
-                                    content: RatingEditor(
-                                      rating: widget.ratingEditor,
-                                    ),
-                                    //actionsAlignment: MainAxisAlignment.start,
-                                    actions: [
-                                      ElevatedButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          "إرسال",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.grey),
-                                        onPressed: () {},
-                                        child: Text(
-                                          "إلغاء",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("${widget.data?.rate?.toStringAsFixed(1)}"),
-                            StarRating(
-                              rating: double.parse(
-                                  widget.data!.rate!.toStringAsFixed(1)),
-                              size: 20,
-                              borderColor: Color(0xff6B705C),
-                              color: Color(0xff6B705C),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Column(
-              children: [
-                TabBar(
-                  labelColor: Color(0xff696E5A),
-                  unselectedLabelColor: Color(0xffA9A890),
-                  controller: tabController,
-                  indicatorWeight: 4,
-                  tabs: const [
-                    Tab(
-                      text: "الاوقات المتاحة",
-                    ),
-                    Tab(
-                      text: "معلومات الاستشاري",
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 600,
-                  child: TabBarView(
-                    controller: tabController,
-                    children: [
-                      Column(
+      body: Builder(
+        builder: (context) {
+          TimeCubit.get(context)
+              .getTimeIntervalsSeeker(providerId: widget.data!.uid!);
+
+          return BlocConsumer<TimeCubit, TimeState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 200,
+                      child: Stack(
                         children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            color: Color(0xffCB997E),
-                            height: 70,
-                            child: ListView.builder(
-                              itemCount: times.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(
-                                      () {
-                                        selectedIndex = index;
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                      vertical: 5,
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 0,
-                                      horizontal: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: selectedIndex == index
-                                          ? Color(0xff6B705C)
-                                          : Color(0xffFAFAFA),
-                                      border: Border.all(
-                                        color: selectedIndex == index
-                                            ? Color(0xffFAFAFA)
-                                            : Color(0xff6B705C),
-                                        width: 2,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        times.elementAt(index),
-                                        style: TextStyle(
-                                          color: selectedIndex == index
-                                              ? Color(0xffFAFAFA)
-                                              : Color(0xff6B705C),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          Container(
-                            height: 500,
-                            width: 500,
-                            color: Color(0xffFFE8D6),
-                            child: _calendarCarouselNoHeader,
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Text(
-                              "${widget.data?.experience}",
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              "الشهادات",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(color: Color(0xffCB997E)),
-                            ),
-                            SizedBox(
-                              height: 200,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 10,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50,
+                              ),
+                              Text(
+                                "${widget.data?.name}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(height: 1, color: Colors.black),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(
+                                    () {
                                       showDialog(
                                         context: context,
                                         builder: (context) {
-                                          return PinchZoom(
-                                            child: Image.network(
-                                              'https://picsum.photos/200',
+                                          return AlertDialog(
+                                            title: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "قيم تجربتك",
+                                                style: TextStyle(
+                                                    color: Color(0xffCB997E)),
+                                              ),
                                             ),
-                                            resetDuration: const Duration(
-                                              milliseconds: 100,
+                                            content: RatingEditor(
+                                              rating: widget.ratingEditor,
                                             ),
-                                            maxScale: 2.5,
-                                            onZoomStart: () {
-                                              // print('Start zooming');
-                                            },
-                                            onZoomEnd: () {
-                                              // print('Stop zooming');
-                                            },
+                                            //actionsAlignment: MainAxisAlignment.start,
+                                            actions: [
+                                              ElevatedButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "إرسال",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: Colors.grey),
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "إلغاء",
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
                                           );
                                         },
                                       );
                                     },
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                        "${widget.data?.rate?.toStringAsFixed(1)}"),
+                                    StarRating(
+                                      rating: double.parse(widget.data!.rate!
+                                          .toStringAsFixed(1)),
+                                      size: 20,
+                                      borderColor: Color(0xff6B705C),
+                                      color: Color(0xff6B705C),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        TabBar(
+                          labelColor: Color(0xff696E5A),
+                          unselectedLabelColor: Color(0xffA9A890),
+                          controller: tabController,
+                          indicatorWeight: 4,
+                          tabs: const [
+                            Tab(
+                              text: "الاوقات المتاحة",
+                            ),
+                            Tab(
+                              text: "معلومات الاستشاري",
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 600,
+                          child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    color: Color(0xffCB997E),
+                                    height: 70,
+                                    child: ListView.builder(
+                                      itemCount: TimeCubit.get(context)
+                                          .timeAvailable
+                                          .length,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            TimeCubit.get(context)
+                                                .toggleSelectedTime(
+                                                    index: index);
+
+                                            TimeCubit.get(context)
+                                                .setReservedTime(index: index);
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                              vertical: 5,
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 0,
+                                              horizontal: 20,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: TimeCubit.get(context)
+                                                      .selectedTime[index]
+                                                  ? Color(0xff6B705C)
+                                                  : Color(0xffFAFAFA),
+                                              border: Border.all(
+                                                color: TimeCubit.get(context)
+                                                        .selectedTime[index]
+                                                    ? Color(0xffFAFAFA)
+                                                    : Color(0xff6B705C),
+                                                width: 2,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: Center(
+                                              child: TimeCubit.get(context)
+                                                      .timeAvailable
+                                                      .isNotEmpty
+                                                  ? Text(
+                                                      TimeCubit.get(context)
+                                                          .timeAvailable[index],
+                                                      style: TextStyle(
+                                                        color: TimeCubit.get(
+                                                                        context)
+                                                                    .selectedTime[
+                                                                index]
+                                                            ? Color(0xffFAFAFA)
+                                                            : Color(0xff6B705C),
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Expanded(
                                     child: Container(
-                                      margin: EdgeInsets.all(10),
+                                      width: double.infinity,
+                                      color: Color(0xffFFE8D6),
+                                      child: dp.DayPicker.single(
+                                        selectedDate: TimeCubit.get(context)
+                                            .selectedDay
+                                            .add(
+                                              Duration(hours: 2),
+                                            ),
+                                        onChanged: TimeCubit.get(context)
+                                                .reservedTimes
+                                                .isEmpty
+                                            ? (day) {
+                                                TimeCubit.get(context)
+                                                    .getDate(day);
+                                                TimeCubit.get(context)
+                                                    .getAvailableTime(day);
+                                                TimeCubit.get(context)
+                                                    .getSelectedTime();
+                                                TimeCubit.get(context)
+                                                    .setReservedDay(day: day);
+                                              }
+                                            : (day) {
+                                                TimeCubit.get(context)
+                                                    .resetReservedTimes();
+                                                TimeCubit.get(context)
+                                                    .getDate(day);
+                                                TimeCubit.get(context)
+                                                    .getAvailableTime(day);
+                                                TimeCubit.get(context)
+                                                    .getSelectedTime();
+                                                TimeCubit.get(context)
+                                                    .setReservedDay(day: day);
+                                              },
+                                        eventDecorationBuilder: (date) {
+                                          List<DateTime> eventsDates =
+                                              TimeCubit.get(context)
+                                                  .markedDate
+                                                  .map<DateTime>((e) => e)
+                                                  .toList();
+
+                                          bool isEventDate = eventsDates.any(
+                                              (DateTime d) =>
+                                                  date.year == d.year &&
+                                                  date.month == d.month &&
+                                                  d.day == date.day);
+
+                                          BoxDecoration roundedBorder =
+                                              BoxDecoration(
+                                                  color: Color(0xff6B705C),
+                                                  border: Border.all(
+                                                    color: Color(0xffDDBEA9),
+                                                  ),
+                                                  shape: BoxShape.circle);
+
+                                          return isEventDate
+                                              ? dp.EventDecoration(
+                                                  boxDecoration: roundedBorder)
+                                              : dp.EventDecoration(
+                                                  boxDecoration: BoxDecoration(
+                                                    color: Color(0xffDDBEA9),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                );
+                                        },
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime.now().add(
+                                          Duration(days: 365),
+                                        ),
+                                        datePickerLayoutSettings:
+                                            dp.DatePickerLayoutSettings(
+                                          scrollPhysics:
+                                              NeverScrollableScrollPhysics(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "${widget.data?.experience}",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      "الشهادات",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(color: Color(0xffCB997E)),
+                                    ),
+                                    SizedBox(
                                       height: 200,
-                                      width: 200,
-                                      child: Image.network(
-                                        "https://picsum.photos/200",
-                                        fit: BoxFit.cover,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: 10,
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return PinchZoom(
+                                                    child: Image.network(
+                                                      'https://picsum.photos/200',
+                                                    ),
+                                                    resetDuration:
+                                                        const Duration(
+                                                      milliseconds: 100,
+                                                    ),
+                                                    maxScale: 2.5,
+                                                    onZoomStart: () {
+                                                      // print('Start zooming');
+                                                    },
+                                                    onZoomEnd: () {
+                                                      // print('Stop zooming');
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(10),
+                                              height: 200,
+                                              width: 200,
+                                              child: Image.network(
+                                                "https://picsum.photos/200",
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        widget.canProceed
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ConsultationDetails(
+                                        providerData: widget.data!,
                                       ),
                                     ),
                                   );
                                 },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                widget.canProceed
-                    ? Container(
-                        margin: EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ConsultationDetails(
-                                  providerData: widget.data!,
+                                child: Text(
+                                  "التالي",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "التالي",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white),
-                          ),
-                        ),
-                      )
-                    : Container()
-              ],
-            ),
-          ],
-        ),
+                              )
+                            : Container()
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
       ),
       bottomNavigationBar: MyBottomNavigationBar(
         selectedIndex: 0,

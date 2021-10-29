@@ -1,6 +1,7 @@
 import 'package:consultation/Components.dart';
-import 'package:consultation/Provider/provider_chat_open.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
+import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,6 +12,7 @@ class ScheduledConsultationDetail extends StatefulWidget {
   final String time;
   final DateTime date;
   final String seekerId;
+  final String scheduledId;
 
   const ScheduledConsultationDetail({
     Key? key,
@@ -20,6 +22,7 @@ class ScheduledConsultationDetail extends StatefulWidget {
     required this.time,
     required this.date,
     required this.seekerId,
+    required this.scheduledId,
   }) : super(key: key);
 
   @override
@@ -96,15 +99,21 @@ class _ScheduledConsultationDetailState
               alignment: Alignment.center,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ProviderChatOpen(
-                        consultId: "",
-                        seekerId: "",
-                        providerId: "",
-                      ),
-                    ),
+                  ScheduleCubit.get(context).setApproved(
+                    context,
+                    providerId: FirebaseAuth.instance.currentUser!.uid,
+                    seekerId: widget.seekerId,
+                    scheduledId: widget.scheduledId,
                   );
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => ProviderChatOpen(
+                  //       consultId: widget.scheduledId,
+                  //       seekerId: widget.seekerId,
+                  //       providerId: FirebaseAuth.instance.currentUser!.uid,
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: const Text(
                   "قبول العرض",

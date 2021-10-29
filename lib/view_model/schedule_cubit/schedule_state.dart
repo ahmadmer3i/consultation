@@ -8,3 +8,5 @@ class ScheduleInitialState extends ScheduleState {}
 class ScheduleProviderDataSuccessState extends ScheduleState {}
 
 class ScheduledProviderDataGetSucceedState extends ScheduleState {}
+
+class ScheduledGetChatSuccessState extends ScheduleState {}

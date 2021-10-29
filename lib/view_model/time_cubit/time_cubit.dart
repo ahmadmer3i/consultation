@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 part 'time_state.dart';
 
@@ -21,6 +22,8 @@ class TimeCubit extends Cubit<TimeState> {
   DateTime reservedDay = DateTime.now();
   String consult = "";
   bool isEventDate = false;
+
+  var id = const Uuid().v1();
 
   var providerId = "";
 
@@ -171,11 +174,12 @@ class TimeCubit extends Cubit<TimeState> {
     required providerId,
     required topic,
   }) {
-    _firebase.collection("scheduled").doc().set({
+    _firebase.collection("scheduled").doc(id).set({
       "scheduledDate": selectedDay,
       "scheduledTime": selectedTimes,
       "providerId": providerId,
       "payment": payment,
+      "scheduledId": id,
       "seekerId": _auth.currentUser!.uid,
       "scheduledDetails": consult,
       "topic": topic,

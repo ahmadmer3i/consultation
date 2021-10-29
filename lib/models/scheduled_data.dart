@@ -8,6 +8,9 @@ class ScheduledData {
   String? seekerId;
   String? providerId;
   String? topic;
+  String? scheduledId;
+  bool? isApproved;
+  bool? isOpened;
 
   ScheduledData.fromDatabase(Map<String, dynamic> json) {
     scheduledDate = json["scheduledDate"];
@@ -17,5 +20,8 @@ class ScheduledData {
     seekerId = json["seekerId"];
     providerId = json["providerId"];
     topic = json["topic"];
+    scheduledId = json["scheduledId"];
+    isApproved = json["isApproved"] ?? false;
+    isOpened = json["isOpened"] ?? false;
   }
 }

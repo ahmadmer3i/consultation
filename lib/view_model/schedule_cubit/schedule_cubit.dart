@@ -2,7 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/models/scheduled_data.dart';
+import 'package:consultation/provider/provider_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -19,6 +22,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   List<ProviderData> providers = [];
 
   List<ScheduledData> scheduledData = [];
+  List<ScheduledData> scheduledChatData = [];
 
   getScheduleData({required String topic}) {
     _firebase
@@ -53,5 +57,56 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       },
     );
     emit(ScheduledProviderDataGetSucceedState());
+  }
+
+  void setApproved(
+    context, {
+    required String providerId,
+    required String seekerId,
+    required String scheduledId,
+  }) {
+    _firebase
+        .collection("scheduled")
+        .doc(scheduledId)
+        .set(
+          {
+            "isApproved": true,
+            "isOpened": true,
+          },
+          SetOptions(merge: true),
+        )
+        .then((value) => _firebase
+            .collection("scheduled")
+            .doc(scheduledId)
+            .collection("chat")
+            .doc(seekerId)
+            .collection("messages")
+            .add({}))
+        .then(
+          (value) => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const ProviderChat(),
+            ),
+          ),
+        );
+  }
+
+  void getChat() {
+    _firebase
+        .collection("scheduled")
+        .where("isApproved", isEqualTo: true)
+        .where("providerId", isEqualTo: _auth.currentUser!.uid)
+        .snapshots()
+        .listen((event) {
+      scheduledChatData = [];
+      for (var doc in event.docs) {
+        scheduledChatData.add(
+          ScheduledData.fromDatabase(
+            doc.data(),
+          ),
+        );
+      }
+    });
+    emit(ScheduledGetChatSuccessState());
   }
 }

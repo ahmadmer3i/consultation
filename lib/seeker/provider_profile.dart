@@ -473,7 +473,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                                     MaterialPageRoute(
                                       builder: (context) => ConsultationDetails(
                                         providerData: widget.data!,
-                                        topic: widget.topic,
+                                        topic: widget.topic!,
                                       ),
                                     ),
                                   );

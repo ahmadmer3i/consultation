@@ -43,6 +43,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     _firebase
         .collection("scheduled")
         .where("providerId", isEqualTo: _auth.currentUser!.uid)
+        .where("isApproved", isEqualTo: false)
         .snapshots()
         .listen(
       (event) {

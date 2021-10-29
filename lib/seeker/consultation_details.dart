@@ -8,8 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConsultationDetails extends StatefulWidget {
   final ProviderData providerData;
-  final String? topic;
-  const ConsultationDetails({Key? key, required this.providerData, this.topic})
+  final String topic;
+  const ConsultationDetails(
+      {Key? key, required this.providerData, required this.topic})
       : super(key: key);
 
   @override
@@ -70,7 +71,6 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                               payment: widget.providerData.price! *
                                   TimeCubit.get(context).reservedTimes.length,
                               providerId: widget.providerData.uid,
-                              topic: widget.topic,
                             );
                           },
                         ),

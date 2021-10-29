@@ -23,7 +23,8 @@ class TimeCubit extends Cubit<TimeState> {
   String consult = "";
   bool isEventDate = false;
 
-  var id = const Uuid().v1();
+  var id = Uuid().v1();
+  var topic = "";
 
   var providerId = "";
 
@@ -172,7 +173,6 @@ class TimeCubit extends Cubit<TimeState> {
     required selectedTimes,
     required double payment,
     required providerId,
-    required topic,
   }) {
     _firebase.collection("scheduled").doc(id).set({
       "scheduledDate": selectedDay,
@@ -183,6 +183,8 @@ class TimeCubit extends Cubit<TimeState> {
       "seekerId": _auth.currentUser!.uid,
       "scheduledDetails": consult,
       "topic": topic,
+      "isApproved": false,
+      "isOpened": false,
     }, SetOptions(merge: true)).then(
       (value) {
         Navigator.pop(context);
@@ -196,6 +198,7 @@ class TimeCubit extends Cubit<TimeState> {
         );
       },
     );
+    id = const Uuid().v1();
     emit(TimeSeekerSetSuccess());
   }
 
@@ -206,5 +209,9 @@ class TimeCubit extends Cubit<TimeState> {
         dateTime.year == d.year &&
         dateTime.month == d.month &&
         d.day == dateTime.day);
+  }
+
+  setTopic({required String scheduledTopic}) {
+    topic = scheduledTopic;
   }
 }

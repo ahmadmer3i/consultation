@@ -4,6 +4,7 @@ import 'package:consultation/components.dart';
 import 'package:consultation/models/topic.dart';
 import 'package:consultation/view_model/get_request_data.dart';
 import 'package:consultation/view_model/get_topics_data.dart';
+import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,9 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                                       children: [
                                         ElevatedButton(
                                           onPressed: () {
+                                            TimeCubit.get(context).setTopic(
+                                                scheduledTopic:
+                                                    topicsList[index].title);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) =>

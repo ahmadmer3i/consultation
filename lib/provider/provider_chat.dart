@@ -178,10 +178,13 @@ class _ProviderChatState extends State<ProviderChat>
                           builder: (context, state) {
                             var cubit = ScheduleCubit.get(context);
                             return ListView.separated(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
@@ -264,12 +267,14 @@ class _ProviderChatState extends State<ProviderChat>
                                         },
                                       ),
                                     ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) => SizedBox(
-                                      height: 10,
-                                    ),
-                                itemCount: cubit.scheduledChatData.length);
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 5,
+                              ),
+                              itemCount: cubit.scheduledChatData.length,
+                            );
                           },
                         );
                       })

@@ -7,6 +7,7 @@ import 'package:consultation/tools/bloc_observer.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
 import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
+import 'package:consultation/view_model/seeker_cubit/seeker_cubit.dart';
 import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ScheduleCubit()..getScheduledDataProvider(),
+        ),
+        BlocProvider(
+          create: (context) => SeekerCubit(),
         )
       ],
       child: MaterialApp(

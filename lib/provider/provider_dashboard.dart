@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:io';
+
 import 'package:consultation/Provider/instant_consultation_detail.dart';
 import 'package:consultation/Provider/scheduled_consultation_detail.dart';
 import 'package:consultation/Provider/seeker_profile.dart';
@@ -7,6 +9,8 @@ import 'package:consultation/components.dart';
 import 'package:consultation/models/seeker_data.dart';
 import 'package:consultation/view_model/get_seeker_data.dart';
 import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
+import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
+import 'package:consultation/view_model/seeker_cubit/seeker_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -248,7 +252,8 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                                           ),
                                                         ),
                                                         Text(
-                                                          "${snapshotSeeker.data!.date!}",
+                                                          snapshotSeeker
+                                                              .data!.date!,
                                                           style: TextStyle(
                                                             height: 1.5,
                                                             fontSize: 13,
@@ -486,71 +491,144 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                               )
                           : Container(),
                       /////////////////
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        child: ListView(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ScheduledConsultationDetail(),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color(0xffFFE8D6),
-                                ),
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SeekerProfile(),
-                                          ),
-                                        );
-                                      },
-                                      child: Row(
-                                        children: [
-                                          CircleAvatar(),
-                                          Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 10,
+                      Builder(
+                        builder: (context) {
+                          ScheduleCubit.get(context).getScheduledDataProvider();
+                          return BlocConsumer<ScheduleCubit, ScheduleState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              var cubit = ScheduleCubit.get(context);
+                              return cubit.scheduledData.isNotEmpty
+                                  ? Container(
+                                      margin: EdgeInsets.all(10),
+                                      child: ListView.separated(
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(
+                                          height: 5,
+                                        ),
+                                        itemCount: cubit.scheduledData.length,
+                                        itemBuilder: (context, index) {
+                                          SeekerCubit.get(context)
+                                              .getSeekerData(
+                                                  seekerId: cubit
+                                                      .scheduledData[index]
+                                                      .seekerId!);
+
+                                          return FutureBuilder(
+                                            future: getSeekerDataPerInstant(
+                                              seekerId: cubit
+                                                  .scheduledData[index]
+                                                  .seekerId!,
                                             ),
-                                            child: Text(
-                                              "خالد عبدالله",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .subtitle1,
-                                            ),
-                                          )
-                                        ],
+                                            builder: (context,
+                                                AsyncSnapshot<SeekerData>
+                                                    snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.done) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ScheduledConsultationDetail(),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: Color(0xffFFE8D6),
+                                                    ),
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Column(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .push(
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        SeekerProfile(),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: Row(
+                                                            children: [
+                                                              CircleAvatar(),
+                                                              Container(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                ),
+                                                                child: Text(
+                                                                  snapshot.data!
+                                                                      .name!,
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subtitle1,
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Align(
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: Text(cubit
+                                                              .scheduledData[
+                                                                  index]
+                                                              .topic!),
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(DateFormat
+                                                                    .yMMMd('ar')
+                                                                .format(cubit
+                                                                    .scheduledData[
+                                                                        index]
+                                                                    .scheduledDate!
+                                                                    .toDate())),
+                                                            Text(
+                                                                "6:00 - 8:00 مساء"),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                return Platform.isIOS
+                                                    ? Center(
+                                                        child:
+                                                            CupertinoActivityIndicator(),
+                                                      )
+                                                    : Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      );
+                                              }
+                                            },
+                                          );
+                                        },
                                       ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text("تصميم غرافيك"),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Text(" 17 سبتمبر 2021"),
-                                        Text("6:00 - 8:00 مساء"),
-                                      ],
                                     )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                                  : Center(
+                                      child: Platform.isAndroid
+                                          ? CircularProgressIndicator()
+                                          : CupertinoActivityIndicator(),
+                                    );
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),

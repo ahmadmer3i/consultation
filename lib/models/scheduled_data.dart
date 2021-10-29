@@ -11,7 +11,7 @@ class ScheduledData {
 
   ScheduledData.fromDatabase(Map<String, dynamic> json) {
     scheduledDate = json["scheduledDate"];
-    payment = double.parse(json["payment"]);
+    payment = double.parse(json["payment"].toString());
     scheduledDetails = json["scheduledDetails"];
     scheduledTimes = json["scheduledTime"];
     seekerId = json["seekerId"];

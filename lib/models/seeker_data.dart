@@ -17,12 +17,12 @@ class SeekerData {
     required this.password,
   });
 
-  // SeekerData.fromJson(Map<String, dynamic> json) {
-  //   username = json["username"];
-  //   password = json["password"];
-  //   gender = json["gender"];
-  //   uid = json["uid"];
-  //   email = json["email"];
-  //   date = json["dateOfBirth"];
-  // }
+  SeekerData.fromJson(Map<String, dynamic> json) {
+    username = json["username"];
+    password = json["password"];
+    gender = json["gender"];
+    uid = json["uid"];
+    email = json["email"];
+    date = json["dateOfBirth"];
+  }
 }

@@ -38,8 +38,10 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) {
-        MessagesCubit.get(context)
-            .getMessages(consultId: widget.consultId, messageId: widget.uid);
+        MessagesCubit.get(context).getMessages(
+            collectionName: "consults",
+            consultId: widget.consultId,
+            messageId: widget.uid);
         return BlocConsumer<MessagesCubit, MessagesState>(
           listener: (context, state) {},
           builder: (context, state) {
@@ -296,6 +298,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                               IconButton(
                                 onPressed: () {
                                   MessagesCubit.get(context).sendChat(
+                                    collectionName: "consults",
                                     messageId: widget.seekerId,
                                     consultId: widget.consultId,
                                     message: messageController.text,

@@ -66,30 +66,19 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     required String seekerId,
     required String scheduledId,
   }) {
-    _firebase
-        .collection("scheduled")
-        .doc(scheduledId)
-        .set(
-          {
-            "isApproved": true,
-            "isOpened": true,
-          },
-          SetOptions(merge: true),
-        )
-        .then((value) => _firebase
-            .collection("scheduled")
-            .doc(scheduledId)
-            .collection("chat")
-            .doc(seekerId)
-            .collection("messages")
-            .add({}))
-        .then(
-          (value) => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const ProviderChat(),
-            ),
-          ),
-        );
+    _firebase.collection("scheduled").doc(scheduledId).set(
+      {
+        "isApproved": true,
+        "isOpened": true,
+      },
+      SetOptions(merge: true),
+    ).then(
+      (value) => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ProviderChat(),
+        ),
+      ),
+    );
   }
 
   void getChat() {

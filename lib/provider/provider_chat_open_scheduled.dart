@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class ProviderChatOpen extends StatefulWidget {
+class ProviderChatOpenScheduled extends StatefulWidget {
   final bool isClosed;
   final String providerId;
   final String seekerId;
   final String consultId;
-  const ProviderChatOpen(
+  const ProviderChatOpenScheduled(
       {Key? key,
       this.isClosed = false,
       required this.providerId,
@@ -21,10 +21,11 @@ class ProviderChatOpen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ProviderChatOpenState createState() => _ProviderChatOpenState();
+  _ProviderChatOpenScheduledState createState() =>
+      _ProviderChatOpenScheduledState();
 }
 
-class _ProviderChatOpenState extends State<ProviderChatOpen> {
+class _ProviderChatOpenScheduledState extends State<ProviderChatOpenScheduled> {
   bool? isClosed = false;
   final messageController = TextEditingController();
 
@@ -36,7 +37,7 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
 
   @override
   Widget build(BuildContext context) {
-    print("here");
+    print("scheudled");
     return Scaffold(
       appBar: MyAppBar(
         onPressed: () {},
@@ -45,7 +46,7 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
         create: (context) => MessagesCubit(),
         child: Builder(builder: (context) {
           MessagesCubit.get(context).getMessages(
-              collectionName: "consults",
+              collectionName: "scheduled",
               consultId: widget.consultId,
               messageId: widget.seekerId);
           return BlocConsumer<MessagesCubit, MessagesState>(
@@ -207,7 +208,7 @@ class _ProviderChatOpenState extends State<ProviderChatOpen> {
                               IconButton(
                                 onPressed: () {
                                   MessagesCubit.get(context).sendChat(
-                                    collectionName: "consults",
+                                    collectionName: "scheduled",
                                     messageId: widget.seekerId,
                                     consultId: widget.consultId,
                                     message: messageController.text,

@@ -497,7 +497,7 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                 // ),
                                 )
                             : Container(),
-                        /////////////////
+                        // Scheduled Section!
                         Builder(
                           builder: (context) {
                             ScheduleCubit.get(context)
@@ -517,8 +517,6 @@ class _ProviderDashboardState extends State<ProviderDashboard>
                                           ),
                                           itemCount: cubit.scheduledData.length,
                                           itemBuilder: (context, index) {
-                                            print(
-                                                cubit.scheduledChatData.length);
                                             SeekerCubit.get(context)
                                                 .getSeekerData(
                                                     seekerId: cubit

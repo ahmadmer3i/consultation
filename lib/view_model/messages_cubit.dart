@@ -15,6 +15,7 @@ class MessagesCubit extends Cubit<MessagesState> {
   static MessagesCubit get(context) => BlocProvider.of(context);
 
   void sendChat({
+    required String collectionName,
     required String consultId,
     required String message,
     required Timestamp dateTime,
@@ -29,7 +30,7 @@ class MessagesCubit extends Cubit<MessagesState> {
       senderId: senderId,
     );
     await FirebaseFirestore.instance
-        .collection("consults")
+        .collection(collectionName)
         .doc(consultId)
         .collection("chat")
         .doc(messageId)
@@ -39,9 +40,12 @@ class MessagesCubit extends Cubit<MessagesState> {
   }
 
   List<MessageData> messages = [];
-  void getMessages({required String consultId, required String messageId}) {
+  void getMessages(
+      {required collectionName,
+      required String consultId,
+      required String messageId}) {
     FirebaseFirestore.instance
-        .collection("consults")
+        .collection(collectionName)
         .doc(consultId)
         .collection("chat")
         .doc(messageId)

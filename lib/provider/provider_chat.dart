@@ -4,6 +4,7 @@ import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/seeker_data.dart';
 import 'package:consultation/provider/provider_chat_open.dart';
+import 'package:consultation/provider/provider_chat_open_scheduled.dart';
 import 'package:consultation/view_model/provider/get_chat_data_provider.dart';
 import 'package:consultation/view_model/provider/get_seeker_offer.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
@@ -171,6 +172,7 @@ class _ProviderChatState extends State<ProviderChat>
                           }
                         },
                       ),
+                      // Scheduled Chat
                       Builder(builder: (context) {
                         ScheduleCubit.get(context).getChat();
                         return BlocConsumer<ScheduleCubit, ScheduleState>(
@@ -189,7 +191,7 @@ class _ProviderChatState extends State<ProviderChat>
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ProviderChatOpen(
+                                              ProviderChatOpenScheduled(
                                             providerId: cubit
                                                 .scheduledChatData[index]
                                                 .providerId!,
@@ -299,7 +301,8 @@ class _ProviderChatState extends State<ProviderChat>
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => ProviderChatOpen(
+                                    builder: (context) =>
+                                        ProviderChatOpenScheduled(
                                       isClosed: true,
                                       seekerId: snapshot.data![index].uid,
                                       providerId:

@@ -461,7 +461,7 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
                             ],
                           ),
                         ),
-                        widget.canProceed
+                        TimeCubit.get(context).reservedTimes.isNotEmpty
                             ? ElevatedButton(
                                 onPressed: () {
                                   Navigator.of(context).push(

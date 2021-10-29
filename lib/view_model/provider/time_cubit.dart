@@ -139,10 +139,17 @@ class TimeCubit extends Cubit<TimeState> {
     emit(TimeResetReservedDaySuccess());
   }
 
-  void setSchedule(
-      {required DateTime selectedDay,
-      required selectedTimes,
-      required double payment,
-      required providerId,
-      required seekerId}) {}
+  void setSchedule({
+    required DateTime selectedDay,
+    required selectedTimes,
+    required double payment,
+    required providerId,
+  }) {
+    _firebase.collection("scheduled").doc(providerId).set({
+      "scheduleDate": selectedDay,
+      "shceduleTime": selectedTimes,
+      "providerId": providerId,
+      "payment": payment,
+    }, SetOptions(merge: true));
+  }
 }

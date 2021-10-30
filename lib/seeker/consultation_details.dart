@@ -8,9 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConsultationDetails extends StatefulWidget {
   final ProviderData providerData;
-  final String topic;
-  const ConsultationDetails(
-      {Key? key, required this.providerData, required this.topic})
+  const ConsultationDetails({Key? key, required this.providerData})
       : super(key: key);
 
   @override
@@ -18,6 +16,7 @@ class ConsultationDetails extends StatefulWidget {
 }
 
 class _ConsultationDetailsState extends State<ConsultationDetails> {
+  final formKey = GlobalKey<FormState>();
   final consultController = TextEditingController();
   int? selectedMethod = 0;
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -30,10 +29,12 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
         builder: (context, state) {
           return Container(
             padding: EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
                     alignment: Alignment.center,
                     child: Text(
                       "تفاصيل الاستشارة",
@@ -41,49 +42,64 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                           .textTheme
                           .headline5!
                           .copyWith(color: Color(0xffCB997E)),
-                    )),
-                MyTextFieldDark(
-                  textController: consultController,
-                  label: "*اكتب استشارتك*",
-                  maxLength: 400,
-                  minHeight: 6,
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      TimeCubit.get(context)
-                          .setConsult(seekerConsult: consultController.text);
-                      showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20))),
-                        context: context,
-                        builder: (_) => MyBottomSheet(
-                          price: widget.providerData.price! *
-                              TimeCubit.get(context).reservedTimes.length,
-                          onPressed: () {
-                            TimeCubit.get(context).setSchedule(
-                              context,
-                              selectedDay: TimeCubit.get(context).selectedDay,
-                              selectedTimes:
-                                  TimeCubit.get(context).reservedTimes,
-                              payment: widget.providerData.price! *
-                                  TimeCubit.get(context).reservedTimes.length,
-                              providerId: widget.providerData.uid,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "الدفع",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900, color: Colors.white),
                     ),
                   ),
-                ),
-              ],
+                  MyTextFieldDark(
+                    validator: (value) {
+                      if (consultController.text.isEmpty) {
+                        return "الرجاء كتابة تفاصيل الاستشارة";
+                      }
+                      return null;
+                    },
+                    textController: consultController,
+                    label: "*اكتب استشارتك*",
+                    maxLength: 400,
+                    minHeight: 6,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          TimeCubit.get(context).setConsult(
+                              seekerConsult: consultController.text);
+                          showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            context: context,
+                            builder: (_) => MyBottomSheet(
+                              price: widget.providerData.price! *
+                                  TimeCubit.get(context).reservedTimes.length,
+                              onPressed: () {
+                                TimeCubit.get(context).setSchedule(
+                                  context,
+                                  selectedDay:
+                                      TimeCubit.get(context).selectedDay,
+                                  selectedTimes:
+                                      TimeCubit.get(context).reservedTimes,
+                                  payment: widget.providerData.price! *
+                                      TimeCubit.get(context)
+                                          .reservedTimes
+                                          .length,
+                                  providerId: widget.providerData.uid,
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        "الدفع",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },

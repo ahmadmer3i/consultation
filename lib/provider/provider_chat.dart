@@ -74,19 +74,23 @@ class _ProviderChatState extends State<ProviderChat>
                         builder: (ctx, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.active) {
-                            return Container(
-                              margin: EdgeInsets.all(10),
-                              child: ListView.separated(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
-                                separatorBuilder: (context, idx) {
-                                  return SizedBox(
-                                    height: 10,
-                                  );
-                                },
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
+                            return ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length + 1,
+                              separatorBuilder: (context, idx) {
+                                return SizedBox(
+                                  height: 5,
+                                );
+                              },
+                              itemBuilder: (context, index) {
+                                if (index == snapshot.data!.length) {
+                                  return SizedBox.shrink();
+                                }
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
@@ -163,9 +167,9 @@ class _ProviderChatState extends State<ProviderChat>
                                         },
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             );
                           } else {
                             return SizedBox.shrink();
@@ -174,7 +178,8 @@ class _ProviderChatState extends State<ProviderChat>
                       ),
                       // Scheduled Chat
                       Builder(builder: (context) {
-                        ScheduleCubit.get(context).getChat();
+                        ScheduleCubit.get(context)
+                            .getChat(userId: "providerId");
                         return BlocConsumer<ScheduleCubit, ScheduleState>(
                           listener: (context, state) {},
                           builder: (context, state) {

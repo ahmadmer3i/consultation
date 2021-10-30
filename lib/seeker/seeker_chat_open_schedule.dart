@@ -15,13 +15,11 @@ class SeekerChatOpen extends StatefulWidget {
   final String providerId;
   final String seekerId;
   final bool isClosed;
-  final String collectionName;
   final String uid;
   const SeekerChatOpen({
     Key? key,
     this.isClosed = false,
     required this.uid,
-    required this.collectionName,
     required this.consultId,
     required this.providerId,
     required this.seekerId,
@@ -41,7 +39,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
     return Builder(
       builder: (context) {
         MessagesCubit.get(context).getMessages(
-            collectionName: widget.collectionName,
+            collectionName: "consults",
             consultId: widget.consultId,
             messageId: widget.uid);
         return BlocConsumer<MessagesCubit, MessagesState>(
@@ -300,7 +298,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                               IconButton(
                                 onPressed: () {
                                   MessagesCubit.get(context).sendChat(
-                                    collectionName: widget.collectionName,
+                                    collectionName: "consults",
                                     messageId: widget.seekerId,
                                     consultId: widget.consultId,
                                     message: messageController.text,

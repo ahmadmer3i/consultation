@@ -19,6 +19,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   final _firebase = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
+  var userId = "";
+
   List<ProviderData> providers = [];
 
   List<ScheduledData> scheduledData = [];
@@ -81,11 +83,11 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     );
   }
 
-  void getChat() {
+  void getChat({required String userId}) {
     _firebase
         .collection("scheduled")
         .where("isApproved", isEqualTo: true)
-        .where("providerId", isEqualTo: _auth.currentUser!.uid)
+        .where(userId, isEqualTo: _auth.currentUser!.uid)
         .snapshots()
         .listen((event) {
       scheduledChatData = [];
@@ -98,5 +100,9 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       }
     });
     emit(ScheduledGetChatSuccessState());
+  }
+
+  String getUserId() {
+    return _auth.currentUser!.uid;
   }
 }

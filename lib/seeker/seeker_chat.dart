@@ -4,6 +4,7 @@ import 'package:consultation/components.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/provider_data.dart';
 import 'package:consultation/seeker/seeker_chat_open.dart';
+import 'package:consultation/seeker/seeker_chat_open_schedule.dart';
 import 'package:consultation/view_model/get_chat_data.dart';
 import 'package:consultation/view_model/get_provider_data.dart';
 import 'package:consultation/view_model/get_provider_offer.dart';
@@ -194,8 +195,11 @@ class _SeekerChatState extends State<SeekerChat>
                           ),
                           Builder(
                             builder: (context) {
-                              ScheduleCubit.get(context)
-                                  .getChat(userId: "seekerId");
+                              ScheduleCubit.get(context).getChat(
+                                  isClosed: false,
+                                  userId: "seekerId",
+                                  isApproved: true,
+                                  isOpened: true);
                               return BlocConsumer<ScheduleCubit, ScheduleState>(
                                 listener: (context, state) {},
                                 builder: (context, state) {
@@ -217,7 +221,7 @@ class _SeekerChatState extends State<SeekerChat>
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    SeekerChatOpen(
+                                                    SeekerChatOpenSchedule(
                                                   collectionName: "scheduled",
                                                   seekerId: cubit
                                                       .scheduledChatData[index]
@@ -318,109 +322,267 @@ class _SeekerChatState extends State<SeekerChat>
                     ),
                     //-------------------------------------
                     // Ended
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      child: StreamBuilder<List<ConsultData>>(
-                        stream: getChatData(status: "ended"),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.active) {
-                            return ListView.separated(
-                              separatorBuilder: (context, index) => SizedBox(
-                                height: 5,
-                              ),
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return FutureBuilder(
-                                  future: getProviderOffer(
-                                      id: snapshot.data![index].providerId!),
-                                  builder: (context,
-                                      AsyncSnapshot<ProviderData>
-                                          snapshotEnded) {
-                                    if (snapshotEnded.connectionState ==
-                                        ConnectionState.done) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SeekerChatOpen(
-                                                collectionName: "consults",
-                                                seekerId:
-                                                    snapshot.data![index].uid,
-                                                providerId: snapshot
-                                                    .data![index].providerId!,
-                                                uid: snapshot.data![index].uid,
-                                                consultId: snapshot
-                                                    .data![index].consultId,
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          StreamBuilder<List<ConsultData>>(
+                            stream: getChatData(status: "ended"),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.active) {
+                                return ListView.separated(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: 5,
+                                  ),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.length + 1,
+                                  itemBuilder: (context, index) {
+                                    if (index == snapshot.data!.length) {
+                                      return SizedBox.shrink();
+                                    }
+                                    return FutureBuilder(
+                                      future: getProviderOffer(
+                                          id: snapshot
+                                              .data![index].providerId!),
+                                      builder: (context,
+                                          AsyncSnapshot<ProviderData>
+                                              snapshotEnded) {
+                                        if (snapshotEnded.connectionState ==
+                                            ConnectionState.done) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SeekerChatOpen(
+                                                      isClosed: true,
+                                                      collectionName:
+                                                          "consults",
+                                                      seekerId: snapshot
+                                                          .data![index].uid,
+                                                      providerId: snapshot
+                                                          .data![index]
+                                                          .providerId!,
+                                                      uid: snapshot
+                                                          .data![index].uid,
+                                                      consultId: snapshot
+                                                          .data![index]
+                                                          .consultId,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color: Color(0xffFFE8D6),
+                                                ),
+                                                padding: EdgeInsets.all(10),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        CircleAvatar(),
+                                                        Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10),
+                                                          child: Text(
+                                                            snapshotEnded
+                                                                .data!.name!,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .subtitle1,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: const [
+                                                        CircleAvatar(
+                                                          radius: 10,
+                                                          backgroundColor:
+                                                              Color(0xff6B705C),
+                                                        ),
+                                                        Text(
+                                                          "10",
+                                                          style: TextStyle(
+                                                            fontSize: 11,
+                                                            color: Colors.white,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Color(0xffFFE8D6),
-                                          ),
-                                          padding: EdgeInsets.all(10),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  CircleAvatar(),
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 10),
-                                                    child: Text(
-                                                      snapshotEnded.data!.name!,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle1,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Stack(
-                                                alignment: Alignment.center,
-                                                children: const [
-                                                  CircleAvatar(
-                                                    radius: 10,
-                                                    backgroundColor:
-                                                        Color(0xff6B705C),
-                                                  ),
-                                                  Text(
-                                                    "10",
-                                                    style: TextStyle(
-                                                      fontSize: 11,
-                                                      color: Colors.white,
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+                                      },
+                                    );
                                   },
                                 );
-                              },
-                            );
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        },
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
+                          ),
+                          Builder(
+                            builder: (context) {
+                              ScheduleCubit.get(context).getChatEnded(
+                                  userId: "seekerId",
+                                  isOpened: false,
+                                  isApproved: true);
+                              return BlocConsumer<ScheduleCubit, ScheduleState>(
+                                listener: (context, state) {},
+                                builder: (context, state) {
+                                  var cubit = ScheduleCubit.get(context);
+                                  return ListView.separated(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        cubit.scheduledChatDataEnded.length,
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                      height: 5,
+                                    ),
+                                    itemBuilder: (context, index) {
+                                      return FutureBuilder(
+                                        future: getProviderOffer(
+                                            id: cubit
+                                                .scheduledChatDataEnded[index]
+                                                .providerId!),
+                                        builder: (context,
+                                            AsyncSnapshot<ProviderData>
+                                                snapshotEnded) {
+                                          if (snapshotEnded.connectionState ==
+                                              ConnectionState.done) {
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SeekerChatOpenSchedule(
+                                                        isClosed: true,
+                                                        collectionName:
+                                                            "scheduled",
+                                                        seekerId: cubit
+                                                            .scheduledChatDataEnded[
+                                                                index]
+                                                            .seekerId!,
+                                                        providerId: cubit
+                                                            .scheduledChatDataEnded[
+                                                                index]
+                                                            .providerId!,
+                                                        uid: cubit
+                                                            .scheduledChatDataEnded[
+                                                                index]
+                                                            .seekerId!,
+                                                        consultId: cubit
+                                                            .scheduledChatDataEnded[
+                                                                index]
+                                                            .scheduledId!,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: Color(0xffFFE8D6),
+                                                  ),
+                                                  padding: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          CircleAvatar(),
+                                                          Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        10),
+                                                            child: Text(
+                                                              snapshotEnded
+                                                                  .data!.name!,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .subtitle1,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Stack(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        children: const [
+                                                          CircleAvatar(
+                                                            radius: 10,
+                                                            backgroundColor:
+                                                                Color(
+                                                                    0xff6B705C),
+                                                          ),
+                                                          Text(
+                                                            "10",
+                                                            style: TextStyle(
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        ],
                       ),
                     ),
                   ],

@@ -178,8 +178,11 @@ class _ProviderChatState extends State<ProviderChat>
                       ),
                       // Scheduled Chat
                       Builder(builder: (context) {
-                        ScheduleCubit.get(context)
-                            .getChat(userId: "providerId");
+                        ScheduleCubit.get(context).getChat(
+                          userId: "providerId",
+                          isOpened: true,
+                          isApproved: true,
+                        );
                         return BlocConsumer<ScheduleCubit, ScheduleState>(
                           listener: (context, state) {},
                           builder: (context, state) {
@@ -193,10 +196,13 @@ class _ProviderChatState extends State<ProviderChat>
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: GestureDetector(
                                     onTap: () {
+                                      print(cubit
+                                          .scheduledChatData[index].seekerId);
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ProviderChatOpenScheduled(
+                                            collectionName: "scheduled",
                                             providerId: cubit
                                                 .scheduledChatData[index]
                                                 .providerId!,
@@ -288,101 +294,241 @@ class _ProviderChatState extends State<ProviderChat>
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: StreamBuilder<List<ConsultData>>(
-                    stream: getChatDataProvider(status: "ended"),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.active) {
-                        return ListView.separated(
-                          itemCount: snapshot.data!.length,
-                          separatorBuilder: (context, index) {
-                            return SizedBox(
-                              height: 10,
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProviderChatOpenScheduled(
-                                      isClosed: true,
-                                      seekerId: snapshot.data![index].uid,
-                                      providerId:
-                                          snapshot.data![index].providerId!,
-                                      consultId:
-                                          snapshot.data![index].consultId,
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      StreamBuilder<List<ConsultData>>(
+                        stream: getChatDataProvider(status: "ended"),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.active) {
+                            return ListView.separated(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length + 1,
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  height: 5,
+                                );
+                              },
+                              itemBuilder: (context, index) {
+                                if (index == snapshot.data!.length) {
+                                  return SizedBox.shrink();
+                                }
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProviderChatOpenScheduled(
+                                            collectionName: "scheduled",
+                                            isClosed: true,
+                                            seekerId: snapshot.data![index].uid,
+                                            providerId: snapshot
+                                                .data![index].providerId!,
+                                            consultId:
+                                                snapshot.data![index].consultId,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Color(0xffFFE8D6)),
+                                      padding: EdgeInsets.all(10),
+                                      child: FutureBuilder(
+                                        future: getSeekerOffer(
+                                            id: snapshot.data![index].uid),
+                                        builder: (context,
+                                            AsyncSnapshot<SeekerData>
+                                                seekerSnapshot) {
+                                          if (seekerSnapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            return Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    CircleAvatar(),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 10),
+                                                      child: Text(
+                                                        "${seekerSnapshot.data?.name}",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle1,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Stack(
+                                                  alignment: Alignment.center,
+                                                  children: const [
+                                                    CircleAvatar(
+                                                      radius: 10,
+                                                      backgroundColor:
+                                                          Color(0xff6B705C),
+                                                    ),
+                                                    Text(
+                                                      "10",
+                                                      style: TextStyle(
+                                                          fontSize: 11,
+                                                          color: Colors.white),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          } else {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 );
                               },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color(0xffFFE8D6)),
-                                padding: EdgeInsets.all(10),
-                                child: FutureBuilder(
-                                  future: getSeekerOffer(
-                                      id: snapshot.data![index].uid),
-                                  builder: (context,
-                                      AsyncSnapshot<SeekerData>
-                                          seekerSnapshot) {
-                                    if (seekerSnapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              CircleAvatar(),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10),
-                                                child: Text(
-                                                  "${seekerSnapshot.data?.name}",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .subtitle1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Stack(
-                                            alignment: Alignment.center,
-                                            children: const [
-                                              CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor:
-                                                    Color(0xff6B705C),
-                                              ),
-                                              Text(
-                                                "10",
-                                                style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.white),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                  },
-                                ),
-                              ),
                             );
-                          },
-                        );
-                      } else {
-                        return CircularProgressIndicator();
-                      }
-                    },
+                          } else {
+                            return CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      Builder(builder: (context) {
+                        ScheduleCubit.get(context).getChatEnded(
+                            userId: "providerId",
+                            isOpened: false,
+                            isApproved: true);
+                        return BlocConsumer<ScheduleCubit, ScheduleState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              var cubit = ScheduleCubit.get(context);
+                              return ListView.separated(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProviderChatOpenScheduled(
+                                                collectionName: "scheduled",
+                                                isClosed: true,
+                                                seekerId: cubit
+                                                    .scheduledChatDataEnded[
+                                                        index]
+                                                    .seekerId!,
+                                                providerId: cubit
+                                                    .scheduledChatDataEnded[
+                                                        index]
+                                                    .providerId!,
+                                                consultId: cubit
+                                                    .scheduledChatDataEnded[
+                                                        index]
+                                                    .scheduledId!,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Color(0xffFFE8D6)),
+                                          padding: EdgeInsets.all(10),
+                                          child: FutureBuilder(
+                                            future: getSeekerOffer(
+                                                id: cubit
+                                                    .scheduledChatDataEnded[
+                                                        index]
+                                                    .seekerId!),
+                                            builder: (context,
+                                                AsyncSnapshot<SeekerData>
+                                                    seekerSnapshot) {
+                                              if (seekerSnapshot
+                                                      .connectionState ==
+                                                  ConnectionState.done) {
+                                                return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        CircleAvatar(),
+                                                        Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      10),
+                                                          child: Text(
+                                                            "${seekerSnapshot.data?.name}",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .subtitle1,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Stack(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      children: const [
+                                                        CircleAvatar(
+                                                          radius: 10,
+                                                          backgroundColor:
+                                                              Color(0xff6B705C),
+                                                        ),
+                                                        Text(
+                                                          "10",
+                                                          style: TextStyle(
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.white),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                );
+                                              } else {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                  itemCount: ScheduleCubit.get(context)
+                                      .scheduledChatDataEnded
+                                      .length);
+                            });
+                      }),
+                    ],
                   ),
                 ),
               ],

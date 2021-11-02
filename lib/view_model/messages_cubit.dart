@@ -151,6 +151,14 @@ class MessagesCubit extends Cubit<MessagesState> {
     emit(MessageEndingSuccessState());
   }
 
+  void endChatSchedule({required scheduledId, providerId}) {
+    FirebaseFirestore.instance
+        .collection("scheduled")
+        .doc(scheduledId)
+        .update({"isOpened": false}).then((value) => isClosing == false);
+    emit(MessageEndingSuccessState());
+  }
+
   void resetIsClosing() {
     isClosing = false;
     emit(MessageResetClosingSuccessState());

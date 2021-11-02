@@ -184,7 +184,7 @@ class TimeCubit extends Cubit<TimeState> {
       "scheduledDetails": consult,
       "topic": topic,
       "isApproved": false,
-      "isOpened": false,
+      "isOpened": true,
     }, SetOptions(merge: true)).then(
       (value) {
         Navigator.pop(context);

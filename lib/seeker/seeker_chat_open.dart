@@ -265,7 +265,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                       },
                     ),
                   ),
-                  !MessagesCubit.get(context).isClosing
+                  !widget.isClosed
                       ? Container(
                           color: Color(0xffFFE0BE),
                           height: 60,

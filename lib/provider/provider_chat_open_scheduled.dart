@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class ProviderChatOpenScheduled extends StatefulWidget {
+  final String collectionName;
   final bool isClosed;
   final String providerId;
   final String seekerId;
@@ -15,6 +16,7 @@ class ProviderChatOpenScheduled extends StatefulWidget {
   const ProviderChatOpenScheduled(
       {Key? key,
       this.isClosed = false,
+      required this.collectionName,
       required this.providerId,
       required this.seekerId,
       required this.consultId})
@@ -47,7 +49,7 @@ class _ProviderChatOpenScheduledState extends State<ProviderChatOpenScheduled> {
         child: Builder(
           builder: (context) {
             MessagesCubit.get(context).getMessages(
-                collectionName: "scheduled",
+                collectionName: widget.collectionName,
                 consultId: widget.consultId,
                 messageId: widget.seekerId);
             return BlocConsumer<MessagesCubit, MessagesState>(

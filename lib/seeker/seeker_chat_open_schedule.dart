@@ -10,26 +10,28 @@ import 'package:intl/intl.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class SeekerChatOpen extends StatefulWidget {
+class SeekerChatOpenSchedule extends StatefulWidget {
   final String consultId;
   final String providerId;
   final String seekerId;
   final bool isClosed;
+  final String collectionName;
   final String uid;
-  const SeekerChatOpen({
+  const SeekerChatOpenSchedule({
     Key? key,
     this.isClosed = false,
     required this.uid,
+    required this.collectionName,
     required this.consultId,
     required this.providerId,
     required this.seekerId,
   }) : super(key: key);
 
   @override
-  _SeekerChatOpenState createState() => _SeekerChatOpenState();
+  _SeekerChatOpenScheduleState createState() => _SeekerChatOpenScheduleState();
 }
 
-class _SeekerChatOpenState extends State<SeekerChatOpen> {
+class _SeekerChatOpenScheduleState extends State<SeekerChatOpenSchedule> {
   final messageController = TextEditingController();
   var rating = 0.0;
   @override
@@ -39,7 +41,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
     return Builder(
       builder: (context) {
         MessagesCubit.get(context).getMessages(
-            collectionName: "consults",
+            collectionName: widget.collectionName,
             consultId: widget.consultId,
             messageId: widget.uid);
         return BlocConsumer<MessagesCubit, MessagesState>(
@@ -101,7 +103,8 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                                 //future function we used async and await when the data is filled in firebase (ex:bad connection)
                                                 // continue this
                                                 await FirebaseFirestore.instance
-                                                    .collection("provider")
+                                                    .collection(
+                                                        widget.collectionName)
                                                     .doc(widget.providerId)
                                                     .collection("ratings")
                                                     .doc()
@@ -122,11 +125,12 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                                 ).then(
                                                   (value) =>
                                                       MessagesCubit.get(context)
-                                                          .endChat(
-                                                              providerId: widget
-                                                                  .providerId,
-                                                              consultId: widget
-                                                                  .consultId),
+                                                          .endChatSchedule(
+                                                    providerId:
+                                                        widget.providerId,
+                                                    scheduledId:
+                                                        widget.consultId,
+                                                  ),
                                                 );
                                                 // ?= variable is optional may be null
                                                 Navigator.of(context).pop();
@@ -263,7 +267,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                       },
                     ),
                   ),
-                  !MessagesCubit.get(context).isClosing
+                  !widget.isClosed
                       ? Container(
                           color: Color(0xffFFE0BE),
                           height: 60,
@@ -298,7 +302,7 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                               IconButton(
                                 onPressed: () {
                                   MessagesCubit.get(context).sendChat(
-                                    collectionName: "consults",
+                                    collectionName: widget.collectionName,
                                     messageId: widget.seekerId,
                                     consultId: widget.consultId,
                                     message: messageController.text,

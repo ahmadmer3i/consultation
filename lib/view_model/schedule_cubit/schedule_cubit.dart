@@ -20,11 +20,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   final _auth = FirebaseAuth.instance;
 
   var userId = "";
+  bool isClosed = false;
 
   List<ProviderData> providers = [];
 
   List<ScheduledData> scheduledData = [];
   List<ScheduledData> scheduledChatData = [];
+  List<ScheduledData> scheduledChatDataEnded = [];
 
   getScheduleData({required String topic}) {
     _firebase
@@ -45,6 +47,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     _firebase
         .collection("scheduled")
         .where("providerId", isEqualTo: _auth.currentUser!.uid)
+        .where("isOpened", isEqualTo: true)
         .where("isApproved", isEqualTo: false)
         .snapshots()
         .listen(
@@ -83,10 +86,16 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     );
   }
 
-  void getChat({required String userId}) {
+  void getChat({
+    bool? isClosed,
+    required String userId,
+    required bool isOpened,
+    required bool isApproved,
+  }) {
     _firebase
         .collection("scheduled")
-        .where("isApproved", isEqualTo: true)
+        .where("isOpened", isEqualTo: isOpened)
+        .where("isApproved", isEqualTo: isApproved)
         .where(userId, isEqualTo: _auth.currentUser!.uid)
         .snapshots()
         .listen((event) {
@@ -99,6 +108,32 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         );
       }
     });
+
+    emit(ScheduledGetChatSuccessState());
+  }
+
+  void getChatEnded(
+      {bool? closed,
+      required String userId,
+      required bool isOpened,
+      required bool isApproved}) {
+    _firebase
+        .collection("scheduled")
+        .where("isOpened", isEqualTo: false)
+        .where("isApproved", isEqualTo: true)
+        .where(userId, isEqualTo: _auth.currentUser!.uid)
+        .snapshots()
+        .listen((event) {
+      scheduledChatDataEnded = [];
+      for (var doc in event.docs) {
+        scheduledChatDataEnded.add(
+          ScheduledData.fromDatabase(
+            doc.data(),
+          ),
+        );
+      }
+    });
+
     emit(ScheduledGetChatSuccessState());
   }
 

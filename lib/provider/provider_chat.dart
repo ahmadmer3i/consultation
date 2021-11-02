@@ -195,27 +195,32 @@ class _ProviderChatState extends State<ProviderChat>
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: GestureDetector(
-                                    onTap: () {
-                                      print(cubit
-                                          .scheduledChatData[index].seekerId);
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProviderChatOpenScheduled(
-                                            collectionName: "scheduled",
-                                            providerId: cubit
-                                                .scheduledChatData[index]
-                                                .providerId!,
-                                            seekerId: cubit
-                                                .scheduledChatData[index]
-                                                .seekerId!,
-                                            consultId: cubit
-                                                .scheduledChatData[index]
-                                                .scheduledId!,
-                                          ),
-                                        ),
-                                      );
-                                    },
+                                    onTap: cubit.scheduledChatData[index]
+                                            .scheduledDate!
+                                            .toDate()
+                                            .isAtSameMomentAs(DateTime.now())
+                                        ? () {
+                                            print(cubit.scheduledChatData[index]
+                                                .seekerId);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProviderChatOpenScheduled(
+                                                  collectionName: "scheduled",
+                                                  providerId: cubit
+                                                      .scheduledChatData[index]
+                                                      .providerId!,
+                                                  seekerId: cubit
+                                                      .scheduledChatData[index]
+                                                      .seekerId!,
+                                                  consultId: cubit
+                                                      .scheduledChatData[index]
+                                                      .scheduledId!,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        : () {},
                                     child: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:

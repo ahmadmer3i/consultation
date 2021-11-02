@@ -213,32 +213,43 @@ class _SeekerChatState extends State<SeekerChat>
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 5),
                                         child: GestureDetector(
-                                          onTap: () {
-                                            MessagesCubit.get(context)
-                                                .resetIsClosing();
-                                            MessagesCubit.get(context)
-                                                .resetRating();
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SeekerChatOpenSchedule(
-                                                  collectionName: "scheduled",
-                                                  seekerId: cubit
-                                                      .scheduledChatData[index]
-                                                      .seekerId!,
-                                                  providerId: cubit
-                                                      .scheduledChatData[index]
-                                                      .providerId!,
-                                                  uid: cubit
-                                                      .scheduledChatData[index]
-                                                      .seekerId!,
-                                                  consultId: cubit
-                                                      .scheduledChatData[index]
-                                                      .scheduledId!,
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                          onTap: cubit.scheduledChatData[index]
+                                                  .scheduledDate!
+                                                  .toDate()
+                                                  .isAtSameMomentAs(
+                                                      DateTime.now())
+                                              ? () {
+                                                  MessagesCubit.get(context)
+                                                      .resetIsClosing();
+                                                  MessagesCubit.get(context)
+                                                      .resetRating();
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SeekerChatOpenSchedule(
+                                                        collectionName:
+                                                            "scheduled",
+                                                        seekerId: cubit
+                                                            .scheduledChatData[
+                                                                index]
+                                                            .seekerId!,
+                                                        providerId: cubit
+                                                            .scheduledChatData[
+                                                                index]
+                                                            .providerId!,
+                                                        uid: cubit
+                                                            .scheduledChatData[
+                                                                index]
+                                                            .seekerId!,
+                                                        consultId: cubit
+                                                            .scheduledChatData[
+                                                                index]
+                                                            .scheduledId!,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                              : () {},
                                           child: Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:

@@ -200,8 +200,6 @@ class _ProviderChatState extends State<ProviderChat>
                                             .toDate()
                                             .isAtSameMomentAs(DateTime.now())
                                         ? () {
-                                            print(cubit.scheduledChatData[index]
-                                                .seekerId);
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (context) =>

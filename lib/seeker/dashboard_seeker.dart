@@ -290,109 +290,119 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                           },
                         ),
                       )
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              color: Color(0xffFFE8D6),
-                            ),
-                            margin: const EdgeInsets.only(top: 10),
-                            height: 150,
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProviderProfileSchedule(
-                                                canProceed: false,
-                                                data: cubit.searchResult[index],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const CircleAvatar(),
-                                            Container(
-                                              padding: const EdgeInsets.all(5),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    cubit.searchResult[index]
-                                                        .name!,
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headline6!
-                                                        .copyWith(
-                                                          height: 1,
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    " ${cubit.searchResult[index].price!.toStringAsFixed(0)} ريال / الساعة",
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .subtitle2,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Row(
+                    : cubit.searchResult.isNotEmpty
+                        ? ListView.separated(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  color: Color(0xffFFE8D6),
+                                ),
+                                margin: const EdgeInsets.only(top: 10),
+                                height: 150,
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(cubit.searchResult[index].rate!
-                                              .toStringAsFixed(1)),
-                                          StarRating(
-                                            rating:
-                                                cubit.searchResult[index].rate!,
-                                            size: 20,
-                                            borderColor:
-                                                const Color(0xff6B705C),
-                                            color: const Color(0xff6B705C),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProviderProfileSchedule(
+                                                    canProceed: false,
+                                                    data: cubit
+                                                        .searchResult[index],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const CircleAvatar(),
+                                                Container(
+                                                  padding:
+                                                      const EdgeInsets.all(5),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        cubit
+                                                            .searchResult[index]
+                                                            .name!,
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .headline6!
+                                                            .copyWith(
+                                                              height: 1,
+                                                            ),
+                                                      ),
+                                                      Text(
+                                                        " ${cubit.searchResult[index].price!.toStringAsFixed(0)} ريال / الساعة",
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle2,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
+                                          Row(
+                                            children: [
+                                              Text(cubit
+                                                  .searchResult[index].rate!
+                                                  .toStringAsFixed(1)),
+                                              StarRating(
+                                                rating: cubit
+                                                    .searchResult[index].rate!,
+                                                size: 20,
+                                                borderColor:
+                                                    const Color(0xff6B705C),
+                                                color: const Color(0xff6B705C),
+                                              ),
+                                            ],
+                                          )
                                         ],
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        cubit.searchResult[index].experience!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2!
+                                            .copyWith(height: 1.2),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    cubit.searchResult[index].experience!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle2!
-                                        .copyWith(height: 1.2),
-                                  ),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                  height: 5,
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                              height: 5,
-                            ),
-                        itemCount: cubit.searchResult.length),
+                            itemCount: cubit.searchResult.length)
+                        : const Center(
+                            child: Text("لا يوجد نتائج بحث"),
+                          ),
               ],
             ),
           );

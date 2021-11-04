@@ -198,7 +198,7 @@ class _ProviderChatState extends State<ProviderChat>
                                     onTap: cubit.scheduledChatData[index]
                                             .scheduledDate!
                                             .toDate()
-                                            .isAtSameMomentAs(DateTime.now())
+                                            .isBefore(DateTime.now())
                                         ? () {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(

@@ -216,8 +216,7 @@ class _SeekerChatState extends State<SeekerChat>
                                           onTap: cubit.scheduledChatData[index]
                                                   .scheduledDate!
                                                   .toDate()
-                                                  .isAtSameMomentAs(
-                                                      DateTime.now())
+                                                  .isBefore(DateTime.now())
                                               ? () {
                                                   MessagesCubit.get(context)
                                                       .resetIsClosing();

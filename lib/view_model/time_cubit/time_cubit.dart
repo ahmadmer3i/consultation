@@ -187,6 +187,17 @@ class TimeCubit extends Cubit<TimeState> {
       "isOpened": true,
     }, SetOptions(merge: true)).then(
       (value) {
+        for (var selectedTime in selectedTimes) {
+          var day = (DateFormat.jm().parse(selectedTime));
+          var time = DateTime(selectedDay.year, selectedDay.month,
+              selectedDay.day, day.hour, day.minute);
+          _firebase
+              .collection(providerCollection)
+              .doc(providerId)
+              .collection("availableTime")
+              .doc("$time")
+              .delete();
+        }
         Navigator.pop(context);
         Navigator.pushReplacement(
           context,

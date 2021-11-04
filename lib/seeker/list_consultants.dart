@@ -55,130 +55,294 @@ class _ListConsultantsState extends State<ListConsultants> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  const MyTextFieldDark(
+                  MyTextFieldDark(
+                    suffixIcon: cubit.searchController.text.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              cubit.searchController.clear();
+                              cubit.checkSearch();
+                            },
+                            icon: const Text(
+                              "الغاء",
+                              style: TextStyle(
+                                color: Colors.redAccent,
+                              ),
+                            ),
+                          )
+                        : null,
+                    textController: cubit.searchController,
+                    onChanged: (value) {
+                      cubit.checkSearch();
+                    },
                     label: "ابحث باسم المستشار",
                     radius: 50,
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 5),
-                      child: ListView.builder(
-                        itemCount: cubit.providers.length,
-                        itemBuilder: (context, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              TimeCubit.get(context).getTimeIntervalsSeeker(
-                                  providerId: cubit.providers[index].uid!);
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => ProviderProfileSchedule(
-                                    data: cubit.providers[index],
-                                    topic: widget.topic,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                color: Color(0xffFFE8D6),
-                              ),
-                              margin: const EdgeInsets.only(top: 10),
-                              height: 150,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                  cubit.isSearchEmpty
+                      ? Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: ListView.builder(
+                              itemCount: cubit.providers.length,
+                              itemBuilder: (context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    TimeCubit.get(context)
+                                        .getTimeIntervalsSeeker(
+                                            providerId:
+                                                cubit.providers[index].uid!);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProviderProfileSchedule(
+                                          data: cubit.providers[index],
+                                          topic: widget.topic,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                      color: Color(0xffFFE8D6),
+                                    ),
+                                    margin: const EdgeInsets.only(top: 10),
+                                    height: 150,
+                                    child: Column(
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProviderProfileSchedule(
-                                                  canProceed: false,
-                                                  data: cubit.providers[index],
-                                                ),
-                                              ),
-                                            );
-                                          },
+                                        Expanded(
+                                          flex: 1,
                                           child: Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              const CircleAvatar(),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(5),
-                                                child: Column(
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProviderProfileSchedule(
+                                                        canProceed: false,
+                                                        data: cubit
+                                                            .providers[index],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      cubit.providers[index]
-                                                          .name!,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6!
-                                                          .copyWith(
-                                                            height: 1,
+                                                    const CircleAvatar(),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            cubit
+                                                                .providers[
+                                                                    index]
+                                                                .name!,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline6!
+                                                                .copyWith(
+                                                                  height: 1,
+                                                                ),
                                                           ),
-                                                    ),
-                                                    Text(
-                                                      " ${cubit.providers[index].price!.toStringAsFixed(0)} ريال / الساعة",
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .subtitle2,
+                                                          Text(
+                                                            " ${cubit.providers[index].price!.toStringAsFixed(0)} ريال / الساعة",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .subtitle2,
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
+                                              Row(
+                                                children: [
+                                                  Text(cubit
+                                                      .providers[index].rate!
+                                                      .toStringAsFixed(1)),
+                                                  StarRating(
+                                                    rating: cubit
+                                                        .providers[index].rate!,
+                                                    size: 20,
+                                                    borderColor:
+                                                        const Color(0xff6B705C),
+                                                    color:
+                                                        const Color(0xff6B705C),
+                                                  ),
+                                                ],
+                                              )
                                             ],
                                           ),
                                         ),
-                                        Row(
-                                          children: [
-                                            Text(cubit.providers[index].rate!
-                                                .toStringAsFixed(1)),
-                                            StarRating(
-                                              rating:
-                                                  cubit.providers[index].rate!,
-                                              size: 20,
-                                              borderColor:
-                                                  const Color(0xff6B705C),
-                                              color: const Color(0xff6B705C),
-                                            ),
-                                          ],
-                                        )
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            cubit.providers[index].experience!,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2!
+                                                .copyWith(height: 1.2),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      cubit.providers[index].experience!,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2!
-                                          .copyWith(height: 1.2),
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 5),
+                            child: ListView.builder(
+                              itemCount: cubit.searchResult.length,
+                              itemBuilder: (context, int index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    TimeCubit.get(context)
+                                        .getTimeIntervalsSeeker(
+                                            providerId:
+                                                cubit.searchResult[index].uid!);
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProviderProfileSchedule(
+                                          data: cubit.searchResult[index],
+                                          topic: widget.topic,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                      color: Color(0xffFFE8D6),
+                                    ),
+                                    margin: const EdgeInsets.only(top: 10),
+                                    height: 150,
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ProviderProfileSchedule(
+                                                        canProceed: false,
+                                                        data:
+                                                            cubit.searchResult[
+                                                                index],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    const CircleAvatar(),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            cubit
+                                                                .searchResult[
+                                                                    index]
+                                                                .name!,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline6!
+                                                                .copyWith(
+                                                                  height: 1,
+                                                                ),
+                                                          ),
+                                                          Text(
+                                                            " ${cubit.providers[index].price!.toStringAsFixed(0)} ريال / الساعة",
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .subtitle2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(cubit
+                                                      .providers[index].rate!
+                                                      .toStringAsFixed(1)),
+                                                  StarRating(
+                                                    rating: cubit
+                                                        .providers[index].rate!,
+                                                    size: 20,
+                                                    borderColor:
+                                                        const Color(0xff6B705C),
+                                                    color:
+                                                        const Color(0xff6B705C),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Text(
+                                            cubit.providers[index].experience!,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2!
+                                                .copyWith(height: 1.2),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
+                          ),
+                        ),
                 ],
               ),
             );

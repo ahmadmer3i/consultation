@@ -10,3 +10,7 @@ class ScheduleProviderDataSuccessState extends ScheduleState {}
 class ScheduledProviderDataGetSucceedState extends ScheduleState {}
 
 class ScheduledGetChatSuccessState extends ScheduleState {}
+
+class ScheduledSearchState extends ScheduleState {}
+
+class ScheduleSearchEmptyState extends ScheduleState {}

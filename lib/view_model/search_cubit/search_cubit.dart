@@ -28,8 +28,8 @@ class SearchCubit extends Cubit<SearchState> {
     emit(SearchTextState());
   }
 
-  checkSearch() {
-    if (searchController.text.length > 3) {
+  void checkSearch() {
+    if (searchController.text.length > 2) {
       isSearchEmpty = false;
       emit(SearchEmptyState());
       searchResult = [];

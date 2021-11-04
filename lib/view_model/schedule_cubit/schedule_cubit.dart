@@ -22,11 +22,15 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   var userId = "";
   bool isClosed = false;
 
+  final searchController = TextEditingController();
+
   List<ProviderData> providers = [];
 
   List<ScheduledData> scheduledData = [];
   List<ScheduledData> scheduledChatData = [];
   List<ScheduledData> scheduledChatDataEnded = [];
+  List<ProviderData> searchResult = [];
+  bool isSearchEmpty = true;
 
   getScheduleData({required String topic}) {
     _firebase
@@ -84,6 +88,23 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         ),
       ),
     );
+  }
+
+  void checkSearch() {
+    if (searchController.text.length > 2) {
+      isSearchEmpty = false;
+      emit(ScheduleSearchEmptyState());
+      searchResult = [];
+      for (var provider in providers) {
+        if (provider.name!.contains(searchController.text)) {
+          searchResult.add(provider);
+        }
+      }
+      emit((ScheduledSearchState()));
+    } else {
+      isSearchEmpty = true;
+      emit(ScheduleSearchEmptyState());
+    }
   }
 
   void getChat({

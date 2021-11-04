@@ -82,12 +82,23 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                   ),
                 ),
                 MyTextFieldDark(
+                  suffixIcon: cubit.searchController.text.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            cubit.searchController.clear();
+                            cubit.checkSearch();
+                          },
+                          icon: const Text(
+                            "الغاء",
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        )
+                      : null,
                   textController: cubit.searchController,
                   onChanged: (value) {
                     cubit.checkSearch();
-                    for (var item in cubit.searchResult) {
-                      print(item.name);
-                    }
                   },
                   label: "ابحث باسم المستشار",
                   radius: 50,
@@ -397,11 +408,15 @@ class _DashboardSeekerState extends State<DashboardSeeker> {
                             },
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
-                                  height: 5,
-                                ),
-                            itemCount: cubit.searchResult.length)
+                              height: 5,
+                            ),
+                            itemCount: cubit.searchResult.length,
+                          )
                         : const Center(
-                            child: Text("لا يوجد نتائج بحث"),
+                            child: Text(
+                              "لا يوجد نتائج بحث",
+                              textAlign: TextAlign.center,
+                            ),
                           ),
               ],
             ),

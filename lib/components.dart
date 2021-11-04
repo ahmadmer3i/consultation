@@ -95,8 +95,10 @@ class MyTextFieldDark extends StatefulWidget {
   final String? Function(String?)? validator;
   final TextEditingController? textController;
   final bool isReadOnly;
+  final String? initialValue;
   const MyTextFieldDark({
     Key? key,
+    this.initialValue,
     required this.label,
     this.isReadOnly = false,
     this.onChanged,
@@ -123,6 +125,7 @@ class _MyTextFieldDarkState extends State<MyTextFieldDark> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.initialValue,
       readOnly: widget.isReadOnly,
       controller: widget.textController,
       maxLength: widget.maxLength,

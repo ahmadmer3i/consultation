@@ -12,6 +12,7 @@ Future<List<ProviderData>> getProviderForTopics(List<ProviderData> data,
       if (providerTopic == topic) {
         data.add(
           ProviderData(
+            birthOfDate: doc["dateOfBirth"],
             price: double.parse(doc["price"].toString()),
             password: doc["password"],
             email: doc["email"],

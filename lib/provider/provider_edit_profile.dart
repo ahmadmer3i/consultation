@@ -1,18 +1,38 @@
-import 'package:consultation/Components.dart';
+import 'package:consultation/models/provider_data.dart';
 import 'package:flutter/material.dart';
 
+import '../components.dart';
+
 class ProviderProfileEdit extends StatefulWidget {
-  const ProviderProfileEdit({Key? key}) : super(key: key);
+  final ProviderData data;
+  const ProviderProfileEdit({Key? key, required this.data}) : super(key: key);
 
   @override
   ProviderProfileEditState createState() => ProviderProfileEditState();
 }
 
 class ProviderProfileEditState extends State<ProviderProfileEdit> {
+  var nameController = TextEditingController();
+  var emailController = TextEditingController();
+  var bodController = TextEditingController();
+  var experienceController = TextEditingController();
+  var priceController = TextEditingController();
+  var ibanController = TextEditingController();
   int selectedGender = 0;
   bool instant = true;
   bool scheduled = true;
   int selectedBank = 0;
+  @override
+  void initState() {
+    priceController.text = widget.data.price!.toString();
+    nameController.text = widget.data.name!;
+    ibanController.text = widget.data.iban!;
+    emailController.text = widget.data.email!;
+    bodController.text = widget.data.birthOfDate!;
+    experienceController.text = widget.data.experience!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,11 +52,19 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                         .copyWith(color: const Color(0xffCB997E)),
                   )),
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: const MyTextFieldDark(label: "الاسم بالكامل*")),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: MyTextFieldDark(
+                  textController: nameController,
+                  label: "الاسم بالكامل*",
+                ),
+              ),
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: const MyTextFieldDark(label: "البريد الإلكتروني*")),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: MyTextFieldDark(
+                  textController: emailController,
+                  label: "البريد الإلكتروني*",
+                ),
+              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
@@ -51,57 +79,66 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
                 child: DropdownButton(
-                    hint: const Text(
-                      "جنس*",
-                      style: TextStyle(
-                          color: Color(0xffFFE8D6),
-                          decoration: TextDecoration.none),
-                    ),
-                    onChanged: (int? value) {
-                      setState(() {
+                  hint: const Text(
+                    "جنس*",
+                    style: TextStyle(
+                        color: Color(0xffFFE8D6),
+                        decoration: TextDecoration.none),
+                  ),
+                  onChanged: (int? value) {
+                    setState(
+                      () {
                         selectedGender = value!;
-                      });
-                    },
-                    focusColor: Colors.white,
-                    style: const TextStyle(color: Colors.white),
-                    value: selectedGender,
-                    dropdownColor: Colors.white,
-                    isExpanded: true,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 0,
-                          child: Text(
-                            "ذكر",
-                            style: TextStyle(color: Colors.black),
-                          )),
-                      DropdownMenuItem(
-                          value: 1,
-                          child: Text(
-                            "أنثى",
-                            style: TextStyle(color: Colors.black),
-                          )),
-                    ]),
+                      },
+                    );
+                  },
+                  focusColor: Colors.white,
+                  style: const TextStyle(color: Colors.white),
+                  value: widget.data.gender == "M" ? 0 : 1,
+                  dropdownColor: Colors.white,
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text(
+                        "ذكر",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text(
+                        "أنثى",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: MyTextFieldDark(
-                    label: "تاريخ الميلاد*",
-                    iconButton: IconButton(
-                      onPressed: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2015, 8),
-                          lastDate: DateTime(2101),
-                        );
-                      },
-                      icon:
-                          const Icon(Icons.calendar_today, color: Colors.black),
-                    ),
-                  )),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: MyTextFieldDark(
+                  textController: bodController,
+                  label: "تاريخ الميلاد*",
+                  iconButton: IconButton(
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2015, 8),
+                        lastDate: DateTime(2101),
+                      );
+                    },
+                    icon: const Icon(Icons.calendar_today, color: Colors.black),
+                  ),
+                ),
+              ),
               Container(
                   margin: const EdgeInsets.only(bottom: 10),
                   child: MyTextFieldDark(
@@ -130,7 +167,8 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                       ),
                     ),
                   )),
-              const MyTextFieldDark(
+              MyTextFieldDark(
+                textController: experienceController,
                 label: "تكلم لنا عن خبراتك*",
                 showHint: false,
                 minHeight: 6,
@@ -174,20 +212,21 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                       ]),
                     ),
                     Container(
-                        margin: const EdgeInsets.all(2),
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.black87,
+                      margin: const EdgeInsets.all(2),
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.black87,
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
                         ),
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        )),
+                        onPressed: () {},
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -219,35 +258,43 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                       children: [
                         const Text("فوري"),
                         Checkbox(
-                            value: instant,
-                            onChanged: (value) {
-                              setState(() {
+                          value: widget.data.isInstance,
+                          onChanged: (value) {
+                            setState(
+                              () {
                                 instant = value!;
-                              });
-                            })
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                     Row(
                       children: [
                         const Text("المقرر"),
                         Checkbox(
-                            value: scheduled,
-                            onChanged: (value) {
-                              setState(() {
+                          value: widget.data.isScheduled,
+                          onChanged: (value) {
+                            setState(
+                              () {
                                 scheduled = value!;
-                              });
-                            })
+                              },
+                            );
+                          },
+                        )
                       ],
                     )
                   ],
                 ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: const MyTextFieldDark(
-                    label: "رسوم الاستشارة / الساعة*",
-                    suffix: Text("ریال"),
-                  )),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: MyTextFieldDark(
+                  textController: priceController,
+                  label: "رسوم الاستشارة / الساعة*",
+                  suffix: const Text("ریال/ساعة"),
+                ),
+              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
@@ -260,34 +307,43 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
               Container(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: DropdownButton(
-                    onChanged: (int? value) {
-                      setState(() {
+                  onChanged: (int? value) {
+                    setState(
+                      () {
                         selectedBank = value!;
-                      });
-                    },
-                    focusColor: Colors.black,
-                    style: const TextStyle(color: Colors.black),
-                    value: selectedBank,
-                    dropdownColor: Colors.white,
-                    isExpanded: true,
-                    items: const [
-                      DropdownMenuItem(
-                          value: 0,
-                          child: Text(
-                            "بنك الرياض",
-                            style: TextStyle(color: Colors.black),
-                          )),
-                      DropdownMenuItem(
-                          value: 1,
-                          child: Text(
-                            "بنك الجزيرة",
-                            style: TextStyle(color: Colors.black),
-                          )),
-                    ]),
+                      },
+                    );
+                  },
+                  focusColor: Colors.black,
+                  style: const TextStyle(color: Colors.black),
+                  value: selectedBank,
+                  dropdownColor: Colors.white,
+                  isExpanded: true,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 0,
+                      child: Text(
+                        "بنك الرياض",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text(
+                        "بنك الجزيرة",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: const MyTextFieldDark(label: "رقم الآيبان*")),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: MyTextFieldDark(
+                  textController: ibanController,
+                  label: "رقم الآيبان*",
+                ),
+              ),
               ElevatedButton(
                 onPressed: () {},
                 child: Text(

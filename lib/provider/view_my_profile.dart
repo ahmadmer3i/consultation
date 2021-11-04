@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:consultation/Provider/provider_edit_profile.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/provider/provider_edit_profile.dart';
 import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -375,16 +375,23 @@ class _ViewMyProfileState extends State<ViewMyProfile>
                     ? Container(
                         margin: EdgeInsets.all(10),
                         child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ProviderProfileEdit()));
-                            },
-                            child: Text(
-                              "تعديل بياناتي",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: Colors.white),
-                            )))
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProviderProfileEdit(
+                                    data: InstantCubit.get(context)
+                                        .providerData1!),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "تعديل بياناتي",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        ),
+                      )
                     : Container()
               ],
             )

@@ -10,6 +10,7 @@ Future<List<ProviderData>> getProviderData(List<ProviderData> data) async {
     data.add(
       ProviderData(
         // topics: doc["topics"] as List<String>,
+        birthOfDate: doc["dateOfBirth"],
         rate: double.parse(doc["rate"].toString()),
         price: double.parse(doc["price"].toString()),
         password: doc["password"],

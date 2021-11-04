@@ -21,6 +21,7 @@ class ProviderCubit extends Cubit<ProviderState> {
     email: "",
     name: "",
     uid: "",
+    birthOfDate: "",
     isApproved: false,
     price: 0,
   );

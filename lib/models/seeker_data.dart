@@ -20,6 +20,7 @@ class SeekerData {
   SeekerData.fromJson(Map<String, dynamic> json) {
     username = json["username"];
     password = json["password"];
+    name = json["name"];
     gender = json["gender"];
     uid = json["uid"];
     email = json["email"];

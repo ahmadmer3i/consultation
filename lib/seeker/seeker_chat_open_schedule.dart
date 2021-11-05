@@ -279,7 +279,7 @@ class _SeekerChatOpenScheduleState extends State<SeekerChatOpenSchedule> {
                                 onPressed: () {
                                   reportModalSheet(context,
                                       sender: "seekerId",
-                                      receiver: "providerIds",
+                                      receiver: "providerId",
                                       reportCollection: "seekerReports",
                                       userId: widget.providerId);
                                 },

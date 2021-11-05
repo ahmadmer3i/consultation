@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
+import 'package:consultation/widgets/report_modal_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -185,7 +186,13 @@ class _ProviderChatOpenScheduledState extends State<ProviderChatOpenScheduled> {
                             child: Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    reportModalSheet(context,
+                                        userId: widget.seekerId,
+                                        reportCollection: "providerReports",
+                                        sender: "providerId",
+                                        receiver: "seekerId");
+                                  },
                                   icon: Icon(Icons.more_horiz),
                                 ),
                                 Expanded(

@@ -6,6 +6,7 @@ import 'package:consultation/splash_screen.dart';
 import 'package:consultation/tools/bloc_observer.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
 import 'package:consultation/view_model/provider/provider_instant_cubit/instant_cubit.dart';
+import 'package:consultation/view_model/report_cubit/report_cubit.dart';
 import 'package:consultation/view_model/schedule_cubit/schedule_cubit.dart';
 import 'package:consultation/view_model/search_cubit/search_cubit.dart';
 import 'package:consultation/view_model/seeker_cubit/seeker_cubit.dart';
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => SearchCubit()..getAllProviders(),
         ),
+        BlocProvider(
+          create: (context) => ReportCubit(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

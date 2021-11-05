@@ -39,7 +39,6 @@ class _ProviderChatOpenScheduledState extends State<ProviderChatOpenScheduled> {
 
   @override
   Widget build(BuildContext context) {
-    print("scheudled");
     return Scaffold(
       appBar: MyAppBar(
         onPressed: () {},
@@ -59,6 +58,7 @@ class _ProviderChatOpenScheduledState extends State<ProviderChatOpenScheduled> {
                   children: [
                     Expanded(
                       child: ListView.separated(
+                        shrinkWrap: true,
                         reverse: true,
                         controller: MessagesCubit.get(context).scroll,
                         separatorBuilder: (context, index) => SizedBox(

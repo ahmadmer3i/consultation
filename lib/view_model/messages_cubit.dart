@@ -4,6 +4,7 @@ import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/models/consult_data.dart';
 import 'package:consultation/models/message_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -23,6 +24,7 @@ class MessagesCubit extends Cubit<MessagesState> {
     required String receiverId,
     required messageId,
   }) async {
+    print("test");
     MessageData messageData = MessageData(
       message: message,
       dateTime: dateTime,

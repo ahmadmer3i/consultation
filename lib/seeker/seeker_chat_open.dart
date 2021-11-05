@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:consultation/components.dart';
 import 'package:consultation/view_model/messages_cubit.dart';
+import 'package:consultation/widgets/report_modal_sheet.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -219,12 +221,13 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                 constraints: BoxConstraints(maxWidth: 300),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Color(0xffF3F3F3),
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      )),
+                                    color: Color(0xffF3F3F3),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                  ),
                                   padding: EdgeInsets.symmetric(
                                       vertical: 5, horizontal: 10),
                                   child: Column(
@@ -245,9 +248,8 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                                         margin: EdgeInsets.only(top: 5),
                                         child: Text(
                                           DateFormat.jm('ar').format(
-                                              messages[index]
-                                                  .dateTime
-                                                  .toDate()),
+                                            messages[index].dateTime.toDate(),
+                                          ),
                                           textAlign: TextAlign.start,
                                           style: Theme.of(context)
                                               .textTheme
@@ -273,7 +275,13 @@ class _SeekerChatOpenState extends State<SeekerChatOpen> {
                           child: Row(
                             children: [
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  reportModalSheet(context,
+                                      sender: "seekerId",
+                                      receiver: "providerId",
+                                      reportCollection: "seekerReports",
+                                      userId: widget.providerId);
+                                },
                                 icon: Icon(Icons.more_horiz),
                               ),
                               Expanded(

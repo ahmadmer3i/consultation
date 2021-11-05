@@ -96,6 +96,7 @@ class _ProviderChatState extends State<ProviderChat>
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               ProviderChatOpen(
+                                                  collectionName: "instant",
                                                   providerId: snapshot
                                                       .data![index].providerId!,
                                                   seekerId:

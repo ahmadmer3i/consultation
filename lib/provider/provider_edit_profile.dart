@@ -43,14 +43,15 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
           child: Column(
             children: [
               Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "تحديث الملف",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(color: const Color(0xffCB997E)),
-                  )),
+                alignment: Alignment.center,
+                child: Text(
+                  "تحديث الملف",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(color: const Color(0xffCB997E)),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: MyTextFieldDark(
@@ -140,33 +141,35 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                 ),
               ),
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: MyTextFieldDark(
-                    isObscure: true,
-                    minHeight: 1,
-                    maxLines: 1,
-                    label: "كلمة المرور",
-                    iconButton: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.remove_red_eye,
-                      ),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: MyTextFieldDark(
+                  isObscure: true,
+                  minHeight: 1,
+                  maxLines: 1,
+                  label: "كلمة المرور",
+                  iconButton: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.remove_red_eye,
                     ),
-                  )),
+                  ),
+                ),
+              ),
               Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: MyTextFieldDark(
-                    isObscure: true,
-                    minHeight: 1,
-                    maxLines: 1,
-                    label: "تأكيد كلمة المرور*",
-                    iconButton: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.remove_red_eye,
-                      ),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: MyTextFieldDark(
+                  isObscure: true,
+                  minHeight: 1,
+                  maxLines: 1,
+                  label: "تأكيد كلمة المرور*",
+                  iconButton: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.remove_red_eye,
                     ),
-                  )),
+                  ),
+                ),
+              ),
               MyTextFieldDark(
                 textController: experienceController,
                 label: "تكلم لنا عن خبراتك*",
@@ -196,20 +199,22 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Stack(children: [
-                        Image.network("https://picsum.photos/200"),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.black87,
-                            shape: const CircleBorder(),
+                      child: Stack(
+                        children: [
+                          Image.network("https://picsum.photos/200"),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.black87,
+                              shape: const CircleBorder(),
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {},
                           ),
-                          child: const Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ]),
+                        ],
+                      ),
                     ),
                     Container(
                       margin: const EdgeInsets.all(2),
@@ -292,7 +297,9 @@ class ProviderProfileEditState extends State<ProviderProfileEdit> {
                 child: MyTextFieldDark(
                   textController: priceController,
                   label: "رسوم الاستشارة / الساعة*",
-                  suffix: const Text("ریال/ساعة"),
+                  suffix: const Text(
+                    "ریال/ساعة",
+                  ),
                 ),
               ),
               Align(

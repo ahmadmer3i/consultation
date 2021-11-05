@@ -1,7 +1,7 @@
 import 'package:consultation/Provider/calendar_management.dart';
 import 'package:consultation/Provider/view_my_profile.dart';
-import 'package:consultation/Seeker/seeker_reports.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/provider/provider_reports.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -102,7 +102,7 @@ class _ProviderProfileState extends State<ProviderProfile> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SeekerReports()));
+                    builder: (context) => const ProviderReports()));
               },
               child: Container(
                 margin: const EdgeInsets.all(5),

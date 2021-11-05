@@ -10,3 +10,5 @@ class ProfileUpdateGetDataSuccess extends ProfileUpdateState {}
 class ProfileUpdateUpdateSuccessState extends ProfileUpdateState {}
 
 class ProfileUpdateLoadingState extends ProfileUpdateState {}
+
+class ProfileUpdateErrorState extends ProfileUpdateState {}

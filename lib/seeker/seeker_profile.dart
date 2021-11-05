@@ -1,6 +1,6 @@
-import 'package:consultation/Seeker/seeker_edit_profile.dart';
 import 'package:consultation/Seeker/seeker_reports.dart';
 import 'package:consultation/components.dart';
+import 'package:consultation/seeker/seeker_edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ class _SeekerProfileState extends State<SeekerProfile> {
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SeekerProfileEdit()));
+                    builder: (context) => SeekerProfileEdit()));
               },
               child: Container(
                 margin: const EdgeInsets.all(5),

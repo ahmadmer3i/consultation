@@ -3,16 +3,10 @@ import 'package:consultation/view_model/profile_update_seeker/profile_update_cub
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SeekerProfileEdit extends StatefulWidget {
-  const SeekerProfileEdit({Key? key}) : super(key: key);
-
-  @override
-  SeekerProfileEditState createState() => SeekerProfileEditState();
-}
-
-class SeekerProfileEditState extends State<SeekerProfileEdit> {
+class SeekerProfileEdit extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
-  int selectedGender = 0;
+
+  SeekerProfileEdit({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileUpdateCubit>(
@@ -20,7 +14,8 @@ class SeekerProfileEditState extends State<SeekerProfileEdit> {
       child: BlocConsumer<ProfileUpdateCubit, ProfileUpdateState>(
         listener: (context, state) {},
         builder: (context, state) {
-          var cubit = ProfileUpdateCubit.get(context);
+          var cubit =
+              ProfileUpdateCubit.get(context); // object from the Cubit Class
           return Scaffold(
             appBar: MyAppBar(),
             body: Container(
@@ -83,11 +78,6 @@ class SeekerProfileEditState extends State<SeekerProfileEdit> {
                           ),
                           onChanged: (int? value) {
                             cubit.gender = value == 0 ? "M" : "F";
-                            setState(
-                              () {
-                                selectedGender = value!;
-                              },
-                            );
                           },
                           focusColor: Colors.white,
                           style: const TextStyle(
@@ -151,6 +141,14 @@ class SeekerProfileEditState extends State<SeekerProfileEdit> {
                           textController: cubit.passwordController,
                           isObscure: true,
                           minHeight: 1,
+                          validator: (errorMessage) {
+                            //encloser
+                            if (cubit.passwordController.text.isNotEmpty &&
+                                cubit.passwordController.text.length < 6) {
+                              return "كلمة المرور يجب ان تكون على الاقل ٦ احرف";
+                            }
+                            return null;
+                          },
                           maxLines: 1,
                           label: "كلمة المرور",
                           iconButton: IconButton(

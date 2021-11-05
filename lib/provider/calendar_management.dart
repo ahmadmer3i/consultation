@@ -161,6 +161,54 @@ class _CalendarManagementState extends State<CalendarManagement> {
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
+                                  onLongPress: () {
+                                    showModalBottomSheet(
+                                      isDismissible: false,
+                                      context: context,
+                                      builder: (context) => Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        height: 140,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 120),
+                                              child: ElevatedButton(
+                                                onPressed: () {},
+                                                child: Text(
+                                                  "حذف الوقت",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFE8D6),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 120),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text(
+                                                  "تراجع",
+                                                  style: TextStyle(
+                                                    color: Color(0xFFFFE8D6),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   onTap: () {
                                     setState(
                                       () {
@@ -247,12 +295,13 @@ class _CalendarManagementState extends State<CalendarManagement> {
                               },
                               selectedDate: TimeCubit.get(context)
                                   .selectedDay
-                                  .add(Duration(hours: 2)),
+                                  .add(Duration(minutes: 40)),
                               onChanged: (day) {
                                 TimeCubit.get(context).getDate(day);
                                 TimeCubit.get(context).getAvailableTime(day);
                               },
-                              firstDate: DateTime.now(),
+                              firstDate:
+                                  DateTime.now().subtract(Duration(minutes: 1)),
                               lastDate: DateTime.now().add(
                                 Duration(days: 365),
                               ),

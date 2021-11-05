@@ -24,7 +24,6 @@ class MessagesCubit extends Cubit<MessagesState> {
     required String receiverId,
     required messageId,
   }) async {
-    print("test");
     MessageData messageData = MessageData(
       message: message,
       dateTime: dateTime,
@@ -55,7 +54,7 @@ class MessagesCubit extends Cubit<MessagesState> {
         .orderBy("date", descending: true)
         .snapshots()
         .listen((event) {
-      messages = [];
+      messages = []; // to prevent repeating messages
       for (var e in event.docs) {
         messages.add(
           MessageData(

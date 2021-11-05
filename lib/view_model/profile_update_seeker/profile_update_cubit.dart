@@ -46,7 +46,7 @@ class ProfileUpdateCubit extends Cubit<ProfileUpdateState> {
       emailController.text = seekerData.email!;
       bodController.text = seekerData.date!;
       gender = seekerData.gender!;
-      emit(ProfileUpdateGetDataSuccess());
+      emit(ProfileUpdateGetDataSuccess()); // to change screen state
     });
   }
 
@@ -64,7 +64,8 @@ class ProfileUpdateCubit extends Cubit<ProfileUpdateState> {
         if (passwordController.text.isNotEmpty) {
           await _auth.currentUser!.updatePassword(passwordController.text);
         }
-        Navigator.pop(context);
+        // Navigator.pop(context);
+        MessageDialog.showSnackBar("تم التحديث بنجاح", context);
       } on FirebaseAuthException catch (e) {
         if (e.code == "requires-recent-login") {
           MessageDialog.showSnackBar(

@@ -60,7 +60,8 @@ class _AddNewSlotState extends State<AddNewSlot> {
                           setState(
                             () {
                               date = value;
-                              dateController.text = value.toString();
+                              dateController.text =
+                                  DateFormat.yMMMd('ar').format(value!);
                             },
                           );
                         },
@@ -157,18 +158,10 @@ class _AddNewSlotState extends State<AddNewSlot> {
                   var time2 = DateTime(date!.year, date!.month, date!.day,
                       endTime.hour, endTime.minute);
                   var counter = time1.hour;
-                  print(time1.difference(time2));
-                  print("hour of period start ${startTime.hourOfPeriod}");
-                  print("hour of period end ${endTime.hourOfPeriod}");
-                  print(startTime);
-                  print(endTime);
-                  print("counter: $counter");
-                  print("end time: ${time2.hour}");
+
                   timeIntervals = [];
                   if (_formKey.currentState!.validate()) {
-                    print("valid");
                     while (time2.hour > counter) {
-                      print(counter);
                       timeIntervals.add(
                         DateTime(date!.year, date!.month, date!.day, counter,
                             time2.minute),

@@ -46,7 +46,7 @@ class ReportCubit extends Cubit<ReportState> {
     _firebase
         .collection(reportCollection)
         .where(userType, isEqualTo: _auth.currentUser!.uid)
-        .orderBy("reportDate", descending: false)
+        .orderBy("reportDate", descending: true)
         .get()
         .then((value) {
       reportData = [];

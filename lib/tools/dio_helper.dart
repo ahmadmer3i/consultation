@@ -35,6 +35,7 @@ class DioHelper {
                   if (url.contains("failed")) {
                     Navigator.pop(context);
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (context) => Dialog(
                         backgroundColor: Colors.transparent,
@@ -65,6 +66,7 @@ class DioHelper {
                   }
                   Navigator.pop(context);
                   showDialog(
+                    barrierDismissible: false,
                     context: context,
                     builder: (context) => Dialog(
                       backgroundColor: Colors.transparent,

@@ -1,3 +1,4 @@
+import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/seeker/dashboard_seeker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +32,14 @@ class DioHelper {
               onPageFinished: (url) {
                 if (url.contains(value.data["callback_url"])) {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(
+                  Navigator.pop(context);
+                  Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DashboardSeeker(username: ,)));
+                          builder: (context) => DashboardSeeker(
+                                username: currentUsername,
+                              )),
+                      (route) => false);
                 }
               },
             ),

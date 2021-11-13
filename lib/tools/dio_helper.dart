@@ -30,16 +30,74 @@ class DioHelper {
             builder: (context) => WebView(
               initialUrl: value.data["source"]["transaction_url"],
               onPageFinished: (url) {
+                print(url);
                 if (url.contains(value.data["callback_url"])) {
+                  if (url.contains("failed")) {
+                    Navigator.pop(context);
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text("فشل عملية الدفع"),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("إلغاء"))
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                    return;
+                  }
                   Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DashboardSeeker(
-                                username: currentUsername,
-                              )),
-                      (route) => false);
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      backgroundColor: Colors.transparent,
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text("تم الدفع بنجاح"),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DashboardSeeker(
+                                              username: currentUsername,
+                                            )),
+                                    (route) => false);
+                              },
+                              child: const Text("إلغاء"),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 }
               },
             ),

@@ -38,6 +38,12 @@ class SeekerProfileEdit extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: MyTextFieldDark(
+                          validator: (value) {
+                            if (cubit.nameController.text.length < 6) {
+                              return "يرجى ادخال الاسم الصحيح";
+                            }
+                            return null;
+                          },
                           textController: cubit.nameController,
                           label: "الاسم بالكامل*",
                         ),
@@ -45,6 +51,14 @@ class SeekerProfileEdit extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: MyTextFieldDark(
+                          validator: (value) {
+                            RegExp regExp = RegExp(
+                                "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+                            if (!regExp.hasMatch(cubit.emailController.text)) {
+                              return "يرجى ادخال البريد الالكتروني بالشكل الصحيح";
+                            }
+                            return null;
+                          },
                           textController: cubit.emailController,
                           label: "البريد الإلكتروني*",
                         ),
@@ -78,6 +92,7 @@ class SeekerProfileEdit extends StatelessWidget {
                           ),
                           onChanged: (int? value) {
                             cubit.gender = value == 0 ? "M" : "F";
+                            cubit.getGenderValue(value!);
                           },
                           focusColor: Colors.white,
                           style: const TextStyle(

@@ -2,6 +2,7 @@
 
 import 'package:consultation/components.dart';
 import 'package:consultation/models/provider_data.dart';
+import 'package:consultation/tools/dio_helper.dart';
 import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class ConsultationDetails extends StatefulWidget {
 
 class _ConsultationDetailsState extends State<ConsultationDetails> {
   final formKey = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   final consultController = TextEditingController();
   int? selectedMethod = 0;
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -70,23 +72,28 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                               ),
                             ),
                             context: context,
+                            isScrollControlled: true,
                             builder: (_) => MyBottomSheet(
                               price: widget.providerData.price! *
                                   TimeCubit.get(context).reservedTimes.length,
                               onPressed: () {
-                                TimeCubit.get(context).setSchedule(
-                                  context,
-                                  selectedDay:
-                                      TimeCubit.get(context).selectedDay,
-                                  selectedTimes:
-                                      TimeCubit.get(context).reservedTimes,
-                                  payment: widget.providerData.price! *
-                                      TimeCubit.get(context)
-                                          .reservedTimes
-                                          .length,
-                                  providerId: widget.providerData.uid,
-                                );
+                                if (formKey.currentState!.validate()) {
+                                  // TimeCubit.get(context).setSchedule(
+                                  //   context,
+                                  //   selectedDay:
+                                  //       TimeCubit.get(context).selectedDay,
+                                  //   selectedTimes:
+                                  //       TimeCubit.get(context).reservedTimes,
+                                  //   payment: widget.providerData.price! *
+                                  //       TimeCubit.get(context)
+                                  //           .reservedTimes
+                                  //           .length,
+                                  //   providerId: widget.providerData.uid,
+                                  // );
+                                  DioHelper.dioPost(context);
+                                }
                               },
+                              formKey: formKey2,
                             ),
                           );
                         }

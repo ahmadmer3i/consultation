@@ -22,6 +22,7 @@ class Offers extends StatefulWidget {
 }
 
 class _OffersState extends State<Offers> {
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +73,7 @@ class _OffersState extends State<Offers> {
                                   : "STC Pay",
                             );
                           },
+                          formKey: formKey,
                         ),
                       );
                     },

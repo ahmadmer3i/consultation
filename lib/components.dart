@@ -12,6 +12,8 @@ import 'package:consultation/seeker/seeker_notification.dart';
 import 'package:consultation/view_model/provider/provider_update_instant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:fzregex/fzregex.dart';
+import 'package:fzregex/utils/pattern.dart';
 
 import 'Seeker/seeker_profile.dart';
 
@@ -513,11 +515,15 @@ class _MyProviderBottomNavigationBarState
 
 class MyBottomSheet extends StatefulWidget {
   final double price;
+
   final VoidCallback onPressed;
+  final GlobalKey<FormState> formKey;
+
   const MyBottomSheet({
     Key? key,
     required this.price,
     required this.onPressed,
+    required this.formKey,
   }) : super(key: key);
 
   @override
@@ -525,137 +531,255 @@ class MyBottomSheet extends StatefulWidget {
 }
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
+  final creditController = TextEditingController();
+  final dateController = TextEditingController();
+  final cvvController = TextEditingController();
+  final fromKey = GlobalKey<FormState>();
   int selectedMethod = 0;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 500,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
-      child: Column(
-        children: [
-          Align(
-              alignment: Alignment.center,
-              child: Text(
-                "تأكيد الدفع",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Color(0xffCB997E), fontWeight: FontWeight.w700),
-              )),
-          Align(
-              alignment: Alignment.center,
-              child: Text(
-                "إجمالي المبلغ",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.w700),
-              )),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "${widget.price}",
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "ریال",
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                  color: Colors.black, height: 1, fontWeight: FontWeight.w700),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: Text(
-              "جنس*",
-              style: Theme.of(context).textTheme.caption!.copyWith(
-                    color: Color(0xffFFE8D6),
-                  ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(5),
-              ),
-            ),
-            child: DropdownButton(
-              hint: Text(
-                "جنس*",
-                style: TextStyle(
-                  color: Color(0xffFFE8D6),
-                  decoration: TextDecoration.none,
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        height: 520,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
+        child: Form(
+          key: widget.formKey,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "تأكيد الدفع",
+                  style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Color(0xffCB997E), fontWeight: FontWeight.w700),
                 ),
               ),
-              onChanged: (int? value) {
-                setState(
-                  () {
-                    selectedMethod = value!;
-                    selectedPaymentMethod = value;
-                  },
-                );
-              },
-              focusColor: Colors.white,
-              style: TextStyle(color: Colors.white),
-              value: selectedMethod,
-              dropdownColor: Colors.white,
-              isExpanded: true,
-              items: [
-                DropdownMenuItem(
-                    value: 0,
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          "Assets/applePay.png",
-                          width: 50,
-                        ),
-                        Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              "Apple Pay",
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ))
-                      ],
-                    )),
-                DropdownMenuItem(
-                  value: 1,
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        "Assets/stcPay.png",
-                        width: 50,
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "إجمالي المبلغ",
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                      color: Colors.black, fontWeight: FontWeight.w700),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "${widget.price}",
+                  style: Theme.of(context).textTheme.headline2!.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
-                      Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "STC Pay",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ))
-                    ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "ریال",
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: Colors.black,
+                      height: 1,
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  controller: creditController,
+                  validator: (value) {
+                    if (!Fzregex.hasMatch(
+                        creditController.text, FzPattern.creditcard)) {
+                      return "يرجى ادخال رقم البطاقة بالشكل الصحيح";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    prefixIcon: Icon(Icons.credit_card),
+                    border: OutlineInputBorder(),
                   ),
                 ),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: widget.onPressed,
-            child: Text(
-              "دفع",
-              style: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        controller: cvvController,
+                        validator: (value) {
+                          if (cvvController.text.length < 3) {
+                            return "يرجى ادخال الرقم السري بشكل صحيح";
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        maxLength: 3,
+                        decoration: InputDecoration(
+                          counterStyle: TextStyle(height: double.minPositive),
+                          counterText: "",
+                          isDense: false,
+                          contentPadding: EdgeInsets.all(4),
+                          hintText: "CVV",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 100,
+                    ),
+                    Flexible(
+                      child: TextFormField(
+                        controller: dateController,
+                        validator: (value) {
+                          RegExp regExp = RegExp(
+                              "^((0[1-9])|(1[0-2]))\\/((${DateTime.now().year})|(20[2][1-9]))\$");
+                          if (!regExp.hasMatch(dateController.text)) {
+                            return "يرجى كتابة التاريخ بالشكل الصحيح";
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            isDense: false,
+                            hintText: "MM/YYYY",
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.all(4)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  "جنس*",
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                        color: Color(0xffFFE8D6),
+                      ),
+                ),
+              ),
+              // Container(
+              //     margin: EdgeInsets.only(bottom: 20),
+              //     padding: EdgeInsets.symmetric(horizontal: 10),
+              //     width: double.infinity,
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.all(
+              //         Radius.circular(5),
+              //       ),
+              //     ),
+              //     child:
+
+              // DropdownButton(
+              //   hint: Text(
+              //     "جنس*",
+              //     style: TextStyle(
+              //       color: Color(0xffFFE8D6),
+              //       decoration: TextDecoration.none,
+              //     ),
+              //   ),
+              //   onChanged: (int? value) {
+              //     setState(
+              //       () {
+              //         selectedMethod = value!;
+              //         selectedPaymentMethod = value;
+              //       },
+              //     );
+              //   },
+              //   focusColor: Colors.white,
+              //   style: TextStyle(color: Colors.white),
+              //   value: selectedMethod,
+              //   dropdownColor: Colors.white,
+              //   isExpanded: true,
+              //   items: [
+              //     DropdownMenuItem(
+              //       value: 0,
+              //       child: Row(
+              //         children: [
+              //           Image.asset(
+              //             "Assets/applePay.png",
+              //             width: 50,
+              //           ),
+              //           Container(
+              //             padding: EdgeInsets.symmetric(horizontal: 10),
+              //             child: Text(
+              //               "Apple Pay",
+              //               style: Theme.of(context).textTheme.bodyText2,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //     DropdownMenuItem(
+              //       value: 1,
+              //       child: Row(
+              //         children: [
+              //           Image.asset(
+              //             "Assets/stcPay.png",
+              //             width: 50,
+              //           ),
+              //           Container(
+              //             padding: EdgeInsets.symmetric(horizontal: 10),
+              //             child: Text(
+              //               "STC Pay",
+              //               style: Theme.of(context).textTheme.bodyText2,
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // ),
+              // Form(
+              //   child: Column(
+              //     children: [
+              //       Flexible(
+              //         child: TextFormField(
+              //           decoration: InputDecoration(
+              //             border: OutlineInputBorder(borderSide: BorderSide.none),
+              //           ),
+              //         ),
+              //       ),
+              //       Flexible(
+              //         child: Row(
+              //           children: [
+              //             TextFormField(
+              //               decoration: InputDecoration(
+              //                 border:
+              //                     OutlineInputBorder(borderSide: BorderSide.none),
+              //               ),
+              //             ),
+              //             TextFormField(
+              //               decoration: InputDecoration(
+              //                 border:
+              //                     OutlineInputBorder(borderSide: BorderSide.none),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       )
+              //     ],
+              //   ),
+              // ),
+              ElevatedButton(
+                onPressed: widget.onPressed,
+                child: Text(
+                  "دفع",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

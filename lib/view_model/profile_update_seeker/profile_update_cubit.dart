@@ -75,4 +75,13 @@ class ProfileUpdateCubit extends Cubit<ProfileUpdateState> {
       emit(ProfileUpdateUpdateSuccessState());
     });
   }
+
+  getGenderValue(int value) {
+    if (gender == "M") {
+      value = 0;
+    } else {
+      value = 1;
+    }
+    emit(ProfileUpdateGenderChangedSuccess());
+  }
 }

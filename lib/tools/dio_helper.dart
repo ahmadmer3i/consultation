@@ -20,9 +20,7 @@ class DioHelper {
       "callback_url": "https://example.com",
     }).then(
       (value) async {
-        if (value.statusCode == 200) {
-          print(value.data);
-        } else if (value.statusCode == 201) {
+        if (value.statusCode == 201) {
           print(value.data);
           Navigator.pop(context);
           showBottomSheet(

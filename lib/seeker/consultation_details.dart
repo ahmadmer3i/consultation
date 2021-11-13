@@ -2,7 +2,6 @@
 
 import 'package:consultation/components.dart';
 import 'package:consultation/models/provider_data.dart';
-import 'package:consultation/tools/dio_helper.dart';
 import 'package:consultation/view_model/time_cubit/time_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -78,19 +77,18 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                                   TimeCubit.get(context).reservedTimes.length,
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
-                                  // TimeCubit.get(context).setSchedule(
-                                  //   context,
-                                  //   selectedDay:
-                                  //       TimeCubit.get(context).selectedDay,
-                                  //   selectedTimes:
-                                  //       TimeCubit.get(context).reservedTimes,
-                                  //   payment: widget.providerData.price! *
-                                  //       TimeCubit.get(context)
-                                  //           .reservedTimes
-                                  //           .length,
-                                  //   providerId: widget.providerData.uid,
-                                  // );
-                                  DioHelper.dioPost(context);
+                                  TimeCubit.get(context).setSchedule(
+                                    context,
+                                    selectedDay:
+                                        TimeCubit.get(context).selectedDay,
+                                    selectedTimes:
+                                        TimeCubit.get(context).reservedTimes,
+                                    payment: widget.providerData.price! *
+                                        TimeCubit.get(context)
+                                            .reservedTimes
+                                            .length,
+                                    providerId: widget.providerData.uid,
+                                  );
                                 }
                               },
                               formKey: formKey2,

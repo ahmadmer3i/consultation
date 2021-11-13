@@ -134,6 +134,8 @@ class _CalendarManagementState extends State<CalendarManagement> {
           return BlocConsumer<TimeCubit, TimeState>(
             listener: (context, state) {},
             builder: (context, state) {
+              TimeCubit.get(context).selectedDay =
+                  DateTime.now().add(Duration(minutes: 1));
               return Container(
                 padding: EdgeInsets.all(10),
                 child: Column(
@@ -293,15 +295,12 @@ class _CalendarManagementState extends State<CalendarManagement> {
                                         ),
                                       );
                               },
-                              selectedDate: TimeCubit.get(context)
-                                  .selectedDay
-                                  .add(Duration(minutes: 40)),
+                              selectedDate: TimeCubit.get(context).selectedDay,
                               onChanged: (day) {
                                 TimeCubit.get(context).getDate(day);
                                 TimeCubit.get(context).getAvailableTime(day);
                               },
-                              firstDate:
-                                  DateTime.now().subtract(Duration(minutes: 1)),
+                              firstDate: DateTime.now(),
                               lastDate: DateTime.now().add(
                                 Duration(days: 365),
                               ),

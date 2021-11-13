@@ -532,6 +532,7 @@ class MyBottomSheet extends StatefulWidget {
 
 class _MyBottomSheetState extends State<MyBottomSheet> {
   final creditController = TextEditingController();
+  final nameController = TextEditingController();
   final dateController = TextEditingController();
   final cvvController = TextEditingController();
   final fromKey = GlobalKey<FormState>();
@@ -542,7 +543,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: Container(
-        height: 520,
+        height: 620,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(50))),
         child: Form(
@@ -588,7 +589,31 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  controller: nameController,
+                  onChanged: (value) {
+                    name = nameController.text;
+                  },
+                  validator: (value) {
+                    if (!Fzregex.hasMatch(
+                        nameController.text, FzPattern.name)) {
+                      return "يرجى ادخال الاسم بالشكل الصحيح";
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: "الاسم باللغة الانجليزية",
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
                   controller: creditController,
+                  onChanged: (value) {
+                    creditCard = creditController.text;
+                  },
                   validator: (value) {
                     if (!Fzregex.hasMatch(
                         creditController.text, FzPattern.creditcard)) {
@@ -619,6 +644,9 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                         },
                         keyboardType: TextInputType.number,
                         maxLength: 3,
+                        onChanged: (value) {
+                          cvv = cvvController.text;
+                        },
                         decoration: InputDecoration(
                           counterStyle: TextStyle(height: double.minPositive),
                           counterText: "",
@@ -635,6 +663,9 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                     Flexible(
                       child: TextFormField(
                         controller: dateController,
+                        onChanged: (value) {
+                          date = dateController.text;
+                        },
                         validator: (value) {
                           RegExp regExp = RegExp(
                               "^((0[1-9])|(1[0-2]))\\/((${DateTime.now().year})|(20[2][1-9]))\$");

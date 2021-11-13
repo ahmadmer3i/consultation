@@ -16,3 +16,7 @@ var providerScheduled = false;
 String providerCollection = "provider";
 String seekerCollection = "seeker";
 int selectedPaymentMethod = 0;
+String date = "";
+String cvv = "";
+String creditCard = "";
+String name = "";

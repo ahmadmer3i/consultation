@@ -23,7 +23,7 @@ class TimeCubit extends Cubit<TimeState> {
   String consult = "";
   bool isEventDate = false;
 
-  var id = Uuid().v1();
+  var id = const Uuid().v1();
   var topic = "";
 
   var providerId = "";
@@ -159,7 +159,6 @@ class TimeCubit extends Cubit<TimeState> {
 
   void setConsult({required String seekerConsult}) {
     consult = seekerConsult;
-    print(consult);
   }
 
   void resetReservedTimes() {
@@ -169,40 +168,52 @@ class TimeCubit extends Cubit<TimeState> {
 
   void setSchedule(
     context, {
+    required GlobalKey<FormState> formKey,
     required DateTime selectedDay,
     required selectedTimes,
     required double payment,
     required providerId,
   }) {
-    _firebase.collection("scheduled").doc(id).set({
-      "scheduledDate": selectedDay,
-      "scheduledTime": selectedTimes,
-      "providerId": providerId,
-      "payment": payment,
-      "scheduledId": id,
-      "seekerId": _auth.currentUser!.uid,
-      "scheduledDetails": consult,
-      "topic": topic,
-      "isApproved": false,
-      "isOpened": true,
-    }, SetOptions(merge: true)).then(
-      (value) {
-        for (var selectedTime in selectedTimes) {
-          var day = (DateFormat.jm().parse(selectedTime));
-          var time = DateTime(selectedDay.year, selectedDay.month,
-              selectedDay.day, day.hour, day.minute);
-          _firebase
-              .collection(providerCollection)
-              .doc(providerId)
-              .collection("availableTime")
-              .doc("$time")
-              .delete();
-        }
-        DioHelper.dioPost(context);
-      },
-    );
+    if (formKey.currentState!.validate()) {
+      _firebase.collection("scheduled").doc(id).set({
+        "scheduledDate": selectedDay,
+        "scheduledTime": selectedTimes,
+        "providerId": providerId,
+        "payment": payment,
+        "scheduledId": id,
+        "seekerId": _auth.currentUser!.uid,
+        "scheduledDetails": consult,
+        "topic": topic,
+        "isApproved": false,
+        "isOpened": true,
+      }, SetOptions(merge: true)).then(
+        (value) {
+          for (var selectedTime in selectedTimes) {
+            var day = (DateFormat.jm().parse(selectedTime));
+            var time = DateTime(selectedDay.year, selectedDay.month,
+                selectedDay.day, day.hour, day.minute);
+            _firebase
+                .collection(providerCollection)
+                .doc(providerId)
+                .collection("availableTime")
+                .doc("$time")
+                .delete();
+          }
+          var paymentDate = date.split("/");
+          DioHelper.dioPost(
+            context,
+            name: name,
+            amount: payment,
+            month: paymentDate[0],
+            year: paymentDate[1],
+            cvv: cvv,
+            creditCard: creditCard,
+          );
+        },
+      );
+      emit(TimeSeekerSetSuccess());
+    }
     id = const Uuid().v1();
-    emit(TimeSeekerSetSuccess());
   }
 
   setEvents(DateTime dateTime) {

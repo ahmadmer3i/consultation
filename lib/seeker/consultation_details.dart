@@ -79,6 +79,7 @@ class _ConsultationDetailsState extends State<ConsultationDetails> {
                                 if (formKey.currentState!.validate()) {
                                   TimeCubit.get(context).setSchedule(
                                     context,
+                                    formKey: formKey2,
                                     selectedDay:
                                         TimeCubit.get(context).selectedDay,
                                     selectedTimes:

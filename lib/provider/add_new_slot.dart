@@ -74,14 +74,12 @@ class _AddNewSlotState extends State<AddNewSlot> {
                 padding: const EdgeInsets.all(10),
                 child: MyTextFieldDark(
                   validator: (value) {
-                    print(endTime.minute - startTime.minute);
                     if (endTime.minute - startTime.minute != 0 ||
                         endTime == startTime ||
                         timeController.text.isEmpty ||
                         startTime.hour > endTime.hour) {
                       return "يجب ان يكون عدد الساعات ساعات كاملة";
                     } else {
-                      print(startTime);
                       return null;
                     }
                   },
@@ -103,19 +101,13 @@ class _AddNewSlotState extends State<AddNewSlot> {
                         onStartChange: (value) async {
                           startTime = value;
                           var minutes = endTime.minute - startTime.minute;
-                          if (minutes != 0) {
-                            print("Error");
-                          }
-                          print(minutes);
+                          if (minutes != 0) {}
                         },
                         onEndChange: (value) async {
                           endTime = value;
                           var hour = endTime.hour - startTime.hour;
                           var minutes = endTime.minute - startTime.minute;
-                          if (minutes != 0) {
-                            print("Error");
-                          }
-                          print(minutes);
+                          if (minutes != 0) {}
                         },
                         use24HourFormat: false,
                       ).then(

@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultation/Seeker/dashboard_seeker.dart';
 import 'package:consultation/helpers/helper.dart';
+import 'package:consultation/models/payemnt_data.dart';
 import 'package:consultation/tools/dio_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 part 'time_state.dart';
 
@@ -25,6 +28,8 @@ class TimeCubit extends Cubit<TimeState> {
 
   var id = const Uuid().v1();
   var topic = "";
+
+  PaymentData? paymentData;
 
   var providerId = "";
 
@@ -208,12 +213,111 @@ class TimeCubit extends Cubit<TimeState> {
             year: paymentDate[1],
             cvv: cvv,
             creditCard: creditCard,
+          ).then(
+            (value) {
+              if (value.statusCode == 201) {
+                Navigator.pop(context);
+                showBottomSheet(
+                  context: context,
+                  builder: (context) => WebView(
+                    initialUrl: value.data["source"]["transaction_url"],
+                    onPageFinished: (url) {
+                      print(url);
+                      if (url.contains(value.data["callback_url"])) {
+                        if (url.contains("failed")) {
+                          Navigator.pop(context);
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => Dialog(
+                              backgroundColor: Colors.transparent,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text("فشل عملية الدفع"),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text("إلغاء"))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+                        paymentData = PaymentData.fromJson(value.data);
+
+                        Navigator.pop(context);
+                        showDialog(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text("تم الدفع بنجاح"),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _firebase
+                                          .collection("scheduled")
+                                          .doc(id)
+                                          .set(
+                                            paymentData!.toMap(),
+                                            SetOptions(merge: true),
+                                          )
+                                          .then((value) {
+                                        id = const Uuid().v1();
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DashboardSeeker(
+                                              username: currentUsername,
+                                            ),
+                                          ),
+                                          (route) => false,
+                                        );
+                                      });
+                                    },
+                                    child: const Text("إلغاء"),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                );
+              }
+            },
           );
         },
       );
       emit(TimeSeekerSetSuccess());
     }
-    id = const Uuid().v1();
   }
 
   setEvents(DateTime dateTime) {

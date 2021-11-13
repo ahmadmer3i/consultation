@@ -906,16 +906,19 @@ class ReportStatusState extends State<ReportStatus> {
       child: Row(
         children: [
           Expanded(
-              child: Container(
-                  color: widget.selectedIndex == 0 ? Color(0xffCB997E) : null,
-                  child: Center(
-                      child: Text(
-                    "انتظار",
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: widget.selectedIndex == 0
-                            ? Color(0xffFFE8D6)
-                            : Color(0xff6B705C)),
-                  )))),
+            child: Container(
+              color: widget.selectedIndex == 0 ? Color(0xffCB997E) : null,
+              child: Center(
+                child: Text(
+                  "انتظار",
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: widget.selectedIndex == 0
+                          ? Color(0xffFFE8D6)
+                          : Color(0xff6B705C)),
+                ),
+              ),
+            ),
+          ),
           Expanded(
               child: Container(
                   color: widget.selectedIndex == 1 ? Color(0xffCB997E) : null,

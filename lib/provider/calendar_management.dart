@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_date_pickers/flutter_date_pickers.dart' as dp;
-import 'package:intl/intl.dart';
 
 import '../Components.dart';
 
@@ -30,12 +29,6 @@ class _CalendarManagementState extends State<CalendarManagement> {
     "12:15",
   ];
   int selectedIndex = 0;
-  DateTime? _selectedDate;
-  // DateTime _currentDate = DateTime.now();
-  // DateTime _currentDate2 = DateTime.now();
-  String _currentMonth = DateFormat.yMMM().format(DateTime(2019, 2, 3));
-  DateTime _targetDateTime = DateTime(2019, 2, 3);
-//  List<DateTime> _markedDate = [DateTime(2018, 9, 20), DateTime(2018, 10, 11)];
   static Widget _eventIcon = Container(
     decoration: BoxDecoration(
         color: Colors.white,

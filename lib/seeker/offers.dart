@@ -23,6 +23,7 @@ class Offers extends StatefulWidget {
 
 class _OffersState extends State<Offers> {
   final formKey = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +51,7 @@ class _OffersState extends State<Offers> {
                   return GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
+                        isScrollControlled: true,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(20),
@@ -60,18 +62,22 @@ class _OffersState extends State<Offers> {
                           price: double.parse(
                               (widget.providerData[index].price).toString()),
                           onPressed: () {
-                            Navigator.pop(context);
-                            setPayment(
-                              context,
-                              providerData: widget.providerData[index],
-                              providerId: widget.providerData[index].consultId!,
-                              docId: widget.docId,
-                              price: double.parse(
-                                  widget.providerData[index].price!.toString()),
-                              payment: selectedPaymentMethod == 0
-                                  ? "Apple Pay"
-                                  : "STC Pay",
-                            );
+                            if (formKey.currentState!.validate()) {
+                              Navigator.pop(context);
+                              setPayment(
+                                context,
+                                providerData: widget.providerData[index],
+                                providerId:
+                                    widget.providerData[index].consultId!,
+                                docId: widget.docId,
+                                price: double.parse(widget
+                                    .providerData[index].price!
+                                    .toString()),
+                                payment: selectedPaymentMethod == 0
+                                    ? "Apple Pay"
+                                    : "STC Pay",
+                              );
+                            }
                           },
                           formKey: formKey,
                         ),

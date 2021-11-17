@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:consultation/helpers/helper.dart';
 import 'package:consultation/models/consult_data.dart';
+import 'package:consultation/tools/dio_helper.dart';
 import 'package:consultation/widgets/dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 var _firebase = FirebaseFirestore.instance;
 var _auth = FirebaseAuth.instance;
@@ -79,28 +83,128 @@ void setPayment(
   required double price,
   required String payment,
 }) async {
-  MessageDialog.showWaitingDialog(context, message: "جاري عملية الدفع");
-  var _firebase = FirebaseFirestore.instance;
-  List<dynamic> items = [];
-  int index;
-  var collection = _firebase.collection("consults");
-  var snapshot = await collection.doc(docId).get();
-  items = snapshot.data()!["providers"];
-  index = items.indexWhere((element) => element["consultId"] == providerId);
-  items[index]["isApproved"] = true;
-  items[index]["status"] = "تم قبول العرض";
+  var payDate = date.split("/");
+  print(payDate[0]);
+  DioHelper.dioPost(
+    context,
+    creditCard: creditCard,
+    cvv: cvv,
+    name: name,
+    year: payDate[1],
+    month: payDate[0],
+    amount: price,
+  ).then((response) {
+    if (response.statusCode == 201) {
+      print(response.data);
+      Navigator.pop(context);
+      showCupertinoModalPopup(
+        context: context,
+        builder: (context) => WebView(
+          initialUrl: response.data["source"]["transaction_url"],
+          onPageFinished: (url) {
+            print(url);
+            if (url.contains(response.data["callback_url"])) {
+              if (url.contains("failed")) {
+                Navigator.pop(context);
+                showDialog(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Text("فشل عملية الدفع"),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("إلغاء"))
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+                return;
+              }
 
-  await _firebase.collection("consults").doc(docId).set(
-    {
-      "providerId": providerId,
-      "price": price,
-      "status": "active",
-      "payment": payment,
-      "isPaid": true,
-      "providers": items,
-    },
-    SetOptions(merge: true),
-  );
-  Navigator.pop(context);
-  Navigator.pop(context);
+              Navigator.pop(context);
+              showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) => Dialog(
+                  backgroundColor: Colors.transparent,
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text("تم الدفع بنجاح"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            MessageDialog.showWaitingDialog(
+                              context,
+                              message: "جاري عملية الدفع",
+                            );
+                            var _firebase = FirebaseFirestore.instance;
+                            List<dynamic> items = [];
+                            int index;
+                            var collection = _firebase.collection("consults");
+                            var snapshot = await collection.doc(docId).get();
+                            items = snapshot.data()!["providers"];
+                            index = items.indexWhere((element) =>
+                                element["consultId"] == providerId);
+                            items[index]["isApproved"] = true;
+                            items[index]["status"] = "تم قبول العرض";
+
+                            await _firebase
+                                .collection("consults")
+                                .doc(docId)
+                                .set(
+                              {
+                                "id": response.data["id"],
+                                "amount_format": response.data["amount_format"],
+                                ""
+                                    "providerId": providerId,
+                                "price": price,
+                                "status": "active",
+                                "payment": response.data["source"]["type"],
+                                "creditCard": response.data["source"]["number"],
+                                "isPaid": true,
+                                "providers": items,
+                              },
+                              SetOptions(merge: true),
+                            );
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                          child: const Text("إلغاء"),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      );
+    }
+  });
 }

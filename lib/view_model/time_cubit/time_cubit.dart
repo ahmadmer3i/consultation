@@ -184,7 +184,6 @@ class TimeCubit extends Cubit<TimeState> {
         "scheduledDate": selectedDay,
         "scheduledTime": selectedTimes,
         "providerId": providerId,
-        "payment": payment,
         "scheduledId": id,
         "seekerId": _auth.currentUser!.uid,
         "scheduledDetails": consult,

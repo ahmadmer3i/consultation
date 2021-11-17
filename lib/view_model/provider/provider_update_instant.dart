@@ -24,8 +24,9 @@ void updateInstantStatus(
   List<Map<String, dynamic>> updatedItems = [];
   for (var element in items) {
     updatedItems.add(element.toDatabase());
-    print(element);
   }
-  _firebase.collection("consults").doc(docId).set({"providers": updatedItems},
-      SetOptions(merge: true)).onError((error, stackTrace) => print(error));
+  _firebase
+      .collection("consults")
+      .doc(docId)
+      .set({"providers": updatedItems}, SetOptions(merge: true));
 }

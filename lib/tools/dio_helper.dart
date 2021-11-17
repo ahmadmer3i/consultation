@@ -1,4 +1,3 @@
-import 'package:consultation/helpers/helper.dart';
 import 'package:dio/dio.dart';
 
 class DioHelper {
@@ -9,12 +8,6 @@ class DioHelper {
       required year,
       required month,
       required double amount}) {
-    print("cvv: $cvv");
-    print("year: $year");
-    print("name: $currentUsername");
-    print("month: $month");
-    print("credit card: $creditCard");
-    print("amount $amount");
     var dio = Dio();
     return dio.post("https://api.moyasar.com/v1/payments", queryParameters: {
       "source[number]": creditCard,

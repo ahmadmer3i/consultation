@@ -149,6 +149,8 @@ class _ProviderProfileScheduleState extends State<ProviderProfileSchedule>
               print("state: $state");
             },
             builder: (context, state) {
+              TimeCubit.get(context).selectedDay =
+                  DateTime.now().add(Duration(minutes: 1));
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

@@ -30,15 +30,12 @@ class _AddNewSlotState extends State<AddNewSlot> {
           key: _formKey,
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "إضافة وقت جديد",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(color: const Color(0xffCB997E)),
-                ),
+              Text(
+                "إضافة وقت جديد",
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .copyWith(color: const Color(0xffCB997E)),
               ),
               Container(
                 padding: const EdgeInsets.all(10),
@@ -59,9 +56,11 @@ class _AddNewSlotState extends State<AddNewSlot> {
                         (value) {
                           setState(
                             () {
-                              date = value;
-                              dateController.text =
-                                  DateFormat.yMMMd('ar').format(value!);
+                              if (value != null) {
+                                date = value;
+                                dateController.text =
+                                    DateFormat.yMMMd('ar').format(value);
+                              }
                             },
                           );
                         },
@@ -79,9 +78,8 @@ class _AddNewSlotState extends State<AddNewSlot> {
                         timeController.text.isEmpty ||
                         startTime.hour > endTime.hour) {
                       return "يجب ان يكون عدد الساعات ساعات كاملة";
-                    } else {
-                      return null;
                     }
+                    return null;
                   },
                   textController: timeController,
                   isReadOnly: true,
@@ -96,7 +94,6 @@ class _AddNewSlotState extends State<AddNewSlot> {
                         end: endTime,
                         interval: const Duration(hours: 1),
                         context: context,
-                        // maxDuration: Duration(hours: 12, minutes: 00),
                         hideTimes: false,
                         onStartChange: (value) async {
                           startTime = value;
@@ -168,24 +165,6 @@ class _AddNewSlotState extends State<AddNewSlot> {
                           .doc(i.toString())
                           .set({});
                     }
-                    // var snapshot = await FirebaseFirestore.instance
-                    //     .collection("provider")
-                    //     .doc(FirebaseAuth.instance.currentUser!.uid)
-                    //     .get();
-                    // if (snapshot.data() != null) {
-                    //   if (snapshot.data()!.containsKey("available")) {
-                    //     for (var i in timeIntervals) {
-                    //       if (!snapshot.data()!.containsValue(i)) {
-                    //         print(snapshot.data()!.containsValue(i));
-                    //
-                    //       }else {
-                    //         FirebaseFirestore.instance.
-                    //       }
-                    //     }
-                    //   } else {
-
-                    // }
-                    // }
                     Navigator.pop(context);
                   }
                 },

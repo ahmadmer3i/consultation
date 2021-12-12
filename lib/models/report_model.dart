@@ -7,6 +7,7 @@ class ReportModel {
   int? status;
   String? reportId;
   Timestamp? reportDate;
+  String? reason;
 
   ReportModel.fromDatabase(Map<String, dynamic> json) {
     reportDetails = json["reportDetails"];
@@ -15,5 +16,6 @@ class ReportModel {
     status = json["status"];
     reportId = json["reportId"];
     reportDate = json["reportDate"];
+    reason = json["reason"];
   }
 }

@@ -98,6 +98,20 @@ class _SeekerReportsState extends State<SeekerReports> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Text(
+                                "السبب",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6!
+                                    .copyWith(color: const Color(0xffCB997E)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                              child: Text(cubit.reportData[index].reason ?? ''),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
                                 "حالۃ البلاغ",
                                 style: Theme.of(context)
                                     .textTheme
@@ -110,7 +124,7 @@ class _SeekerReportsState extends State<SeekerReports> {
                               child: ReportStatus(
                                   selectedIndex:
                                       cubit.reportData[index].status!),
-                            )
+                            ),
                           ],
                         ),
                       );

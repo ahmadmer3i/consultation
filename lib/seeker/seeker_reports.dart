@@ -83,7 +83,7 @@ class _SeekerReportsState extends State<SeekerReports> {
                                             padding: const EdgeInsets.all(5),
                                             child: const CircleAvatar()),
                                         Text(
-                                          snapshot.data!.name!,
+                                          snapshot.data?.name ?? '',
                                           style: Theme.of(context)
                                               .textTheme
                                               .headline6!

@@ -266,6 +266,7 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                               },
                               validator: (password) {
                                 if (password != passwordController.text) {
+                                  //TODO: Password doesn't match
                                   return "message";
                                 }
                                 return null;

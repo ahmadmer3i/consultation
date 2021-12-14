@@ -3,6 +3,8 @@ import 'package:consultation/view_model/login_register/user_register_view_model.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fzregex/fzregex.dart';
+import 'package:fzregex/utils/pattern.dart';
 
 class SeekerRegistration extends StatefulWidget {
   const SeekerRegistration({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
   FirebaseAuth auth = FirebaseAuth.instance; // الربط مع الداتا اوثنتكيشن
   late String _email, _password, _name, _username, _dateOfBirth, _gender;
   late bool _isObscure = true;
+  final passwordController = TextEditingController();
   int selectedGender = 0;
   @override
   Widget build(BuildContext context) {
@@ -70,6 +73,12 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              validator: (name) {
+                                if (name!.length < 7 || !name.contains(" ")) {
+                                  return "يرجى ادخال الاسم من مقطعين";
+                                }
+                                return null;
+                              },
                               label: "الأسم بالكامل",
                               //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
@@ -84,6 +93,13 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              validator: (email) {
+                                if (!Fzregex.hasMatch(
+                                    email!, FzPattern.email)) {
+                                  return "يرجى ادخال البريد الالكتروني";
+                                }
+                                return null;
+                              },
                               label: "البريد الألكتروني",
                               //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
@@ -98,6 +114,12 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              validator: (username) {
+                                if (username!.length < 4) {
+                                  return "يرجى ادخال اسم المستخدم ";
+                                }
+                                return null;
+                              },
                               label: "أسم المستخدم",
                               //كود التحقق من الايميل و الباسورد
                               onChanged: (value) {
@@ -169,6 +191,13 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              validator: (dob) {
+                                if (!Fzregex.hasMatch(dob!,
+                                    "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[13-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})\$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))\$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})\$")) {
+                                  return "يرجى ادخال تاريخ الملاد بالشكل الصحيح";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
                                 _dateOfBirth = value;
                               },
@@ -192,6 +221,14 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             child: MyTextField(
+                              textController: passwordController,
+                              validator: (password) {
+                                if (!Fzregex.hasMatch(
+                                    password!, FzPattern.passwordHard)) {
+                                  //TODO: set message here;
+                                  return "password message";
+                                }
+                              },
                               onChanged: (value) {
                                 setState(
                                   () {
@@ -227,6 +264,12 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                                   },
                                 );
                               },
+                              validator: (password) {
+                                if (password != passwordController.text) {
+                                  return "message";
+                                }
+                                return null;
+                              },
                               isObscure: _isObscure,
                               label: "تأكيد كلمة المرور*",
                               suffixIcon: IconButton(
@@ -247,19 +290,20 @@ class _SeekerRegistrationState extends State<SeekerRegistration> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              selectedGender == 0
-                                  ? _gender = "M"
-                                  : _gender = "F";
-                              seekerRegister(
-                                email: _email,
-                                password: _password,
-                                name: _name,
-                                username: _username,
-                                dateOfBirth: _dateOfBirth,
-                                gender: _gender,
-                                context: context,
-                              );
-
+                              if (key.currentState!.validate()) {
+                                selectedGender == 0
+                                    ? _gender = "M"
+                                    : _gender = "F";
+                                seekerRegister(
+                                  email: _email,
+                                  password: _password,
+                                  name: _name,
+                                  username: _username,
+                                  dateOfBirth: _dateOfBirth,
+                                  gender: _gender,
+                                  context: context,
+                                );
+                              }
                             },
                             child: Text(
                               "التسجیل",
